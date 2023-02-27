@@ -1,12 +1,26 @@
 import { createContext, PropsWithChildren, useState } from 'react'
 
 export type Questions = {
-  monthlySpending: number | null
-  currentEnergySources: string[] | null
-  currentEnergySystems: string[] | null
-  interestedInRenewables: boolean | null
-  primaryReason: string | null
-  usesRenewables: boolean | null
+  location: string
+  owningOfProperty: string
+  address: {
+    postcode: string
+    buildingNumberOrName: string
+  }
+  propertyHasEpc: boolean | null
+  propertyEpc: string
+  offGasGrid: boolean | null
+  benefits: string[]
+  householdIncome: string
+  secondaryQuestionsOnProperty: string[]
+  landlordPermission: boolean | null
+  energySupplier: string
+  personalDetails: {
+    firstName: string
+    lastName: string
+    email: string
+    phoneNumber: string
+  }
 }
 
 const questionnaire = {
@@ -18,12 +32,26 @@ export const QuestionnaireContext = createContext(questionnaire)
 
 export const QuestionnaireContextProvider = ({ children }: PropsWithChildren) => {
   const [data, setData] = useState<Questions>({
-    monthlySpending: null,
-    currentEnergySources: null,
-    currentEnergySystems: null,
-    interestedInRenewables: null,
-    primaryReason: null,
-    usesRenewables: null
+    location: '',
+    owningOfProperty: '',
+    address: {
+      postcode: '',
+      buildingNumberOrName: ''
+    },
+    propertyHasEpc: null,
+    propertyEpc: '',
+    offGasGrid: null,
+    benefits: [],
+    householdIncome: '',
+    secondaryQuestionsOnProperty: [],
+    landlordPermission: null,
+    energySupplier: '',
+    personalDetails: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: ''
+    }
   })
 
   const saveData = (data: Partial<Questions>) => {

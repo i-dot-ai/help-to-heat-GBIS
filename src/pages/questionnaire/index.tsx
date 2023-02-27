@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout'
 import QuestionnaireForm from '@/components/QuestionnaireForm/QuestionnaireForm'
+import { GridRow, GridCol } from 'govuk-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -22,6 +23,13 @@ export default function Questionnaire() {
     }
   }, [router])
 
-  return <QuestionnaireForm steps={steps} />
+  return (
+    <GridRow>
+      <GridCol setWidth="two-thirds">
+        <QuestionnaireForm steps={steps} />
+      </GridCol>
+      <GridCol setWidth="one-third"></GridCol>
+    </GridRow>
+  )
 }
 Questionnaire.getLayout = (page: JSX.Element) => <Layout showBackButton>{page}</Layout>
