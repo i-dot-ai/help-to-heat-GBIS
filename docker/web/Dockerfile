@@ -17,4 +17,6 @@ COPY ./ /app/
 COPY ./docker/web/start.sh /start.sh
 RUN chmod +x /start.sh
 
+EXPOSE 3001
+
 CMD ["sh","/start.sh"]
