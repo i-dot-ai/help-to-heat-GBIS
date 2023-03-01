@@ -3,4 +3,4 @@
 set -o errexit
 set -o nounset
 
-npm start --port $PORT
+npm start --port=$PORT

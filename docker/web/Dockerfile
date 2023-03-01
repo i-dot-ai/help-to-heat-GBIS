@@ -11,3 +11,10 @@ COPY ./ /app/
 WORKDIR /app/
 
 RUN npm ci
+
+COPY ./ /app/
+
+COPY ./docker/web/start.sh /start.sh
+RUN chmod +x /start.sh
+
+CMD ["sh","/start.sh"]
