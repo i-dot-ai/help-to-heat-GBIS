@@ -1,0 +1,12 @@
+---
+applications:
+- name: help-to-heat-sandbox
+  routes:
+  - route: help-to-heat-sandbox.london.cloudapps.digital
+    protocol: http1
+  processes:
+  - type: web
+    instances: 1
+    memory: 64M
+    disk_quota: 2048M
+    health-check-type: port
