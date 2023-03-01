@@ -43,8 +43,8 @@ jobs:
           docker build . --file $DOCKER_FILE --tag $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --build-arg BASE_URL=$BASE_URL
           docker push -a $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE
 
-  deploy_help-to-heat_image:
-    needs: [push_help-to-heat_image]
+  deploy_help_to_heat_image:
+    needs: [push_help_to_heat_image]
 
     runs-on: ubuntu-latest
 
