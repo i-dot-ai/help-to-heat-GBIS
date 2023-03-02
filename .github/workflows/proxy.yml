@@ -6,7 +6,6 @@ on:
     branches:
       - sandbox
       - staging
-      - pentest
     paths:
       - .github/workflows/proxy.yml
       - 'proxy/**'
