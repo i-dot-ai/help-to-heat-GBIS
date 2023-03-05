@@ -28,6 +28,16 @@ fi
 
 IFS="," read -ra IPS <<< "$ALLOWED_IPS"
 
+# echo "${HTPASSWD}" > .htpasswd
+
+lines=(${HTPASSWD//$'\n'/ })
+
+for line in "${lines[@]}"
+do
+  # echo "$line"
+  echo "$line" >> .htpasswd
+done
+
 NGINX_ALLOW_STATEMENTS=""
 for addr in "${IPS[@]}";
   do NGINX_ALLOW_STATEMENTS="$NGINX_ALLOW_STATEMENTS allow $addr;"; true;
