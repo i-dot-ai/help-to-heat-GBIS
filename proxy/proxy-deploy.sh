@@ -34,7 +34,6 @@ echo "${HTPASSWD}" >> .htpasswd
 
 # for line in "${lines[@]}"
 # do
-#   # echo "$line"
 #   echo "$line" >> .htpasswd
 # done
 
