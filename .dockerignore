@@ -1,8 +1,12 @@
-node_modules
-.next
 out
 **/*.test.ts
 **/*.test.tsx
-
 *.pyc
 .env
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+README.md
+.next
+.git

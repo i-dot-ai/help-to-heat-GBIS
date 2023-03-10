@@ -8,7 +8,7 @@ ENV PATH /app/web/node_modules/.bin:$PATH
 
 COPY ./ /app/
 
-WORKDIR /app/
+WORKDIR /app/web
 
 RUN npm ci
 
