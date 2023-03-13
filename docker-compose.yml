@@ -14,15 +14,15 @@ services:
     ports:
       - "3001:3001"
 
-  api:
+  portal:
     build:
       context: .
-      dockerfile: ./docker/api/Dockerfile
-    image: help_to_heat_api
+      dockerfile: ./docker/portal/Dockerfile
+    image: help_to_heat_portal
     depends_on:
       - help-to-heat-db
     env_file:
-      - ./envs/api
+      - ./envs/portal
     volumes:
       - ./:/app/:z
     ports:
@@ -34,6 +34,6 @@ services:
     volumes:
       - help_to_heat_postgres_data:/var/lib/postgresql/data:Z
     env_file:
-      - ./envs/api
+      - ./envs/portal
     expose:
       - "5432"
