@@ -29,7 +29,5 @@ RUN \
     DJANGO_SECRET_KEY="temp" \
     python manage.py collectstatic --no-input
 
-EXPOSE 8000
-
 ENTRYPOINT ["sh","/entrypoint.sh"]
 CMD ["sh","/start.sh"]
