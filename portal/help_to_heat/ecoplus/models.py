@@ -41,3 +41,6 @@ class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
     uprn = models.BigIntegerField()
     rating = models.CharField(max_length=32, choices=epc_rating_choices)
     date = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f"<EpcRating uprn={self.uprn}>"
