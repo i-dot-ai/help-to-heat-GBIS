@@ -1,3 +1,4 @@
+import string
 import uuid
 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -29,5 +30,14 @@ class User(BaseUser, UUIDPrimaryKeyBase):
         super().save(*args, **kwargs)
 
 
+epc_rating_choices = tuple((letter, letter) for letter in string.ascii_letters.upper()[:8])
+
+
 class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
+
+
+class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
+    uprn = models.CharField(max_length=32)
+    rating = models.CharField(max_length=32, choices=epc_rating_choices)
+    date = models.DateField(blank=True, null=True)
