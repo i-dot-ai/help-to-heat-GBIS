@@ -29,5 +29,5 @@ class User(BaseUser, UUIDPrimaryKeyBase):
         super().save(*args, **kwargs)
 
 
-class Submission(UUIDPrimaryKeyBase, TimeStampedModel):
+class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
