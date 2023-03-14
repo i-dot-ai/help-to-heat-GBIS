@@ -26,6 +26,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     "help_to_heat.ecoplus",
+    "rest_framework",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
