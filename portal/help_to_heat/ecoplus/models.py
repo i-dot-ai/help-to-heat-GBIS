@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
@@ -26,3 +27,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
         super().save(*args, **kwargs)
+
+
+class Submission(UUIDPrimaryKeyBase, TimeStampedModel):
+    data = models.JSONField(encoder=DjangoJSONEncoder)
