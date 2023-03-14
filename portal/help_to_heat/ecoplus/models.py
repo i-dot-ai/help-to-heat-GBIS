@@ -38,6 +38,6 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
 
 
 class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
-    uprn = models.CharField(max_length=32)
+    uprn = models.BigIntegerField()
     rating = models.CharField(max_length=32, choices=epc_rating_choices)
     date = models.DateField(blank=True, null=True)
