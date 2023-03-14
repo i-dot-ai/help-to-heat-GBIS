@@ -1,13 +1,13 @@
 include envs/web
 
 define _update_requirements
-	docker-compose run requirements bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
+	docker run -v ${PWD}/:/app/:z python:3.8-buster bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
 endef
 
 .PHONY: update-requirements
 update-requirements:
-	$(call _update_requirements,requirements)
-	$(call _update_requirements,requirements-dev)
+	$(call _update_requirements,portal/requirements)
+	$(call _update_requirements,portal/requirements-dev)
 
 .PHONY: reset-db
 reset-db:
