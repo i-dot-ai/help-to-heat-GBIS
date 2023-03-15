@@ -1,3 +1,5 @@
+# Download the data from here: https://epc.opendatacommunities.org/domestic/search
+
 import bz2
 import csv
 import pathlib
