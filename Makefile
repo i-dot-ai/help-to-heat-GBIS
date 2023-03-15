@@ -1,4 +1,4 @@
-include envs/web
+include envs/portal
 
 define _update_requirements
 	docker run -v ${PWD}/:/app/:z python:3.8-buster bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
