@@ -2,6 +2,7 @@ import bz2
 import csv
 import datetime
 import pathlib
+import subprocess
 
 import httpx
 from django.core.management.base import BaseCommand
@@ -22,6 +23,8 @@ def save_url_in_chunks(url):
                 for chunk in response.iter_bytes(CHUNK_SIZE):
                     text = decompressor.decompress(chunk)
                     f.write(text)
+    sort_args = ("sort", "-u", "-o", str(filepath), str(filepath))
+    subprocess.run(sort_args)
     return filepath
 
 
