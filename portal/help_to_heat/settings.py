@@ -16,8 +16,9 @@ STATIC_ROOT = STATIC_ROOT
 DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = [
-    "help-to-heat-develop.london.cloudapps.digital",
+    "help-to-heat-portal-develop.london.cloudapps.digital",
     "help-to-heat-portal-sandbox.london.cloudapps.digital",
+    "help-to-heat-portal-staging.london.cloudapps.digital",
     "localhost",
     "127.0.0.1",
 ]
