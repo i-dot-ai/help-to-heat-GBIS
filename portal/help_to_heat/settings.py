@@ -17,6 +17,7 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = [
     "help-to-heat-develop.london.cloudapps.digital",
+    "help-to-heat-portal-sandbox.london.cloudapps.digital",
     "localhost",
     "127.0.0.1",
 ]

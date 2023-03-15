@@ -27,7 +27,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [help-to-heat]
+        app: [help-to-heat, help-to-heat-portal]
         include:
           - app: help-to-heat
             dockerfile: docker/web/Dockerfile
@@ -65,6 +65,10 @@ jobs:
     env:
       IMAGE_TAG: ${{ github.ref_name }}
       DOCKER_REPOSITORY: ghcr.io
+
+    strategy:
+      matrix:
+        app: [help-to-heat, help-to-heat-portal]
 
     steps:
       - uses: actions/checkout@v3
@@ -108,7 +112,7 @@ jobs:
           DOCKER_IMAGE: ${{ matrix.app }}
           PAT_TOKEN_USER: ${{ secrets.PAT_TOKEN_USER }}
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: CF_DOCKER_PASSWORD="$PAT_TOKEN" ./cf push -f manifests/"$CF_SPACE"/help-to-heat_manifest.yml --docker-image $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --docker-username=$PAT_TOKEN_USER
+        run: CF_DOCKER_PASSWORD="$PAT_TOKEN" ./cf push -f manifests/"$CF_SPACE/${{ matrix.app }}"_manifest.yml --docker-image $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --docker-username=$PAT_TOKEN_USER
 
       # - uses: actions/checkout@v2
       # - name: Slack Notification
