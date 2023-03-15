@@ -1,5 +1,5 @@
 """
-WSGI config for people_survey project.
+WSGI config for help_to_heat project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
