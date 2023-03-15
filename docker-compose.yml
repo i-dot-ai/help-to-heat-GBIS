@@ -1,5 +1,8 @@
 version: '3'
 
+volumes:
+  help_to_heat_postgres_data: {}
+
 services:
   web:
     build:
@@ -10,3 +13,27 @@ services:
       - ./envs/web
     ports:
       - "3001:3001"
+
+  portal:
+    build:
+      context: .
+      dockerfile: ./docker/portal/Dockerfile
+    image: help_to_heat_portal
+    depends_on:
+      - help-to-heat-db
+    env_file:
+      - ./envs/portal
+    volumes:
+      - ./:/app/:z
+    ports:
+      - "8012:8012"
+
+  help-to-heat-db:
+    image: postgres:13
+    container_name: help_to_heat_postgres
+    volumes:
+      - help_to_heat_postgres_data:/var/lib/postgresql/data:Z
+    env_file:
+      - ./envs/portal
+    expose:
+      - "5432"
