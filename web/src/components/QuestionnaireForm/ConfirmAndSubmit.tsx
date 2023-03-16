@@ -2,16 +2,26 @@ import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { QuestionnaireContext, Questions } from '@/context/QuestionnaireContext'
+import { useRouter } from 'next/router'
 
-export const ConfirmAndSubmit = ({ nextStep }: { nextStep: number }) => {
+export const ConfirmAndSubmit = () => {
+  const router = useRouter()
   const { data } = useContext(QuestionnaireContext)
   const { handleSubmit } = useForm({
     reValidateMode: 'onSubmit',
     defaultValues: data
   })
 
-  const onSubmit = (data: Questions) => {
-    alert(JSON.stringify({ data, nextStep }, null, 2))
+  const onSubmit = async (data: Questions) => {
+    await fetch('/api/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ data })
+    }).then(() => {
+      router.push('/success')
+    })
   }
 
   return (

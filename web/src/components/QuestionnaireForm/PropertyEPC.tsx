@@ -26,7 +26,7 @@ const DateField = ({ input: { onChange, onBlur, ...input }, children, ...props }
   )
 }
 
-export const validateDateOfBirth: (value?: {
+export const validateCertificateDate: (value?: {
   year?: number | string
   month?: number | string
   day?: number | string
@@ -104,7 +104,11 @@ export const PropertyEPC = ({ nextStep }: { nextStep: number }) => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     save(data)
-    router.push(`/questionnaire?step=${nextStep}`)
+    if (data.propertyEpcRating && ['D', 'E', 'F', 'G'].includes(data.propertyEpcRating)) {
+      router.push(`/questionnaire?step=${nextStep}`)
+    } else {
+      router.push('/property-not-eligible')
+    }
   }
 
   return (
@@ -113,26 +117,26 @@ export const PropertyEPC = ({ nextStep }: { nextStep: number }) => {
         <GovUK.Fieldset.Legend size="L">Enter your EPC</GovUK.Fieldset.Legend>
 
         <GovUK.Label mb={4}>
-          Date of certificate
           {submitCount > 0 && errors?.propertyEpcRating?.message && (
             <GovUK.ErrorText>{errors?.propertyEpcRating.message}</GovUK.ErrorText>
           )}
-          {options.map((option) => (
-            <GovUK.Radio
-              key={option.value}
-              hint={option.hint}
-              type="radio"
-              value={option.value}
-              {...register('propertyEpcRating', {
-                required: {
-                  value: true,
-                  message: 'This field is required'
-                }
-              })}
-            >
-              {option.label}
-            </GovUK.Radio>
-          ))}
+          <GovUK.Select
+            mb={8}
+            label="Rating"
+            input={register('propertyEpcRating', {
+              required: {
+                value: true,
+                message: 'This field is required'
+              }
+            })}
+          >
+            <option value="">Please select...</option>
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </GovUK.Select>
         </GovUK.Label>
 
         <DateField
@@ -140,7 +144,7 @@ export const PropertyEPC = ({ nextStep }: { nextStep: number }) => {
             submitCount > 0 ? errors?.propertyEpcDateOfCertificate?.message : undefined
           }
           input={register('propertyEpcDateOfCertificate', {
-            validate: validateDateOfBirth
+            validate: validateCertificateDate
           })}
         >
           Date of certificate

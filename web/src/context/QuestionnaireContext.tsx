@@ -9,8 +9,9 @@ export type Questions = {
     buildingNumberOrName?: string
   }
   addressUPRN?: string
+  councilTaxBand?: string
   propertyHasEpc: boolean | null
-  propertyEpcRating: string
+  propertyEpcRating?: string
   propertyEpcDateOfCertificate: {
     year?: string | number | undefined
     month?: string | number | undefined
@@ -48,6 +49,7 @@ const questionnaire = {
 export const QuestionnaireContext = createContext(questionnaire)
 
 export const QuestionnaireContextProvider = ({ children }: PropsWithChildren) => {
+  const [smartEPCcheckPerformed, setSmartEPCcheckPerformed] = useState(false)
   const [data, setData] = useState<Questions>({
     location: '',
     owningOfProperty: '',
@@ -55,9 +57,7 @@ export const QuestionnaireContextProvider = ({ children }: PropsWithChildren) =>
       postcode: '',
       buildingNumberOrName: ''
     },
-    addressUPRN: '',
     propertyHasEpc: null,
-    propertyEpcRating: '',
     propertyEpcDateOfCertificate: {
       year: '',
       month: '',
@@ -88,10 +88,30 @@ export const QuestionnaireContextProvider = ({ children }: PropsWithChildren) =>
     }
   }, [data])
 
-  // DISABLED FOR NOW (DEV)
-  // useEffect(() => {
-  //   const data = readPersistedData()
-  // }, [])
+  useEffect(() => {
+    if (!!data.addressUPRN && !smartEPCcheckPerformed) {
+      setSmartEPCcheckPerformed(true)
+      fetch(`/api/epc?uprn=${data.addressUPRN}`)
+        .then((r) => r.json())
+        .then((r) => {
+          if (r.rating && r.date) {
+            const _date = new Date(r.date)
+            setData((v) => {
+              return {
+                ...v,
+                propertyHasEpc: true,
+                propertyEpcRating: r.rating,
+                propertyEpcDateOfCertificate: {
+                  year: _date.getFullYear(),
+                  month: _date.getMonth() + 1,
+                  day: _date.getDate()
+                }
+              }
+            })
+          }
+        })
+    }
+  }, [data, smartEPCcheckPerformed])
 
   const saveData = (data: Partial<Questions>) => {
     setData((v) => {

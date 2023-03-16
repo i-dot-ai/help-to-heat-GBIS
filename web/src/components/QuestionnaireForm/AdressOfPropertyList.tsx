@@ -30,6 +30,7 @@ export const AdressOfPropertyList = ({ nextStep }: { nextStep: number }) => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     save(data)
+
     if (addressNotFound) {
       // TBC
       router.push('/address-not-found')
@@ -68,6 +69,12 @@ export const AdressOfPropertyList = ({ nextStep }: { nextStep: number }) => {
       })
   }, [data, router])
 
+  useEffect(() => {
+    if (!loading && options.length === 0) {
+      router.push('/post-code-not-found')
+    }
+  }, [loading, options, router])
+
   return (
     <GovUK.LoadingBox loading={loading}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -77,9 +84,6 @@ export const AdressOfPropertyList = ({ nextStep }: { nextStep: number }) => {
           <GovUK.Label mb={4}>
             {submitCount > 0 && errors?.addressUPRN?.message && (
               <GovUK.ErrorText>{errors?.addressUPRN.message}</GovUK.ErrorText>
-            )}
-            {!loading && options.length === 0 && (
-              <p>__PLACEHOLDER__: Address not found __PLACEHOLDER__</p>
             )}
             {options.map((option) => (
               <GovUK.Radio

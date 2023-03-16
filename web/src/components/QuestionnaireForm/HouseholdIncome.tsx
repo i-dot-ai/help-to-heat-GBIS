@@ -23,11 +23,12 @@ export const HouseholdIncome = ({ nextStep }: { nextStep: number }) => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     save(data)
     // TBC logic
-    if (data.householdIncome === 'more-30000') {
-      router.push('/ineligible-customer')
-    } else {
-      router.push(`/questionnaire?step=${nextStep}`)
-    }
+    // if (data.householdIncome === 'more-30000') {
+    //   router.push('/ineligible-customer')
+    // } else {
+    //   router.push(`/questionnaire?step=${nextStep}`)
+    // }
+    router.push(`/questionnaire?step=${nextStep}`)
   }
 
   return (

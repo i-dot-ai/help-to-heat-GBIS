@@ -23,13 +23,13 @@ const options = [
     hint: ''
   },
   {
-    label: 'I don’t see my option listed',
-    value: 'I don’t see my option listed',
+    label: `I don't see my option listed`,
+    value: `I don't see my option listed`,
     hint: ''
   },
   {
-    label: 'I don’t know',
-    value: 'I don’t know',
+    label: `I don't know`,
+    value: `I don't know`,
     hint: ''
   }
 ]

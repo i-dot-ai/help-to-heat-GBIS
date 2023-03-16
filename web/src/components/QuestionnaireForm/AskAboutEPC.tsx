@@ -26,7 +26,7 @@ export const AskAboutEPC = ({ nextStep }: { nextStep: number }) => {
     }
     save(_data)
     if (!_data.propertyHasEpc) {
-      router.push(`/epc-does-not-exist`)
+      router.push(`/questionnaire?step=6`)
     } else {
       router.push(`/questionnaire?step=${nextStep}`)
     }

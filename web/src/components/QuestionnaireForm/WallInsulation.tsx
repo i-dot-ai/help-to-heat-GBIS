@@ -23,8 +23,8 @@ const options = [
     hint: ''
   },
   {
-    label: 'I don’t know',
-    value: 'I don’t know',
+    label: `I don't know`,
+    value: `I don't know`,
     hint: ''
   }
 ]

@@ -4,15 +4,20 @@ import { PropsWithChildren } from 'react'
 
 const Layout = ({
   children,
-  showBackButton = false
-}: PropsWithChildren<{ beforeChildren?: JSX.Element; showBackButton?: boolean }>) => {
+  showBackButton = false,
+  customBackUrl
+}: PropsWithChildren<{
+  beforeChildren?: JSX.Element
+  showBackButton?: boolean
+  customBackUrl?: string
+}>) => {
   const router = useRouter()
 
   return (
     <Page
       beforeChildren={
         <span className="print-hidden">
-          <PhaseBanner level="alpha">
+          <PhaseBanner level="Prototype">
             This is a new service – your feedback will help us to improve it.
           </PhaseBanner>
           {!!showBackButton && (
@@ -20,7 +25,7 @@ const Layout = ({
               href="/"
               onClick={(e) => {
                 e.preventDefault()
-                router.back()
+                customBackUrl ? router.push(customBackUrl) : router.back()
               }}
             >
               Back
