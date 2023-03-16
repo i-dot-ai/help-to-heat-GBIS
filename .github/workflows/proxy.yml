@@ -35,7 +35,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [help-to-heat]
+        app: [help-to-heat, help-to-heat-portal]
 
     steps:
 
