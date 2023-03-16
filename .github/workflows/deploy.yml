@@ -23,7 +23,7 @@ jobs:
     env:
       IMAGE_TAG: ${{ github.ref_name }}
       DOCKER_REPOSITORY: ghcr.io
-      BASE_URL: https://help-to-heat-${{ github.ref_name }}.london.cloudapps.digital
+      PORTAL_URL: https://help-to-heat-portal-${{ github.ref_name }}.apps.internal
 
     strategy:
       matrix:
@@ -39,7 +39,7 @@ jobs:
 
       - name: Setup prod api host
         if:  ${{ github.event_name == 'release' }}
-        run: echo "BASE_URL=https://help-to-heat.london.cloudapps.digital" >> $GITHUB_ENV
+        run: echo "PORTAL_URL=https://help-to-heat-portal.apps.internal" >> $GITHUB_ENV
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -54,7 +54,7 @@ jobs:
           DOCKER_IMAGE: ${{ matrix.app }}
 
         run: |
-          docker build . --file $DOCKER_FILE --tag $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --build-arg BASE_URL=$BASE_URL
+          docker build . --file $DOCKER_FILE --tag $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --build-arg PORTAL_URL=$PORTAL_URL
           docker push -a $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE
 
   deploy_image:
