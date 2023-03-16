@@ -1,6 +1,9 @@
 FROM node:16 as web
 
+ARG PORTAL_URL
+
 ENV TZ=UTC
+ENV PORTAL_URL=${PORTAL_URL}
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
