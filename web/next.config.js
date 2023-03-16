@@ -4,6 +4,9 @@ const nextConfig = {
   reactStrictMode: true,
   compiler: {
     styledComponents: true
+  },
+  env: {
+    PORTAL_URL: process.env.PORTAL_URL
   }
 }
 
