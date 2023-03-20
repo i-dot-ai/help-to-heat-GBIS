@@ -10,7 +10,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { rating, date } = await fetch(`${PORTAL_URL}/api/epc-rating/${uprn}/`, {
-    // const { rating, date } = await fetch(`${PORTAL_URL}/api/epc-rating/289495275833/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

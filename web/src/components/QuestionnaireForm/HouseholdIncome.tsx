@@ -20,15 +20,14 @@ export const HouseholdIncome = ({ nextStep }: { nextStep: number }) => {
 
   const errorsToShow = Object.keys(errors)
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    save(data)
-    // TBC logic
-    // if (data.householdIncome === 'more-30000') {
-    //   router.push('/ineligible-customer')
-    // } else {
-    //   router.push(`/questionnaire?step=${nextStep}`)
-    // }
-    router.push(`/questionnaire?step=${nextStep}`)
+  const onSubmit: SubmitHandler<Inputs> = (payload) => {
+    save(payload)
+
+    if (payload.householdIncome === 'less-31000' && data.benefits === 'No') {
+      router.push(`/local-council-support`)
+    } else {
+      router.push(`/questionnaire?step=${nextStep}`)
+    }
   }
 
   return (
@@ -53,7 +52,7 @@ export const HouseholdIncome = ({ nextStep }: { nextStep: number }) => {
 
             <GovUK.Radio
               type="radio"
-              value="less-30000"
+              value="less-31000"
               {...register('householdIncome', {
                 required: {
                   value: true,
@@ -61,11 +60,11 @@ export const HouseholdIncome = ({ nextStep }: { nextStep: number }) => {
                 }
               })}
             >
-              Less than £30,000 a year
+              Less than £31,000 a year
             </GovUK.Radio>
             <GovUK.Radio
               type="radio"
-              value="more-30000"
+              value="more-31000"
               {...register('householdIncome', {
                 required: {
                   value: true,
@@ -73,7 +72,7 @@ export const HouseholdIncome = ({ nextStep }: { nextStep: number }) => {
                 }
               })}
             >
-              More than £30,000 a year
+              More than £31,000 a year
             </GovUK.Radio>
           </GovUK.Label>
         </GovUK.FormGroup>

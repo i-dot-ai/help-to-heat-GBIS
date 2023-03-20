@@ -67,6 +67,15 @@ export const KindOfProperty = ({ nextStep }: { nextStep: number }) => {
           What kind of property do you have?
         </GovUK.Fieldset.Legend>
 
+        <GovUK.Details summary="Why do we need to know this?">
+          <GovUK.Paragraph>
+            Energy use varies between different buildings, particularly for heating.
+          </GovUK.Paragraph>
+          <GovUK.Paragraph>
+            Some home improvements are only possible or appropriate for certain buildings.
+          </GovUK.Paragraph>
+        </GovUK.Details>
+
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.kindOfProperty?.message}>
           <GovUK.Label mb={4}>
             {submitCount > 0 && errors?.kindOfProperty?.message && (

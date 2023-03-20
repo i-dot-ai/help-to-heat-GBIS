@@ -11,6 +11,7 @@ export type Questions = {
   addressUPRN?: string
   councilTaxBand?: string
   propertyHasEpc: boolean | null
+  suggestedEPCIsCorrect?: string
   propertyEpcRating?: string
   propertyEpcDateOfCertificate: {
     year?: string | number | undefined
@@ -18,7 +19,7 @@ export type Questions = {
     day?: string | number | undefined
   }
   offGasGrid: boolean | null
-  benefits: boolean | null
+  benefits?: 'Yes' | 'No'
   householdIncome: string
   secondaryQuestionsOnProperty: string[]
   landlordPermission: boolean | null
@@ -64,7 +65,6 @@ export const QuestionnaireContextProvider = ({ children }: PropsWithChildren) =>
       day: ''
     },
     offGasGrid: null,
-    benefits: null,
     householdIncome: '',
     secondaryQuestionsOnProperty: [],
     landlordPermission: null,

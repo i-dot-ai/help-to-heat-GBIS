@@ -27,6 +27,7 @@ import ListOfElegibleSchemes from './ListOfElegibleSchemes'
 import ChooseSupplier from './ChooseSupplier'
 import { QuestionnaireContext } from '@/context/QuestionnaireContext'
 import { useContext } from 'react'
+import { FoundEPC } from './FoundEPC'
 
 const QuestionnaireForm = ({ steps }: { steps: Steps }) => {
   const showDebug = false
@@ -38,7 +39,9 @@ const QuestionnaireForm = ({ steps }: { steps: Steps }) => {
       {steps.currentStep === 2 && <OwningOfProperty nextStep={3} />}
       {steps.currentStep === 3 && <AddressOfProperty nextStep={31} />}
       {steps.currentStep === 31 && <AdressOfPropertyList nextStep={32} />}
-      {steps.currentStep === 32 && <CouncilTaxBand nextStep={4} />}
+      {steps.currentStep === 32 && <CouncilTaxBand nextStep={35} />}
+
+      {steps.currentStep === 35 && <FoundEPC nextStep={6} wrongEpcStep={4} />}
 
       {steps.currentStep === 4 && <AskAboutEPC nextStep={5} />}
       {steps.currentStep === 5 && <PropertyEPC nextStep={6} />}
@@ -53,7 +56,7 @@ const QuestionnaireForm = ({ steps }: { steps: Steps }) => {
       {/* stage 3 */}
       {steps.currentStep === 10 && <PropertyWalls nextStep={11} />}
       {steps.currentStep === 11 && <WallInsulation nextStep={12} />}
-      {steps.currentStep === 12 && <Loft nextStep={13} />}
+      {steps.currentStep === 12 && <Loft nextStep={13} nextStepNoLoft={15} />}
       {steps.currentStep === 13 && <AccessToLoft nextStep={14} />}
       {steps.currentStep === 14 && <LoftInsulation nextStep={15} />}
       {steps.currentStep === 15 && <CheckYourAnswers nextStep={151} />}

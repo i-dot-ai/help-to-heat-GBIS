@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { useRouter } from 'next/router'
@@ -25,6 +25,17 @@ export const LandlordPermission = ({ nextStep }: { nextStep: number }) => {
     router.push(`/questionnaire?step=${nextStep}`)
   }
 
+  useEffect(() => {
+    if (
+      [
+        'Yes, I own my property and live in it',
+        'I am a property owner but lease my property to one or more tenants'
+      ].includes(data.owningOfProperty)
+    ) {
+      router.push(`/questionnaire?step=${nextStep}`)
+    }
+  }, [data, nextStep, router])
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {!!errorsToShow?.length && (
@@ -35,7 +46,9 @@ export const LandlordPermission = ({ nextStep }: { nextStep: number }) => {
       )}
 
       <GovUK.Fieldset>
-        <GovUK.Fieldset.Legend size="L">Landlord permission</GovUK.Fieldset.Legend>
+        <GovUK.Fieldset.Legend size="L">
+          Do you have your landlord’s permission to make changes to the property?
+        </GovUK.Fieldset.Legend>
 
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.landlordPermission?.message}>
           <GovUK.Label mb={4}>

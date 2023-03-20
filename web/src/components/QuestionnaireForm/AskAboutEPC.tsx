@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { useRouter } from 'next/router'
 import { QuestionnaireContext, Questions } from '@/context/QuestionnaireContext'
-import { Link } from 'govuk-react'
 
 type Inputs = Pick<Questions, 'propertyHasEpc'>
 
@@ -39,6 +38,19 @@ export const AskAboutEPC = ({ nextStep }: { nextStep: number }) => {
           Does the property have an energy performance certificate (EPC)?
         </GovUK.Fieldset.Legend>
 
+        <GovUK.Paragraph>
+          You will need to provide the EPC rating and the date of the assessment for your
+          property.
+        </GovUK.Paragraph>
+        <GovUK.Paragraph>
+          If you cannot find your EPC, or you are unsure if your property has one, you can
+          [check if your property has an EPC](https://www.gov.uk/find-energy-certificate).
+        </GovUK.Paragraph>
+        <GovUK.Paragraph>
+          If your property does not have have an EPC, you may need to get a new
+          certificate depending on which home improvement scheme you are eligible for.
+        </GovUK.Paragraph>
+
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.propertyHasEpc?.message}>
           <GovUK.Label mb={4}>
             {submitCount > 0 && errors?.propertyHasEpc?.message && (
@@ -60,15 +72,6 @@ export const AskAboutEPC = ({ nextStep }: { nextStep: number }) => {
             <GovUK.Radio
               type="radio"
               value="no"
-              hint={
-                <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.gov.uk/find-energy-certificate"
-                >
-                  https://www.gov.uk/find-energy-certificate
-                </Link>
-              }
               {...register('propertyHasEpc', {
                 required: {
                   value: true,

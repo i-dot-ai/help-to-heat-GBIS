@@ -7,7 +7,7 @@ const PropertyIneligiblePage = () => {
     <Layout showBackButton>
       <GridRow>
         <GridCol setWidth="two-thirds">
-          <H1>This property does not qualify for measures</H1>
+          <H1>Your property does not meet the minimum EPC eligibility requirements.</H1>
         </GridCol>
         <GridCol setWidth="one-third"></GridCol>
       </GridRow>
