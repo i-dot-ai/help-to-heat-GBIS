@@ -71,7 +71,7 @@ export const AdressOfPropertyList = ({ nextStep }: { nextStep: number }) => {
 
   useEffect(() => {
     if (!loading && options.length === 0) {
-      router.push('/post-code-not-found')
+      router.push('/address-not-found')
     }
   }, [loading, options, router])
 

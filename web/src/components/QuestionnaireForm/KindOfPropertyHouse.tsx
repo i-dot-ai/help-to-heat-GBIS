@@ -10,22 +10,22 @@ const options = [
   {
     label: 'Detached',
     value: 'Detached',
-    hint: ''
+    hint: 'Does not share any of its walls with another house or building'
   },
   {
     label: 'Semi-detached',
     value: 'Semi-detached',
-    hint: ''
+    hint: 'Is attached to one other house or building'
   },
   {
     label: 'Terraced',
     value: 'Terraced',
-    hint: ''
+    hint: 'Sits in the middle with a house or building on each side'
   },
   {
     label: 'End terrace',
     value: 'End terrace',
-    hint: ''
+    hint: 'Sits at the end of a row of similar houses with one house attached to it'
   }
 ]
 
@@ -61,6 +61,15 @@ export const KindOfPropertyHouse = ({ nextStep }: { nextStep: number }) => {
         <GovUK.Fieldset.Legend size="L">
           What kind of house do you have?
         </GovUK.Fieldset.Legend>
+
+        <GovUK.Details summary="Why do we need to know this?">
+          <GovUK.Paragraph>
+            Energy use varies between different buildings, particularly for heating.
+          </GovUK.Paragraph>
+          <GovUK.Paragraph>
+            Some home improvements are only possible or appropriate for certain buildings.
+          </GovUK.Paragraph>
+        </GovUK.Details>
 
         <GovUK.FormGroup
           error={submitCount > 0 && !!errors?.kindOfPropertyHouse?.message}

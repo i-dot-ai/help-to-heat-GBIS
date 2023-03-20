@@ -24,15 +24,9 @@ export const AddressOfProperty = ({ nextStep }: { nextStep: number }) => {
     defaultValues: data
   })
 
-  const supplierNotSupported = false
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     save(data)
-    if (supplierNotSupported) {
-      router.push('/supplier-not-participating')
-    } else {
-      router.push(`/questionnaire?step=${nextStep}`)
-    }
+    router.push(`/questionnaire?step=${nextStep}`)
   }
 
   return (
@@ -44,11 +38,10 @@ export const AddressOfProperty = ({ nextStep }: { nextStep: number }) => {
 
         <GovUK.FormGroup>
           <GovUK.Label mb={4}>
-            <Paragraph>We need this information to find out the following: </Paragraph>
+            <Paragraph>We need this information to find out the following:</Paragraph>
             <UnorderedList>
-              <ListItem>the energy efficiency of your home</ListItem>
-              <ListItem>who your local authority could be</ListItem>
-              <ListItem>if you live in an eligible postcode</ListItem>
+              <ListItem>The energy efficiency of your home</ListItem>
+              <ListItem>If you live in an eligible postcode</ListItem>
             </UnorderedList>
 
             <InputContainer>

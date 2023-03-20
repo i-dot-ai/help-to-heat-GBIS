@@ -8,12 +8,12 @@ type Inputs = Pick<Questions, 'accessToLoft'>
 
 const options = [
   {
-    label: 'Yes',
+    label: 'Yes, there is access to my loft',
     value: 'Yes',
     hint: ''
   },
   {
-    label: 'No',
+    label: 'No, there is no access to my loft',
     value: 'No',
     hint: ''
   }
@@ -51,6 +51,21 @@ export const AccessToLoft = ({ nextStep }: { nextStep: number }) => {
         <GovUK.Fieldset.Legend size="L">
           Is there access to your loft?
         </GovUK.Fieldset.Legend>
+        <GovUK.Paragraph>
+          You may have a loft hatch, access ladder or stairs that could allow an
+          insulation installer to get into the loft space.
+        </GovUK.Paragraph>
+
+        <GovUK.InsetText>
+          Homes of your type typically{' '}
+          <span
+            style={{
+              fontWeight: 600
+            }}
+          >
+            have access to their loft
+          </span>
+        </GovUK.InsetText>
 
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.accessToLoft?.message}>
           <GovUK.Label mb={4}>

@@ -3,7 +3,6 @@ import * as GovUK from 'govuk-react'
 import { useRouter } from 'next/router'
 import { QuestionnaireContext, Questions } from '@/context/QuestionnaireContext'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Paragraph } from 'govuk-react'
 
 const energySuppliers = [
   {
@@ -95,11 +94,10 @@ const ChooseSupplier = ({ nextStep }: { nextStep: number }) => {
       )}
 
       <GovUK.Fieldset>
-        <GovUK.Fieldset.Legend size="L">Choose an energy supplier</GovUK.Fieldset.Legend>
+        <GovUK.Fieldset.Legend size="L">
+          Select your home energy supplier from the list below.
+        </GovUK.Fieldset.Legend>
 
-        <Paragraph>
-          You can select an energy supplier even if they do not provide your home energy
-        </Paragraph>
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.energySupplier?.message}>
           <GovUK.Label mb={4}>
             {submitCount > 0 && errors?.energySupplier?.message && (
@@ -108,7 +106,8 @@ const ChooseSupplier = ({ nextStep }: { nextStep: number }) => {
 
             <GovUK.Select
               mb={8}
-              label="Choose an energy supplier from the options below."
+              label="If your home energy supplier is not listed, you can select any energy from the
+          list."
               input={register('energySupplier', {
                 required: {
                   value: true,

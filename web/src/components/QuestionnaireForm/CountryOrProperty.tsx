@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { useRouter } from 'next/router'
 import { QuestionnaireContext, Questions } from '@/context/QuestionnaireContext'
-import { HintText } from 'govuk-react'
 
 type Inputs = Pick<Questions, 'location'>
 
@@ -39,8 +38,6 @@ export const CountryOrProperty = ({ nextStep }: { nextStep: number }) => {
         <GovUK.Fieldset.Legend size="L">
           Which country is your property located in?
         </GovUK.Fieldset.Legend>
-
-        <HintText>This service is only available for those who live in England.</HintText>
 
         <GovUK.FormGroup error={!!errors?.location?.message}>
           <GovUK.Label mb={4}>

@@ -21,8 +21,8 @@ export const CouncilTaxBand = ({ nextStep }: { nextStep: number }) => {
 
   const errorsToShow = Object.keys(errors)
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    save(data)
+  const onSubmit: SubmitHandler<Inputs> = (payload) => {
+    save(payload)
 
     if (contextData.propertyHasEpc) {
       router.push(`/questionnaire?step=6`)
@@ -31,9 +31,10 @@ export const CouncilTaxBand = ({ nextStep }: { nextStep: number }) => {
     }
   }
 
-  // list of options from A to H
-  const councilTaxBands = Array.from({ length: 8 }, (_, i) =>
-    String.fromCharCode(65 + i)
+  // list of options from A to H or I depending on location
+  const councilTaxBands = Array.from(
+    { length: contextData.location === 'England' ? 8 : 9 },
+    (_, i) => String.fromCharCode(65 + i)
   ).map((option) => <option key={option}>{option}</option>)
 
   return (
@@ -58,7 +59,16 @@ export const CouncilTaxBand = ({ nextStep }: { nextStep: number }) => {
 
             <GovUK.Select
               mb={8}
-              label="Select your council tax band"
+              label="Select your council tax band from the list below"
+              hint={
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.gov.uk/council-tax-bands"
+                >
+                  If you're unsure, you can check your property's council tax band.
+                </Link>
+              }
               input={register('councilTaxBand', {
                 required: {
                   value: true,
@@ -70,14 +80,6 @@ export const CouncilTaxBand = ({ nextStep }: { nextStep: number }) => {
               {councilTaxBands}
             </GovUK.Select>
           </GovUK.Label>
-          <Link
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.gov.uk/council-tax-bands"
-            style={{ marginTop: '-40px', display: 'flex' }}
-          >
-            Check your property’s council tax band
-          </Link>
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 

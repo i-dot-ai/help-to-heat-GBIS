@@ -56,6 +56,19 @@ export const LoftInsulation = ({ nextStep }: { nextStep: number }) => {
         <GovUK.Fieldset.Legend size="L">
           Is your loft fully insulated?
         </GovUK.Fieldset.Legend>
+        <GovUK.Paragraph>
+          A loft is fully insulated if it has more than 200mm (eight inches) of insulation
+          covering the whole loft, usually laid on the "floor" of the loft with one layer
+          between the horizontal timbers and another layer going across them to bring the
+          insulation up to the required level.
+        </GovUK.Paragraph>
+
+        <GovUK.Details summary="Help me answer this question">
+          <GovUK.Paragraph>
+            If your home was built after 2002, or you have installed loft insulation since
+            2002, it is likely that it is fully insulated.
+          </GovUK.Paragraph>
+        </GovUK.Details>
 
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.loftInsulation?.message}>
           <GovUK.Label mb={4}>

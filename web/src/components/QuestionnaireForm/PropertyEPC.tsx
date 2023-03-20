@@ -114,7 +114,9 @@ export const PropertyEPC = ({ nextStep }: { nextStep: number }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <GovUK.Fieldset>
-        <GovUK.Fieldset.Legend size="L">Enter your EPC</GovUK.Fieldset.Legend>
+        <GovUK.Fieldset.Legend size="L">
+          About your energy performance certificate (EPC)
+        </GovUK.Fieldset.Legend>
 
         <GovUK.Label mb={4}>
           {submitCount > 0 && errors?.propertyEpcRating?.message && (
@@ -122,7 +124,7 @@ export const PropertyEPC = ({ nextStep }: { nextStep: number }) => {
           )}
           <GovUK.Select
             mb={8}
-            label="Rating"
+            label="What is the EPC rating?"
             input={register('propertyEpcRating', {
               required: {
                 value: true,
@@ -147,7 +149,7 @@ export const PropertyEPC = ({ nextStep }: { nextStep: number }) => {
             validate: validateCertificateDate
           })}
         >
-          Date of certificate
+          What is the date of assessment?
         </DateField>
       </GovUK.Fieldset>
 

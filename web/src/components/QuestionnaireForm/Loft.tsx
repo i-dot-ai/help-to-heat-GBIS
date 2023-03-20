@@ -19,7 +19,13 @@ const options = [
   }
 ]
 
-export const Loft = ({ nextStep }: { nextStep: number }) => {
+export const Loft = ({
+  nextStep,
+  nextStepNoLoft
+}: {
+  nextStep: number
+  nextStepNoLoft: number
+}) => {
   const { data, save } = useContext(QuestionnaireContext)
   const router = useRouter()
   const {
@@ -35,7 +41,11 @@ export const Loft = ({ nextStep }: { nextStep: number }) => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     save(data)
-    router.push(`/questionnaire?step=${nextStep}`)
+    if (data.loft === 'No') {
+      router.push(`/questionnaire?step=${nextStepNoLoft}`)
+    } else {
+      router.push(`/questionnaire?step=${nextStep}`)
+    }
   }
 
   return (

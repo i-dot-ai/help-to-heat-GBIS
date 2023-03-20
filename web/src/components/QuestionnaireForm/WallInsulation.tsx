@@ -60,6 +60,25 @@ export const WallInsulation = ({ nextStep }: { nextStep: number }) => {
       <GovUK.Fieldset>
         <GovUK.Fieldset.Legend size="L">Are your walls insulated?</GovUK.Fieldset.Legend>
 
+        <GovUK.Paragraph>
+          Cavity walls built before 1991 are typically uninsulated, unless you or someone
+          before you had insulation installed.
+        </GovUK.Paragraph>
+        <GovUK.Paragraph>
+          Cavity walls built after 1991 were typically built with insulating material
+          between the outer and inner walls.
+        </GovUK.Paragraph>
+        <GovUK.Details summary="Help me answer this question">
+          <GovUK.Paragraph>
+            Homes built after 1991 were typically built with insulating material between
+            the outer and inner walls.
+          </GovUK.Paragraph>
+          <GovUK.Paragraph>
+            If your home was converted, for example it was a shop or other commercial
+            premises before, it may have been built without insulation.
+          </GovUK.Paragraph>
+        </GovUK.Details>
+
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.wallInsulation?.message}>
           <GovUK.Label mb={4}>
             {submitCount > 0 && errors?.wallInsulation?.message && (
