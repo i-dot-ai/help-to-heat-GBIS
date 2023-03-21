@@ -1,9 +1,12 @@
+import random
 import string
 import uuid
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
+
+from . import utils
 
 
 class UUIDPrimaryKeyBase(models.Model):
@@ -33,8 +36,30 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 epc_rating_choices = tuple((letter, letter) for letter in string.ascii_letters.upper()[:8])
 
 
+class SupplierChoices(utils.Choices):
+    BRITISH_GAS = "British Gas"
+    BULB = "Bulb"
+    E_ENERGY = "E Energy"
+    ECOTRICITY = "Ecotricity"
+    EDF = "EDF"
+    EON = "EON"
+    ESB = "ESB"
+    FOXGLOVE = "Foxglove"
+    OCTOPUS = "Octopus"
+    OVO = "OVO"
+    SCOTTISH_POWER = "Scottish Power"
+    SHELL = "Shell"
+    UTILITA = "Utilita"
+    UTILITY_WAREHOUSE = "Utility Warehouse"
+
+
+def pick_random_supplier():
+    return random.choice(SupplierChoices.values)
+
+
 class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
+    supplier = models.CharField(max_length=64, choices=SupplierChoices.choices, default=pick_random_supplier)
 
 
 class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
