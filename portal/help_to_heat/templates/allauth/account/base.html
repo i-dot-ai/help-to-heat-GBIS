@@ -77,18 +77,6 @@
             </div>
           {% endif %}
 
-          <div>
-            <p class="govuk-body">Menu:</p>
-            <ul class="govuk-list">
-              {% if user.is_authenticated %}
-                <li><a class="govuk-link govuk-link--no-visited-state" href="{% url 'account_email' %}">Change E-mail</a></li>
-                <li><a class="govuk-link govuk-link--no-visited-state" href="{% url 'account_logout' %}">Sign Out</a></li>
-              {% else %}
-                <li><a class="govuk-link govuk-link--no-visited-state" href="{% url 'account_login' %}">Sign In</a></li>
-                <li><a class="govuk-link govuk-link--no-visited-state" href="{% url 'account_signup' %}">Sign Up</a></li>
-              {% endif %}
-            </ul>
-          </div>
           {% block content %}
           {% endblock %}
         {% endblock %}
