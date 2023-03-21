@@ -76,6 +76,9 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
                 self.supplier = supplier
         return super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f"<referral id={self.id} supplier={self.supplier}>"
+
 
 class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
     uprn = models.CharField(max_length=12)
