@@ -1,3 +1,6 @@
+/all-domestic-certificates/
+/data/
+
 out
 **/*.test.ts
 **/*.test.tsx
