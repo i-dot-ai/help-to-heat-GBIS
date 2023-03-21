@@ -50,6 +50,9 @@ class TimeStampedModel(models.Model):
 class Supplier(UUIDPrimaryKeyBase, TimeStampedModel):
     name = models.CharField(max_length=256)
 
+    def __str__(self):
+        return f"<Supplier {self.name}>"
+
 
 class User(BaseUser, UUIDPrimaryKeyBase):
     objects = BaseUserManager()
