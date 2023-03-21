@@ -62,7 +62,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
-        super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
 
 class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
