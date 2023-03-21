@@ -18,6 +18,6 @@
 
   <h1 class="govuk-heading-l">Logged in as: {{request.user.email}} for {{request.user.supplier.name}}</h1>
 
-  <p class="govuk-body">You have {{request.user.supplier.referrals|length}} new referrals</p>
+  <p class="govuk-body">You have {{request.user.supplier.referrals.count()}} new referrals</p>
 
 {% endblock %}
