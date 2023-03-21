@@ -60,6 +60,10 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
     is_supplier_user = models.BooleanField(default=False)
 
+    @property
+    def referral_count(self):
+        return self.supplier.referrals.count()
+
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
         return super().save(*args, **kwargs)
