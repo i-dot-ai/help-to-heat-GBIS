@@ -47,10 +47,14 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class Supplier(UUIDPrimaryKeyBase, TimeStampedModel):
+    name = models.CharField(max_length=256)
+
+
 class User(BaseUser, UUIDPrimaryKeyBase):
     objects = BaseUserManager()
     username = None
-    supplier = models.CharField(max_length=64, choices=SupplierChoices.choices, blank=True, null=True, default=None)
+    supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
     is_supplier_user = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
@@ -60,7 +64,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
 class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
-    supplier = models.CharField(max_length=64, choices=SupplierChoices.choices, default=pick_random_supplier)
+    supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
 
 
 class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
