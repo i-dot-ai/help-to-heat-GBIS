@@ -8,6 +8,29 @@ from django_use_email_as_username.models import BaseUser, BaseUserManager
 
 from . import utils
 
+epc_rating_choices = tuple((letter, letter) for letter in string.ascii_letters.upper()[:8])
+
+
+class SupplierChoices(utils.Choices):
+    BRITISH_GAS = "British Gas"
+    BULB = "Bulb"
+    E_ENERGY = "E Energy"
+    ECOTRICITY = "Ecotricity"
+    EDF = "EDF"
+    EON = "EON"
+    ESB = "ESB"
+    FOXGLOVE = "Foxglove"
+    OCTOPUS = "Octopus"
+    OVO = "OVO"
+    SCOTTISH_POWER = "Scottish Power"
+    SHELL = "Shell"
+    UTILITA = "Utilita"
+    UTILITY_WAREHOUSE = "Utility Warehouse"
+
+
+def pick_random_supplier():
+    return random.choice(SupplierChoices.values)
+
 
 class UUIDPrimaryKeyBase(models.Model):
     class Meta:
@@ -31,30 +54,6 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
         super().save(*args, **kwargs)
-
-
-epc_rating_choices = tuple((letter, letter) for letter in string.ascii_letters.upper()[:8])
-
-
-class SupplierChoices(utils.Choices):
-    BRITISH_GAS = "British Gas"
-    BULB = "Bulb"
-    E_ENERGY = "E Energy"
-    ECOTRICITY = "Ecotricity"
-    EDF = "EDF"
-    EON = "EON"
-    ESB = "ESB"
-    FOXGLOVE = "Foxglove"
-    OCTOPUS = "Octopus"
-    OVO = "OVO"
-    SCOTTISH_POWER = "Scottish Power"
-    SHELL = "Shell"
-    UTILITA = "Utilita"
-    UTILITY_WAREHOUSE = "Utility Warehouse"
-
-
-def pick_random_supplier():
-    return random.choice(SupplierChoices.values)
 
 
 class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
