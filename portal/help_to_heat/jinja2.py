@@ -4,7 +4,14 @@ from django.urls import reverse
 
 
 def environment(**options):
-    extra_options = dict()
+    extra_options = dict(
+        loader=jinja2.ChoiceLoader(
+            [
+                options["loader"],
+                jinja2.PrefixLoader({"govuk_frontend_jinja": jinja2.PackageLoader("govuk_frontend_jinja")}),
+            ]
+        )
+    )
     env = jinja2.Environment(
         **{
             **options,
