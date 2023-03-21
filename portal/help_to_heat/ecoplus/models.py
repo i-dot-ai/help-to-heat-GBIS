@@ -69,6 +69,13 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT, related_name="referrals")
 
+    def save(self, *args, **kwargs):
+        if not self.supplier:
+            if self.data['energySupplier']:
+                supplier = Supplier.objects.get(name=self.data['energySupplier'])
+                self.supplier = supplier
+        return super().save(*args, **kwargs)
+
 
 class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
     uprn = models.CharField(max_length=12)
