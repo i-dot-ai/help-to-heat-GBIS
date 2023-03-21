@@ -1,4 +1,5 @@
 import jinja2
+from django.conf import settings
 from django.templatetags.static import static
 from django.urls import reverse
 
@@ -22,6 +23,8 @@ def environment(**options):
         {
             "static": static,
             "url": reverse,
+            "DEBUG": settings.DEBUG,
+            "space_name": settings.VCAP_APPLICATION.get("space_name", "unknown"),
         }
     )
     return env
