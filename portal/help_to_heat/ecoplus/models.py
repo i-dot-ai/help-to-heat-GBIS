@@ -50,6 +50,7 @@ class TimeStampedModel(models.Model):
 class User(BaseUser, UUIDPrimaryKeyBase):
     objects = BaseUserManager()
     username = None
+    supplier = models.CharField(max_length=64, choices=SupplierChoices.choices)
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
