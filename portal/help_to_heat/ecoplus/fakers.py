@@ -63,7 +63,7 @@ def fake_referrals(number=128):
                 "firstName": first_name,
                 "lastName": last_name,
                 "email": f"{first_name}.{last_name}@example.com",
-                "phoneNumber": fake.phone_number()
+                "phoneNumber": fake.phone_number(),
             },
             "addressUPRN": "".join(random.choices(string.digits, k=12)),
             "councilTaxBand": random.choice("ABCD"),

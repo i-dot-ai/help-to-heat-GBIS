@@ -75,8 +75,8 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
 
     def save(self, *args, **kwargs):
         if not self.supplier:
-            if self.data['energySupplier']:
-                supplier = Supplier.objects.get(name=self.data['energySupplier'])
+            if self.data["energySupplier"]:
+                supplier = Supplier.objects.get(name=self.data["energySupplier"])
                 self.supplier = supplier
         return super().save(*args, **kwargs)
 
