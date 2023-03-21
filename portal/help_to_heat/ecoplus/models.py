@@ -67,7 +67,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
 class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
-    supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
+    supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT, related_name="referrals")
 
 
 class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
