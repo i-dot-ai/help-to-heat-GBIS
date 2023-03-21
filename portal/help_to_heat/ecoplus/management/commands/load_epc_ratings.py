@@ -42,11 +42,9 @@ def write_rows(rows):
         latest_date = datetime.date(1970, 1, 1)
     for row in rows:
         if row["date"] > latest_date:
-            epc_rating = models.EpcRating(**row)
-            epc_rating.save()
+            epc_rating = models.EpcRating.create(**row)
         elif row["date"] == latest_date:
-            epc_rating, created = models.EpcRating(**row)
-            epc_rating.save()
+            epc_rating, created = models.EpcRating.get_or_create(**row)
 
 
 class Command(BaseCommand):
