@@ -1,6 +1,7 @@
 DJANGO_SETTINGS_MODULE=help_to_heat.settings
 PORT=8012
 DEBUG=True
+VCAP_APPLICATION='{"space_name": "local"}'
 DJANGO_SECRET_KEY='1n53cur3K3y'
 POSTGRES_HOST=help-to-heat-db
 POSTGRES_PORT=5432

@@ -1,1 +1,23 @@
-<h1>Home Page</h1>
+{% extends "base_generic_gov.html" %}
+{%- from 'govuk_frontend_jinja/components/breadcrumbs/macro.html' import govukBreadcrumbs -%}
+
+{% block content %}
+
+  {{ govukBreadcrumbs({
+    'items': [
+      {
+        'text': "Home",
+        'href': "#"
+      },
+      {
+        'text': "Dashboard",
+        'href': "#"
+      },
+    ]
+    }) }}
+
+  <h1 class="govuk-heading-l">Help to heat portal</h1>
+
+  <p class="govuk-body">Welcome to the portal</p>
+
+{% endblock %}

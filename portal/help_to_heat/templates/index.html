@@ -1,1 +1,13 @@
-<h1>Index Page</h1>
+{% extends "base_generic_gov.html" %}
+{% block content %}
+
+  <h1 class="govuk-heading-l">Help to heat portal</h1>
+
+  <p class="govuk-body">Welcome to the portal</p>
+
+
+  <p class="govuk-body">
+    <a class="govuk-button" href="{{url('account_login')}}">Login</a>
+  </p>
+
+{% endblock %}
