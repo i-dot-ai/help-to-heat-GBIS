@@ -22,3 +22,23 @@ def add_fake_epc_ratings(number=256):
         epc_rating = models.EpcRating(**epc_rating_datum)
         epc_rating.save()
         yield epc_rating
+
+
+fake_supplier_names = (
+    "Springfield Power",
+    "Clampett Oil",
+    "Wayne Enterprises",
+    "MomCorp",
+    "Acme Corp",
+    "CHOAM",
+    "Gringotts",
+    "Nakatomi Trading"
+    "Stark Industries",
+)
+
+
+def add_fake_suppliers():
+    for supplier_name in fake_supplier_names:
+        supplier = models.Supplier(name=supplier_name)
+        supplier.save()
+        yield supplier
