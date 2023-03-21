@@ -32,7 +32,7 @@ fake_supplier_names = (
     "Acme Corp",
     "CHOAM",
     "Gringotts",
-    "Nakatomi Trading"
+    "Nakatomi Trading",
     "Stark Industries",
 )
 
