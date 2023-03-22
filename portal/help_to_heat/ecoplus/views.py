@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -19,10 +21,22 @@ def index_view(request):
 
 @require_http_methods(["GET"])
 def homepage_view(request):
+    archived_files = (
+        {
+            "date": datetime.date(2022, 2, 1),
+        },
+        {
+            "date": datetime.date(2022, 2, 23),
+        },
+        {
+            "date": datetime.date(2022, 3, 14),
+        },
+    )
+    archived_files = tuple(reversed(sorted(archived_files, key=lambda x: x["date"])))
     return render(
         request,
         template_name="homepage.html",
-        context={"request": request},
+        context={"request": request, "archived_files": archived_files},
     )
 
 

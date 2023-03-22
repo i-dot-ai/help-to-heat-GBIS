@@ -10,7 +10,15 @@
 {% macro download() -%}
   <a class="govuk-button" data-module="govuk-button" href="">
     Download latest referrals
-  </button>
+  </a>
+{%- endmacro%}
+
+{% macro archive() -%}
+  <ul>
+    {% for file_data in archived_files  %}
+      <li><a href="#">Download {{file_data.date}}</a></li>
+    {% endfor %}
+  </ul>
 {%- endmacro%}
 
 {% block content %}
@@ -31,6 +39,13 @@
           'html': download()
         }
       },
+      {
+        'label': "Archive",
+        'id': "archive-tab",
+        'panel': {
+          'html': archive()
+        }
+      }
     ]
     }) }}
 
