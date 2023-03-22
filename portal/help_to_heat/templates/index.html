@@ -5,9 +5,13 @@
 
   <p class="govuk-body">Welcome to the portal</p>
 
-
-  <p class="govuk-body">
-    <a class="govuk-button" href="{{url('account_login')}}">Login</a>
-  </p>
+  <div class="govuk-button-group">
+    <p class="govuk-body">
+      <a class="govuk-button" href="{{url('account_login')}}">Login</a>
+    </p>
+    <p class="govuk-body">
+      <a class="govuk-button" href="{{url('account_signup')}}">Register</a>
+    </p>
+  </div>
 
 {% endblock %}
