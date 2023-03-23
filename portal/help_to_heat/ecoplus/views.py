@@ -19,6 +19,10 @@ def index_view(request):
     )
 
 
+def unauthorised_view(request):
+    return render(request, "unauthorised.html", {}, status=403)
+
+
 @require_http_methods(["GET"])
 def homepage_view(request):
     archived_files = (
