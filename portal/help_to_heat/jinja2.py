@@ -1,5 +1,6 @@
 import jinja2
 from django.conf import settings
+from django.contrib import messages
 from django.templatetags.static import static
 from django.urls import reverse
 
@@ -28,6 +29,7 @@ def environment(**options):
         {
             "static": static,
             "url": url,
+            "get_messages": messages.get_messages,
             "DEBUG": settings.DEBUG,
             "space_name": settings.VCAP_APPLICATION.get("space_name", "unknown"),
         }
