@@ -2,13 +2,13 @@
 
 {% load account %}
 
-{% block head_title %}Log in{% endblock %}
+{% block head_title %}Logout{% endblock %}
 
 {% block content %}
 
   <section class="wrapper">
 
-    <form class="login" method="POST" action="{% url 'account_logout' %}">
+    <form class="logout" method="POST" action="{% url 'account_logout' %}">
       {% csrf_token %}
 
       <fieldset class="govuk-fieldset">
