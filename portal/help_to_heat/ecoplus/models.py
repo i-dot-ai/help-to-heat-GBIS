@@ -58,7 +58,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     objects = BaseUserManager()
     username = None
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
-    is_supplier_user = models.BooleanField(default=False)
+    is_supplier = models.BooleanField(default=False)
 
     @property
     def referral_count(self):
