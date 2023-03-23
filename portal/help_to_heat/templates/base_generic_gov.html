@@ -74,15 +74,19 @@
           </span>
         </p>
       </div>
+
       <main class="govuk-main-wrapper " id="main-content" role="main">
 
-        {% block backButton %}
-        {% endblock %}
-
-        {% if section %}
-          <h1 class="i-ai-range govuk-heading-xl">
-            {{section.title}}
-          </h1>
+        {% set messages = get_messages(request) %}
+        {% if messages %}
+          <div>
+            <strong>Messages:</strong>
+            <ul>
+              {% for message in messages %}
+                <li>{{message}}</li>
+              {% endfor %}
+            </ul>
+          </div>
         {% endif %}
 
         {% block content %}
@@ -95,8 +99,6 @@
       <div class="govuk-width-container ">
         <div class="govuk-footer__meta">
           <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-            <h2>Built by i.AI</h2>
-
           </div>
           <div class="govuk-footer__meta-item">
             <a class="govuk-footer__link govuk-footer__copyright-logo"
