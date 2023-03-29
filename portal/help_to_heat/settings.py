@@ -24,6 +24,7 @@ ALLOWED_HOSTS = [
     "help-to-heat-portal-staging.apps.internal",
     "localhost",
     "127.0.0.1",
+    "help-to-heat-testserver",
 ]
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
