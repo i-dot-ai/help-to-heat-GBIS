@@ -15,3 +15,9 @@ reset-db:
 	docker-compose run ${POSTGRES_HOST} dropdb -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB}
 	docker-compose run ${POSTGRES_HOST} createdb -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB}
 	docker-compose kill
+
+.PHONY: test
+test:
+	docker-compose -f portal/tests/docker-compose.yml down
+	docker-compose -f portal/tests/docker-compose.yml build tests-help-to-heat help-to-heat-test-db && docker-compose -f portal/tests/docker-compose.yml run --rm tests-help-to-heat
+	docker-compose -f portal/tests/docker-compose.yml down
