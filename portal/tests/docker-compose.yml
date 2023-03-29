@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  tests-help-to-heat:
+    build:
+      context: ../../
+      dockerfile: ./docker/tests/Dockerfile
+    image: tests_help_to_heat
+    env_file:
+      - ../../envs/tests
+    depends_on:
+      - help-to-heat-test-db
+
+  help-to-heat-test-db:
+    image: postgres:13
+    container_name: help_to_heat_test_postgres
+    env_file:
+      - ../../envs/tests
+    expose:
+      - "5432"
