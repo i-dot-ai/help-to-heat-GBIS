@@ -1,0 +1,17 @@
+{
+  "AddressNotFound.title": "Your address cannot be found",
+  "AddressNotFound.description": "This may be because your property is new or your post code was entered incorrectly.",
+  "IneligibleCountry.title": "Sorry, this service isn't for you",
+  "IneligibleCountry.description": "This service is only for people who own their own home in England and Wales.",
+  "IneligibleCountry.link.ni": "You can [find advice on home energy improvements on NIDirect](https://www.nidirect.gov.uk/information-and-services/environment-and-outdoors/energy-advice)",
+  "IneligibleCountry.link.scotland": "You can [find advice and funding on home energy improvements on Home Energy Scotland](https://www.homeenergyscotland.org/funding/)",
+  "ListOfElegibleSchemes.title": "You may be eligible for the following",
+  "LocalCouncilSupport.title": "You may be eligible for additional household support from your local council",
+  "LocalCouncilSupport.description.a": "Because you have told us your household income is less than £31,000 and no-one in your household receives benefits, your local council may be able to offer you more support for home energy.",
+  "LocalCouncilSupport.description.b": "If you unsure who your local council is, you can [find your local council](https://www.gov.uk/find-local-council).",
+  "LocalCouncilSupport.description.c": "You can still use this service to check what other home energy measures you may be entitled to.",
+  "PropertyIneligible.title": " Your property does not meet the minimum EPC eligibility requirements.",
+  "Success.header": "Referral successful",
+  "Success.title": "Your reference number",
+  "Success.description": "Your application has been referred successfully. The energy supplier you selected will contact you within 14 working days to confirm their process."
+}

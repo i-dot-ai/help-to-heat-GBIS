@@ -1,0 +1,20 @@
+{
+  "service-level": "PROTOTYPE",
+  "service-disclaimer": "This is a new service – your feedback will help us to improve it.",
+  "title": "Get home energy improvements",
+  "start-now": "Start now",
+  "back": "Back",
+  "continue": "Continue",
+  "error-title": "Error summary",
+  "error-message": "Please address the following issues",
+  "form-required": "This field is required",
+  "yes": "Yes",
+  "no": "No",
+  "please-select": "Please select...",
+  "country-england": "England",
+  "country-scotland": "Scotland",
+  "country-wales": "Wales",
+  "country-northern-ireland": "Northern Ireland",
+  "why-do-we-ask": "Why do we need to know this?",
+  "change": "Change"
+}

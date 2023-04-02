@@ -1,39 +1,28 @@
-import { BackLink, Page, PhaseBanner } from 'govuk-react'
-import { useRouter } from 'next/router'
+import { Page, PhaseBanner, WarningText } from 'govuk-react'
 import { PropsWithChildren } from 'react'
+import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
 
-const Layout = ({
-  children,
-  showBackButton = false,
-  customBackUrl
-}: PropsWithChildren<{
-  beforeChildren?: JSX.Element
-  showBackButton?: boolean
-  customBackUrl?: string
-}>) => {
-  const router = useRouter()
-
+const Layout = ({ children }: PropsWithChildren) => {
+  const { t } = useTranslation(['common'])
+  const { locale } = useRouter()
   return (
     <Page
       beforeChildren={
         <span className="print-hidden">
-          <PhaseBanner level="Prototype">
-            This is a new service – your feedback will help us to improve it.
-          </PhaseBanner>
-          {!!showBackButton && (
-            <BackLink
-              href="/"
-              onClick={(e) => {
-                e.preventDefault()
-                customBackUrl ? router.push(customBackUrl) : router.back()
-              }}
-            >
-              Back
-            </BackLink>
-          )}
+          <PhaseBanner level={t('service-level')}>{t('service-disclaimer')}</PhaseBanner>
         </span>
       }
     >
+      {locale === 'cy' && (
+        <div
+          style={{
+            marginBottom: '32px'
+          }}
+        >
+          <WarningText>Welsh copy is under development</WarningText>
+        </div>
+      )}
       {children}
     </Page>
   )

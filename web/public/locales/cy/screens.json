@@ -1,0 +1,17 @@
+{
+  "AddressNotFound.title": "Methwyd canfod eich cyfeiriad",
+  "AddressNotFound.description": "Efallai bod hyn oherwydd bod eich eiddo yn newydd neu fod eich cod post wedi'i deipio'n anghywir.",
+  "IneligibleCountry.title": "Ymddiheurwn, nid yw'r gwasanaeth hwn ar eich cyfer chi",
+  "IneligibleCountry.description": "Mae'r gwasanaeth hwn ar gyfer pobl sy'n berchen ar eu cartref eu hunain yng Nghymru a Lloegr yn unig.",
+  "IneligibleCountry.link.ni": "Gallwch [ddod o hyd i gyngor ar welliannau ynni i'ch cartref ar NIDirect](https://www.nidirect.gov.uk/information-and-services/environment-and-outdoors/energy-advice)",
+  "IneligibleCountry.link.scotland": "Gallwch [ddod o hyd i gyngor ac arian ar welliannau ynni i'ch cartref ar Home Energy Scotland](https://www.homeenergyscotland.org/funding/)",
+  "ListOfElegibleSchemes.title": "Efallai eich bod yn gymwys ar gyfer y canlynol",
+  "LocalCouncilSupport.title": "Efallai eich bod yn gymwys ar gyfer cymorth ariannol ychwanegol gan eich cyngor lleol",
+  "LocalCouncilSupport.description.a": "Oherwydd eich bod wedi dweud wrthym fod incwm eich cartref yn llai na £31,000 ac nad oes unrhyw un yn eich cartref yn derbyn budd-daliadau, gall eich cyngor lleol gynnig mwy o gefnogaeth ar gyfer ynni cartref.",
+  "LocalCouncilSupport.description.b": "Os nad ydych yn siŵr pwy yw eich cyngor lleol, gallwch [ddod o hyd i'ch cyngor lleol](https://www.gov.uk/find-local-council).",
+  "LocalCouncilSupport.description.c": "Gallwch ddefnyddio'r gwasanaeth hwn o hyd i wirio pa fesurau ynni cartref eraill y gallwch fod â hawl iddynt.",
+  "PropertyIneligible.title": "Nid yw eich eiddo'n bodloni gofynion cymhwysedd isafol EPC.",
+  "Success.header": "Cyfeirnodiad llwyddiannus",
+  "Success.title": "Eich rhif cyfeirnodiad",
+  "Success.description": "Mae eich cais wedi'i gyfeirio'n llwyddiannus. Bydd y cyflenwr ynni yr ydych wedi'i ddewis yn cysylltu â chi o fewn 14 diwrnod gwaith i gadarnhau eu proses."
+}

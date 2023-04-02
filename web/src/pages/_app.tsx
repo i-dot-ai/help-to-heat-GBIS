@@ -6,7 +6,7 @@ import { AppProps } from 'next/app'
 import { NextPage } from 'next'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyle } from 'govuk-react'
-import { QuestionnaireContextProvider } from '@/context/QuestionnaireContext'
+import { appWithTranslation } from 'next-i18next'
 
 interface MyAppProps extends AppProps {
   Component: NextPage & {
@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 5 * 1000 } }
 })
 
-export default function MyApp({ Component, pageProps }: MyAppProps) {
+const MyApp = ({ Component, pageProps }: MyAppProps) => {
   const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
@@ -29,12 +29,12 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
       <ThemeProvider theme={{}}>
         <GlobalStyle />
         <QueryClientProvider client={queryClient}>
-          <QuestionnaireContextProvider>
-            {getLayout(<Component {...pageProps} />)}
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QuestionnaireContextProvider>
+          {getLayout(<Component {...pageProps} />)}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
     </>
   )
 }
+
+export default appWithTranslation(MyApp)

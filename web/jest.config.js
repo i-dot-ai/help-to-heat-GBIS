@@ -21,13 +21,13 @@ const customJestConfig = {
     '<rootDir>/dist'
   ],
   moduleNameMapper: {
+    'react-markdown': '<rootDir>/__mocks__/react-markdown.js',
+    'next-i18next': '<rootDir>/__mocks__/next-i18next.js',
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   resolver: '<rootDir>/.jest/resolver.js',
   clearMocks: true,
   testTimeout: 20000
-  // automock: false,
-  // resetMocks: false
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
