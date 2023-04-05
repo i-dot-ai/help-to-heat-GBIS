@@ -60,6 +60,7 @@ const DateField = ({
         onBlur: () => onBlur({ target: { value, name: input.name } }),
         ...input
       }}
+      data-cy={`${input.name}`}
     >
       {children}
     </GovUK.DateField>
