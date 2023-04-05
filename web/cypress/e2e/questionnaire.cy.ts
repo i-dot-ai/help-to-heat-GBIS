@@ -1,3 +1,5 @@
+export {}
+
 describe('Get home energy improvements- Check initial eligibility- Northern Ireland', () => {
   it('loads the homepage', () => {
     cy.visit('http://localhost:3000/')
@@ -304,6 +306,8 @@ describe('Get home energy improvements- Check initial eligibility- Scotland', ()
       cy.get('h1').should('contain', 'Get home energy improvements')
       cy.get('button').should('contain', 'Start now')
       cy.contains('Start now').click()
+
+      cy.get('legend').should('contain', 'Which country is your property located in?')
       cy.get('[type="radio"]').check('England')
       cy.contains('Continue').click()
 
