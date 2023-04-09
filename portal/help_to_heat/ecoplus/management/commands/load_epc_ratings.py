@@ -2,13 +2,14 @@ import bz2
 import csv
 import datetime
 import pathlib
-import subprocess
 
 import httpx
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from help_to_heat.ecoplus import models
 
-DATA_DIR = pathlib.Path("./new_data/")
+
+DATA_DIR = settings.BASE_DIR / "temp-data"
 CHUNK_SIZE = 16 * 1024
 
 
@@ -17,15 +18,30 @@ def save_url_in_chunks(url):
     filename = pathlib.Path(url).stem
     filepath = DATA_DIR / filename
     if not filepath.exists():
+        print(f"Downloading to: {filepath}")
         filepath.parent.mkdir(parents=True, exist_ok=True)
         with filepath.open("wb") as f:
             with httpx.stream("GET", url) as response:
                 for chunk in response.iter_bytes(CHUNK_SIZE):
                     text = decompressor.decompress(chunk)
                     f.write(text)
-    sort_args = ("sort", "-u", "-o", str(filepath), str(filepath))
-    subprocess.run(sort_args)
-    return filepath
+    else:
+        print(f"Skipping download: {filepath} already exists")
+
+    sorted_filepath = DATA_DIR / "".join((filepath.stem, "-sorted", filepath.suffix))
+    if not sorted_filepath.exists():
+        print(f"Sorting to: {sorted_filepath}")
+        with filepath.open("r") as f:
+            lines = f.readlines()
+        header = lines[0]
+        lines = lines[1:]
+        lines.sort()
+        with sorted_filepath.open("w") as f:
+            f.writelines([header])
+            f.writelines(lines)
+    else:
+        print(f"Skipping sort: {sorted_filepath} already exists")
+    return sorted_filepath
 
 
 def read_rows(filepath):
@@ -37,14 +53,19 @@ def read_rows(filepath):
 
 def write_rows(rows):
     if models.EpcRating.objects.exists():
-        latest_date = models.EpcRating.objects.latest("date").date
+        latest_date = str(models.EpcRating.objects.latest("date").date)
     else:
-        latest_date = datetime.date(1970, 1, 1)
+        latest_date = str(datetime.date(1970, 1, 1))
     for row in rows:
         if row["date"] > latest_date:
-            epc_rating = models.EpcRating.create(**row)
+            epc_rating = models.EpcRating.objects.create(uprn=row['uprn'], rating=row['epc_rating'], date=row['date'])
         elif row["date"] == latest_date:
-            epc_rating, created = models.EpcRating.get_or_create(**row)
+            try:
+                epc_rating, created = models.EpcRating.objects.get_or_create(uprn=row['uprn'], rating=row['epc_rating'], date=row['date'])
+            except models.EpcRating.MultipleObjectsReturned:
+                epc_ratings = models.EpcRating.objects.filter(uprn=row['uprn'], rating=row['epc_rating'], date=row['date']).all()
+                for epc_rating in epc_ratings[1:]:
+                    epc_rating.delete()
 
 
 class Command(BaseCommand):
@@ -55,6 +76,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         url = kwargs["url"]
-        filepath = save_url_in_chunks(url)
-        rows = read_rows(filepath)
+        sorted_filepath = save_url_in_chunks(url)
+        rows = read_rows(sorted_filepath)
         write_rows(rows)
