@@ -4,10 +4,9 @@ import datetime
 import pathlib
 
 import httpx
-from django.core.management.base import BaseCommand
 from django.conf import settings
+from django.core.management.base import BaseCommand
 from help_to_heat.ecoplus import models
-
 
 DATA_DIR = settings.BASE_DIR / "temp-data"
 CHUNK_SIZE = 16 * 1024
@@ -58,12 +57,16 @@ def write_rows(rows):
         latest_date = str(datetime.date(1970, 1, 1))
     for row in rows:
         if row["date"] > latest_date:
-            epc_rating = models.EpcRating.objects.create(uprn=row['uprn'], rating=row['epc_rating'], date=row['date'])
+            epc_rating = models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
         elif row["date"] == latest_date:
             try:
-                epc_rating, created = models.EpcRating.objects.get_or_create(uprn=row['uprn'], rating=row['epc_rating'], date=row['date'])
+                epc_rating, created = models.EpcRating.objects.get_or_create(
+                    uprn=row["uprn"], rating=row["epc_rating"], date=row["date"]
+                )
             except models.EpcRating.MultipleObjectsReturned:
-                epc_ratings = models.EpcRating.objects.filter(uprn=row['uprn'], rating=row['epc_rating'], date=row['date']).all()
+                epc_ratings = models.EpcRating.objects.filter(
+                    uprn=row["uprn"], rating=row["epc_rating"], date=row["date"]
+                ).all()
                 for epc_rating in epc_ratings[1:]:
                     epc_rating.delete()
 
