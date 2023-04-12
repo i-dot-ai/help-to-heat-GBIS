@@ -12,7 +12,7 @@ DATA_DIR = __here__ / "all-domestic-certificates"
 
 def collect_data():
     for filepath in DATA_DIR.glob("**/certificates.csv"):
-        print(filepath)  #  noqa
+        print(filepath)  # noqa
         with filepath.open() as f:
             reader = csv.DictReader(f)
             for row in reader:
