@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework import serializers
@@ -31,24 +31,30 @@ is_supplier = user_passes_test(
 
 @require_http_methods(["GET"])
 @login_required
-@is_supplier
 def homepage_view(request):
-    archived_files = (
-        {
-            "date": datetime.date(2022, 2, 1),
-        },
-        {
-            "date": datetime.date(2022, 2, 23),
-        },
-        {
-            "date": datetime.date(2022, 3, 14),
-        },
-    )
-    archived_files = tuple(reversed(sorted(archived_files, key=lambda x: x["date"])))
+    if not request.user.is_supplier_admin and not request.user.is_team_leader and not request.user.is_team_member:
+        return redirect("unauthorised")
+    template = "unauthorised"
+    data = {}
+    if request.user.is_team_member:
+        template = "team-member/homepage.html"
+    if request.user.is_team_leader:
+        template = "team-leader/homepage.html"
+    if request.user.is_supplier_admin:
+        template = "supplier-admin/homepage.html"
+        disabled_suppliers = models.Supplier.objects.filter(is_disabled=True)
+        disabled_suppliers = [{"name": supplier.name, "id": supplier.id, "user_count": supplier.user_set.count()} for supplier in disabled_suppliers]
+        enabled_suppliers = models.Supplier.objects.filter(is_disabled=False)
+        enabled_suppliers = [{"name": supplier.name, "id": supplier.id, "user_count": supplier.user_set.count()} for supplier in enabled_suppliers]
+
+        data = {
+            "disabled_suppliers": disabled_suppliers,
+            "enabled_suppliers": enabled_suppliers,
+        }
     return render(
         request,
-        template_name="homepage.html",
-        context={"request": request, "archived_files": archived_files},
+        template_name=template,
+        context={"request": request, "data": data},
     )
 
 
