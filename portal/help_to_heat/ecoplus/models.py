@@ -49,6 +49,7 @@ class TimeStampedModel(models.Model):
 
 class Supplier(UUIDPrimaryKeyBase, TimeStampedModel):
     name = models.CharField(max_length=256)
+    is_disabled = models.BooleanField(default=False, null=False, blank=False)
 
     def __str__(self):
         return f"<Supplier {self.name}>"
@@ -57,8 +58,11 @@ class Supplier(UUIDPrimaryKeyBase, TimeStampedModel):
 class User(BaseUser, UUIDPrimaryKeyBase):
     objects = BaseUserManager()
     username = None
+    full_name = models.CharField(max_length=255, blank=True, null=True)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
-    is_supplier = models.BooleanField(default=False)
+    is_supplier_admin = models.BooleanField(default=False)
+    is_team_leader = models.BooleanField(default=False)
+    is_team_member = models.BooleanField(default=False)
 
     @property
     def referral_count(self):
