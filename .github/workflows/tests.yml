@@ -10,6 +10,9 @@ jobs:
         with:
           node-version: "16"
       - name: Run tests
+        env:
+          PORTAL_URL: ${{ secrets.PORTAL_URL }}
+          UPRN_API_KEY: ${{ secrets.UPRN_API_KEY }}
         working-directory: ./web
         run: | # Install npm packages and build the Storybook files
           npm ci

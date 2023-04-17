@@ -10,6 +10,7 @@ const nextConfig = {
     styledComponents: true
   },
   env: {
+    UPRN_API_KEY: process.env.UPRN_API_KEY,
     PORTAL_URL: process.env.PORTAL_URL,
     IS_DEV: process.env.IS_DEV === 'true'
   },
