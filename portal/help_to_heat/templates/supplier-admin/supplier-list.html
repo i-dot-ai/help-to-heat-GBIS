@@ -1,0 +1,32 @@
+<h1>View and manage suppliers</h1>
+<p>Add a new supplier</p>
+<a class="govuk-button" href="{{url('add-supplier')}}">Add a new supplier</a>
+
+<table class="govuk-table">
+
+</table>
+
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Supplier</th>
+      <th scope="col" class="govuk-table__header govuk-table__header--numeric">No. of team leads</th>
+      <th scope="col" class="govuk-table__header"></th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  {% for supplier in data.enabled_suppliers %}
+    <tr class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">{{supplier.name}}</th>
+      <th scope="row" class="govuk-table__cell govuk-table__cell--numeric">{{supplier.user_count}}</th>
+      <td class="govuk-table__cell govuk-table__cell--numeric">
+        <div class="govuk-button-group govuk-!-display-block">
+          <a href="{{url('supplier-team-leads', supplier.id)}}" class="govuk-button govuk-button--secondary">View</a>
+          <a href="{{url('edit-supplier', supplier.id)}}" class="govuk-button govuk-button--secondary">Edit</a>
+          <a href="{{url("change-supplier-disabled-status", supplier.id)}}" class="govuk-button govuk-button--warning">Disable</a>
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

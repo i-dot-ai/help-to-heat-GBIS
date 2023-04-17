@@ -1,0 +1,26 @@
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+
+<a href="{{url('homepage')}}" class="govuk-back-link">Back</a>
+<form method="POST">
+  <fieldset class="govuk-fieldset">
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h1 class="govuk-fieldset__heading">
+      Add a new supplier
+    </h1>
+  </legend>
+  <p>Add a new supplier to the platform.</p>
+  {{csrf_input}}
+<div class="govuk-form-group">
+  <label class="govuk-label" for="supplier_name">
+    Name
+  </label>
+  <input required class="govuk-input" id="supplier_name" name="supplier_name" type="text">
+</div>
+
+<button class="govuk-button" data-module="govuk-button" type="submit">Add supplier</button>
+<a class="govuk-link" href="{{url('homepage')}}">Cancel</a>
+  </fieldset>
+</form>
+{% endblock %}
