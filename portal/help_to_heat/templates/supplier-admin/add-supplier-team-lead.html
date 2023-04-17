@@ -1,0 +1,32 @@
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+
+<a href="{{url('supplier-team-leads', supplier.id)}}" class="govuk-back-link">Back</a>
+<form method="POST">
+  <fieldset class="govuk-fieldset">
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h1 class="govuk-fieldset__heading">
+      Add a new team lead
+    </h1>
+  </legend>
+  <p>Add a new team lead to the platform.</p>
+  {{csrf_input}}
+<div class="govuk-form-group">
+  <label class="govuk-label" for="team-leader-name">
+    Full name
+  </label>
+  <input required class="govuk-input" id="team-leader-name" name="team-leader-name" type="text">
+</div>
+<div class="govuk-form-group">
+  <label class="govuk-label" for="team-leader-email">
+    Email
+  </label>
+  <input required class="govuk-input" id="team-leader-email" name="team-leader-email" type="email">
+</div>
+
+<button class="govuk-button" data-module="govuk-button" type="submit">Add team lead</button>
+<a class="govuk-link" href="{{url('supplier-team-leads', supplier.id)}}">Cancel</a>
+  </fieldset>
+</form>
+{% endblock %}
