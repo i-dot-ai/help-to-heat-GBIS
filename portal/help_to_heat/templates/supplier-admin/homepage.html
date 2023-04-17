@@ -1,0 +1,33 @@
+{% extends "base_generic_gov.html" %}
+{% from "govuk_frontend_jinja/components/tabs/macro.html" import govukTabs %}
+
+{% macro suppliers() -%}
+  {% include "supplier-admin/supplier-list.html" %}
+{%- endmacro%}
+
+{% macro disabled_suppliers() -%}
+  {% include "supplier-admin/supplier-disabled-list.html" %}
+{%- endmacro%}
+
+{% block content %}
+
+  {{ govukTabs({
+    'items': [
+      {
+        'label': "Suppliers",
+        'id': "suppliers-tab",
+        'panel': {
+          'html': suppliers()
+        }
+      },
+      {
+        'label': "Disabled suppliers",
+        'id': "disabled-suppliers-tab",
+        'panel': {
+          'html': disabled_suppliers()
+        }
+      },
+    ]
+    }) }}
+
+{% endblock %}
