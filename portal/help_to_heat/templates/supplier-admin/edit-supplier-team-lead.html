@@ -5,31 +5,45 @@
 <a href="{{url('supplier-team-leads', supplier.id)}}" class="govuk-back-link">Back</a>
 <form method="POST">
   <fieldset class="govuk-fieldset">
-  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-    <h1 class="govuk-fieldset__heading">
-      Edit team lead
-    </h1>
-  </legend>
-  <p>Edit a team lead on the platform.</p>
-  {{csrf_input}}
-  <div class="govuk-form-group">
-    <label class="govuk-label" for="team-leader-name">
-      Full name
-    </label>
-    <input value="{{user.full_name}}" required class="govuk-input" id="team-leader-name" name="team-leader-name" type="text">
-  </div>
-  <div class="govuk-form-group">
-    <label class="govuk-label" for="team-leader-email">
-      Email
-    </label>
-    <input value="{{user.email}}" required class="govuk-input" id="team-leader-email" name="team-leader-email" type="email">
-  </div>
-
-    <div class="govuk-button-group">
-    <button class="govuk-button" data-module="govuk-button" type="submit">Save changes</button>
-    <a class="govuk-button govuk-button--warning" href="{{url('supplier-team-leads-remove', supplier.id, user.id)}}">Remove user</a>
-    <a class="govuk-link" href="{{url('supplier-team-leads', supplier.id)}}">Cancel</a>
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">
+        Edit team lead
+      </h1>
+    </legend>
+    <p>Edit a team lead on the platform.</p>
+    {{csrf_input}}
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="team-leader-name">
+        Full name
+      </label>
+      <input value="{{user.full_name}}" required class="govuk-input govuk-!-width-one-half" id="team-leader-name" name="team-leader-name" type="text">
     </div>
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="team-leader-email">
+        Email
+      </label>
+      <input value="{{user.email}}" required class="govuk-input govuk-!-width-one-half" id="team-leader-email" name="team-leader-email" type="email">
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters">
+<div class="govuk-button-group">
+          <button class="govuk-button" data-module="govuk-button" type="submit">Save changes</button>
+          <a class="govuk-link" href="{{url('supplier-team-leads', supplier.id)}}">Cancel</a>
+        </div>
+        </div>
+        <div class="govuk-grid-column-one-quarter flex-justify-end">
+          <div class="govuk-button-group">
+          <a class="govuk-link govuk-!-text-align-right" href="{{url('supplier-team-leads-remove', supplier.id, user.id)}}">Disable user</a>
+          </div>
+        </div>
+    </div>
+<!--    <div class="govuk-button-group">-->
+<!--          <button class="govuk-button" data-module="govuk-button" type="submit">Save changes</button>-->
+<!--          <a class="govuk-link" href="{{url('supplier-team-leads', supplier.id)}}">Cancel</a>-->
+<!--        </div>-->
+<!--    <div class="govuk-button-group">-->
+<!--        <a class="govuk-link govuk-!-text-align-right" href="{{url('supplier-team-leads-remove', supplier.id, user.id)}}">Remove user</a>-->
+<!--        </div>-->
   </fieldset>
 </form>
 {% endblock %}
