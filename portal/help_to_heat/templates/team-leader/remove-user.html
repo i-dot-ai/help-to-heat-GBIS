@@ -1,0 +1,16 @@
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+
+<a href="{{url('user-details', supplier_id, user.id)}}" class="govuk-back-link">Back</a>
+<h1 class="govuk-heading-l">[{{user.full_name}}] will no longer have access to the portal.</h1>
+<p>Are you sure you want to remove "{{user.full_name}}" from your team?</p>
+<br>
+<form method="POST">
+  {{csrf_input}}
+  <div class="govuk-button-group">
+    <button class="govuk-button govuk-button--warning" data-module="govuk-button" type="submit">Remove user</button>
+    <a class="govuk-link" href="{{url('user-details', supplier_id, user.id)}}">Cancel</a>
+  </div>
+</form>
+{% endblock %}
