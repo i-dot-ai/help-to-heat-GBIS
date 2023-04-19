@@ -1,0 +1,14 @@
+Hi,
+
+You've been invited to participate in the Help to heat scheme. Please use the link below to access the site and setup your password.
+{{url|safe}}
+
+You can then start using the system.
+
+The link is valid for 24 hours. If you use the link more than once, it will expire.
+
+If you have a query about this notification, please email the support team: {{contact_address}}
+
+Regards
+
+Help to heat team
