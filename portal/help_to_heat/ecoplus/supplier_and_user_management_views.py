@@ -68,10 +68,8 @@ def supplier_team_leads_edit_view(request, supplier_id, user_id):
         user = models.User.objects.get(pk=user_id)
         supplier = models.Supplier.objects.get(pk=supplier_id)
         leader_name = request.POST.get("team-leader-name")
-        leader_email = request.POST.get("team-leader-email")
 
         user.full_name = leader_name
-        user.email = leader_email
         user.save()
         return redirect("supplier-team-leads", supplier.id)
 
