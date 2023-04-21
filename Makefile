@@ -15,3 +15,23 @@ reset-db:
 	docker-compose run ${POSTGRES_HOST} dropdb -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB}
 	docker-compose run ${POSTGRES_HOST} createdb -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB}
 	docker-compose kill
+
+# -------------------------------------- Code Style  -------------------------------------
+
+.PHONY: check-python-code
+check-python-code:
+	isort --check .
+	black --check .
+	flake8
+
+.PHONY: check-migrations
+check-migrations:
+	docker-compose build portal
+	docker-compose run portal python manage.py migrate
+	docker-compose run portal python manage.py makemigrations --check
+
+.PHONY: test
+test:
+	docker-compose -f portal/tests/docker-compose.yml down
+	docker-compose -f portal/tests/docker-compose.yml build tests-help-to-heat help-to-heat-test-db && docker-compose -f portal/tests/docker-compose.yml run --rm tests-help-to-heat
+	docker-compose -f portal/tests/docker-compose.yml down
