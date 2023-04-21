@@ -2,23 +2,26 @@ export {}
 context('Initial eligibility for all countries', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
-    cy.wait(2000)
+    cy.get('#content').should('be.visible')
   })
 
   it('should display "Sorry, this service isn\'t for you" when Northern Ireland is selected', () => {
     cy.contains('Start').click()
+    cy.get('form', { timeout: 10000 }).should('be.visible')
     cy.get('[type="radio"][value="Northern Ireland"]').check()
     cy.contains('Continue').click()
     cy.get('h1').should('contain', "Sorry, this service isn't for you")
   })
   it('should display "Sorry, this service isn\'t for you" when Scotland is selected', () => {
     cy.contains('Start').click()
+    cy.get('form', { timeout: 10000 }).should('be.visible')
     cy.get('[type="radio"][value="Scotland"]').check()
     cy.contains('Continue').click()
     cy.get('h1').should('contain', "Sorry, this service isn't for you")
   })
   it('should display "Do you own your property?" when Wales is selected', () => {
     cy.contains('Start').click()
+    cy.get('form', { timeout: 10000 }).should('be.visible')
     cy.get('[type="radio"][value="Wales"]').check()
     cy.contains('Continue').click()
     cy.get('legend').should('contain', 'Do you own your property?')
@@ -26,6 +29,7 @@ context('Initial eligibility for all countries', () => {
 
   it('should display "Do you own your own property?" when England is selected', () => {
     cy.contains('Start').click()
+    cy.get('form', { timeout: 10000 }).should('be.visible')
     cy.get('[type="radio"][value="England"]').check()
     cy.contains('Continue').click()
     cy.get('legend').should('contain', 'Do you own your property?')
@@ -35,7 +39,7 @@ context('Initial eligibility for all countries', () => {
 context('Shows path to suppliers for different users in Wales', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
-    cy.wait(2000)
+    cy.get('#content').should('be.visible')
   })
   it('shows the successful path to the supplier for a detached property in band H with no benefits', () => {
     cy.contains('Start now').click()
@@ -309,7 +313,7 @@ context('Shows path to suppliers for different users in Wales', () => {
 context('Shows path to suppliers for different users in England', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
-    cy.wait(2000)
+    cy.get('#content').should('be.visible')
   })
 
   it('shows the successful path to the supplier for a detached property in band H with no benefits', () => {
@@ -588,7 +592,7 @@ context('Shows path to suppliers for different users in England', () => {
 context('Shows unhappy path for different users in England', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
-    cy.wait(2000)
+    cy.get('#content').should('be.visible')
   })
   it('EPC expired in England', () => {
     cy.contains('Start now').click()
@@ -724,7 +728,7 @@ context('Shows unhappy path for different users in England', () => {
   context('Shows unhappy path for different users in Wales', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000/')
-      cy.wait(2000)
+      cy.get('#content').should('be.visible')
     })
     it('EPC expired in Wales', () => {
       cy.contains('Start now').click()

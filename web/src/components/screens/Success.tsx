@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as GovUK from 'govuk-react'
 import { useTranslation } from 'next-i18next'
 
 export const Success = (props: { referenceNumber: string }) => {
   const { t } = useTranslation(['screens'])
+
+  useEffect(() => {
+    localStorage.deleteItem('qs')
+  }, [])
+
   return (
     <>
       <GovUK.Panel title={t('Success.header')}>

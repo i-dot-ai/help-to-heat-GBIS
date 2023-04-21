@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useMachine } from '@xstate/react'
 import * as GovUK from 'govuk-react'
 import { useTranslation } from 'next-i18next'
@@ -66,13 +66,27 @@ import { AddressNotFound } from '@/components/screens/AddressNotFound'
 import { ListOfElegibleSchemes } from '@/components/screens/ListOfElegibleSchemes'
 import { Success } from '@/components/screens/Success'
 import { useRouter } from 'next/router'
+import { StateFrom } from 'xstate'
 
 const IS_DEV = process.env.IS_DEV
 
-const Questionnaire = () => {
+const Questionnaire = (props: {
+  initialState?: StateFrom<typeof questionnaireMachine>
+}) => {
   const { locale } = useRouter()
-  const [state, send] = useMachine(questionnaireMachine)
+
+  const [state, send, service] = useMachine(questionnaireMachine, {
+    state: props.initialState
+  })
   const { t } = useTranslation(['common', 'questionnaire'])
+
+  useEffect(() => {
+    const subscription = service.subscribe((state) => {
+      localStorage.setItem('qs', JSON.stringify(state))
+    })
+
+    return subscription.unsubscribe
+  }, [service])
 
   return (
     <div>

@@ -15,6 +15,12 @@ type Inputs = {
   address: PropertyAddressType
 }
 
+const isValidUKPostcode = (postcode: string) => {
+  const regex =
+    /^([A-Za-z][A-HJ-Ya-hj-y]?[0-9][A-Za-z0-9]?[ ]?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] 0[Aa]{2})$/
+  return regex.test(postcode)
+}
+
 export const AddressOfProperty = (props: {
   onSubmit: (v: PropertyAddressType) => void
   defaultValues?: {
@@ -54,7 +60,7 @@ export const AddressOfProperty = (props: {
             <InputContainer>
               <GovUK.InputField
                 mb={4}
-                hint={t('ddressOfProperty.buildingNumberOrName.input.hint')}
+                hint={t('AddressOfProperty.buildingNumberOrName.input.hint')}
                 meta={{
                   touched: submitCount > 0,
                   error: errors?.address?.buildingNumberOrName?.message
@@ -66,12 +72,19 @@ export const AddressOfProperty = (props: {
 
               <GovUK.InputField
                 mb={4}
-                hint={t('ddressOfProperty.postcode.input.hint')}
+                hint={t('AddressOfProperty.postcode.input.hint')}
                 meta={{
                   touched: submitCount > 0,
                   error: errors?.address?.postcode?.message
                 }}
                 input={register('address.postcode', {
+                  validate: {
+                    isValidUKPostcode: (value) =>
+                      isValidUKPostcode(value) ||
+                      (t('invalid-postcode', {
+                        ns: 'common'
+                      }) as string)
+                  },
                   required: {
                     value: true,
                     message: t('form-required', {
