@@ -88,7 +88,7 @@ jobs:
 
       - run: |
           docker-compose build portal
-          docker-compose run portal python portal/manage.py makemigrations --check
+          docker-compose run portal python manage.py makemigrations --check
 
       - uses: actions/checkout@v2
       - name: Slack Notification
