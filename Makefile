@@ -26,9 +26,9 @@ check-python-code:
 
 .PHONY: check-migrations
 check-migrations:
-	docker-compose build web
-	docker-compose run web python manage.py migrate
-	docker-compose run web python manage.py makemigrations --check
+	docker-compose build portal
+	docker-compose run portal python manage.py migrate
+	docker-compose run portal python manage.py makemigrations --check
 
 .PHONY: test
 test:
