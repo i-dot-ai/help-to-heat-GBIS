@@ -10,7 +10,8 @@
       </h1>
     </legend>
     <div class="govuk-button-group">
-      <a class="govuk-button govuk-button--warning" href="{{url('supplier-team-leads-remove', supplier.id, user.id)}}">Disable user</a>
+      <a href="{{url('change-supplier-team-lead-status', supplier.id, user.id)}}" class="govuk-button govuk-button--secondary">{{user.is_active and "Disable" or "Enable"}}</a>
+<!--      <a class="govuk-button govuk-button&#45;&#45;warning" href="{{url('change-supplier-team-lead-status', supplier.id, user.id)}}">Disable user</a>-->
     </div>
     <p>You can amend a team lead's name. If you need to amend their email, you can remove them and add a new team lead.</p>
     {{csrf_input}}

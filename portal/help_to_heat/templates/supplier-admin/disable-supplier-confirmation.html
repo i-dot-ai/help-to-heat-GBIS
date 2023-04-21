@@ -2,7 +2,6 @@
 
 {% block content %}
 
-<a href="{{url('supplier-team-leads', supplier.id)}}" class="govuk-back-link">Back</a>
 <h1 class="govuk-heading-l">{{supplier.name}}</h1>
 <h2 class="govuk-heading-m">{{supplier.is_disabled and "Enable energy supplier" or "Disable energy supplier"}}</h2>
 <form method="POST">

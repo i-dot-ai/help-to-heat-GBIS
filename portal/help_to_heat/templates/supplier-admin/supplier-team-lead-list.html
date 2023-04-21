@@ -5,7 +5,7 @@
 <h1 class="govuk-heading-l">Manage [{{supplier.name}}]'s team leads and details</h1>
 <div class="govuk-button-group">
   <a href="{{url('edit-supplier', supplier.id)}}" class="govuk-button govuk-button--secondary">Edit</a>
-  <a href="{{url('change-supplier-disabled-status', supplier.id)}}" class="govuk-button {% if not supplier.is_disabled %}govuk-button--warning{% endif %}">{{supplier.is_disabled and "Enable" or "Disable"}}</a>
+  <a href="{{url('change-supplier-disabled-status', supplier.id)}}" class="govuk-button govuk-button--secondary">{{supplier.is_disabled and "Enable" or "Disable"}}</a>
 </div>
 <a class="govuk-button" href="{{url('supplier-team-leads-add', supplier.id)}}">Add a new team lead</a>
 
@@ -15,6 +15,7 @@
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Names</th>
       <th scope="col" class="govuk-table__header">Email</th>
+      <th scope="col" class="govuk-table__header">Status</th>
       <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
     </tr>
   </thead>
@@ -23,6 +24,17 @@
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">{{user.full_name}}</th>
       <td class="govuk-table__cell">{{user.email}}</td>
+      <td class="govuk-table__cell">
+        {% if not user.is_active %}
+        <strong class="govuk-tag govuk-tag--red">
+          Disabled
+        </strong>
+        {% else %}
+        <strong class="govuk-tag govuk-tag--green">
+          Enabled
+        </strong>
+        {% endif %}
+      </td>
       <td class="govuk-table__cell govuk-table__cell--numeric">
         <div class="govuk-button-group govuk-!-display-block">
           <a href="{{url('supplier-team-leads-edit', supplier.id, user.id)}}" class="govuk-link">Edit<span class="govuk-visually-hidden"> team lead details</span></a>

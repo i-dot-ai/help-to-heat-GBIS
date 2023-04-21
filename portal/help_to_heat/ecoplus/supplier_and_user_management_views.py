@@ -74,13 +74,16 @@ def supplier_team_leads_edit_view(request, supplier_id, user_id):
         return redirect("supplier-team-leads", supplier.id)
 
 
-def supplier_team_leads_remove_view(request, supplier_id, user_id):
+def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
         user = models.User.objects.get(pk=user_id)
-        user.supplier = None
+        return render(request, "supplier-admin/disable-team-lead-confirmation.html", {"supplier": supplier, "user": user})
+    else:
+        user = models.User.objects.get(pk=user_id)
+        user.is_active = not user.is_active
         user.save()
-        return redirect("supplier-team-leads", supplier.id)
+        return redirect("supplier-team-leads", supplier_id)
 
 
 def team_member_add_role_view(request, supplier_id):
