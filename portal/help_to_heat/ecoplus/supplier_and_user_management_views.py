@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render
-
 from help_to_heat.ecoplus import models
 
 
@@ -78,7 +77,9 @@ def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
         user = models.User.objects.get(pk=user_id)
-        return render(request, "supplier-admin/disable-team-lead-confirmation.html", {"supplier": supplier, "user": user})
+        return render(
+            request, "supplier-admin/disable-team-lead-confirmation.html", {"supplier": supplier, "user": user}
+        )
     else:
         user = models.User.objects.get(pk=user_id)
         user.is_active = not user.is_active
@@ -96,7 +97,9 @@ def team_member_add_role_view(request, supplier_id):
 
 def team_member_add_details_view(request, supplier_id, user_role):
     if request.method == "GET":
-        return render(request, "team-leader/add-user-details.html", {"user_role":user_role, "supplier_id":supplier_id})
+        return render(
+            request, "team-leader/add-user-details.html", {"user_role": user_role, "supplier_id": supplier_id}
+        )
     else:
         supplier = models.Supplier.objects.get(pk=supplier_id)
         user_name = request.POST.get("user-name")

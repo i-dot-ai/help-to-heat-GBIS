@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework import serializers
@@ -42,21 +42,9 @@ def homepage_view(request):
         supplier = request.user.supplier
         unread_leads = 10
         archives = (
-            {
-                "file_name": "22222222.csv",
-                "downloaded_at": datetime.datetime.now(),
-                "last_downloaded_by": "Tom Smith"
-            },
-            {
-                "file_name": "22222222.csv",
-                "downloaded_at": datetime.datetime.now(),
-                "last_downloaded_by": "Tom Smith"
-            },
-            {
-                "file_name": "22222222.csv",
-                "downloaded_at": datetime.datetime.now(),
-                "last_downloaded_by": "Tom Smith"
-            },
+            {"file_name": "22222222.csv", "downloaded_at": datetime.datetime.now(), "last_downloaded_by": "Tom Smith"},
+            {"file_name": "22222222.csv", "downloaded_at": datetime.datetime.now(), "last_downloaded_by": "Tom Smith"},
+            {"file_name": "22222222.csv", "downloaded_at": datetime.datetime.now(), "last_downloaded_by": "Tom Smith"},
         )
 
         team_members = models.User.objects.filter(supplier=supplier, is_team_member=True)

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ecoplus', '0009_supplier_is_disabled'),
+        ("ecoplus", "0009_supplier_is_disabled"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='full_name',
+            model_name="user",
+            name="full_name",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

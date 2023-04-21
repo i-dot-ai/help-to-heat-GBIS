@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ecoplus', '0008_rename_is_supplier_user_is_supplier_admin_and_more'),
+        ("ecoplus", "0008_rename_is_supplier_user_is_supplier_admin_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='supplier',
-            name='is_disabled',
+            model_name="supplier",
+            name="is_disabled",
             field=models.BooleanField(default=False),
         ),
     ]
