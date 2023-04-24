@@ -1,0 +1,45 @@
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+
+<a href="{{url('homepage')}}" class="govuk-back-link">Back</a>
+<h1 class="govuk-heading-l">View and manage details for [{{user.full_name}}]</h1>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Role
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {% if user.is_team_member %}Team member{% else %}Team leader{% endif %}
+    </dd>
+    <dd class="govuk-summary-list__actions">
+      <a class="govuk-link" href="#">
+        Change<span class="govuk-visually-hidden"> role</span>
+      </a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Name
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{user.full_name}}
+    </dd>
+    <dd class="govuk-summary-list__actions">
+      <a class="govuk-link" href="#">
+        Change<span class="govuk-visually-hidden"> name</span>
+      </a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+    <dt class="govuk-summary-list__key">
+      Email
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{user.email}}
+    </dd>
+  </div>
+</dl>
+<br>
+<a href="{{url('remove-user', supplier_id, user.id)}}" class="govuk-button govuk-button--warning">Remove user</a>
+{% endblock %}

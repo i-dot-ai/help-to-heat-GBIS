@@ -10,3 +10,5 @@ POSTGRES_USER=help-to-heat
 POSTGRES_PASSWORD=insecure
 PGPASSWORD=insecure
 DATABASE_URL="postgres://help-to-heat:insecure@help-to-heat-db:5432/help-to-heat"
+CONTACT_EMAIL="test@example.com"
+FROM_EMAIL="test@example.com"

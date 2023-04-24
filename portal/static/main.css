@@ -3,3 +3,8 @@
     background-color: #d4351c;
     padding: 0.5rem 1rem;
 }
+
+#i-dot-ai .flex-justify-end {
+    display: flex;
+    justify-content: flex-end;
+}

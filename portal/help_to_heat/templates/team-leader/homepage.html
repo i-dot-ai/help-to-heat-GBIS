@@ -1,0 +1,44 @@
+{% extends "base_generic_gov.html" %}
+{% from "govuk_frontend_jinja/components/tabs/macro.html" import govukTabs %}
+
+{% macro customer_leads() -%}
+  {% include "team-leader/new-customer-leads.html" %}
+{%- endmacro%}
+
+{% macro archives() -%}
+  {% include "team-leader/archive.html" %}
+{%- endmacro%}
+
+{% macro manage_members() -%}
+  {% include "team-leader/team-member-list.html" %}
+{%- endmacro%}
+
+{% block content %}
+
+  {{ govukTabs({
+    'items': [
+      {
+        'label': "New customer leads",
+        'id': "customer-leads-tab",
+        'panel': {
+          'html': customer_leads()
+        }
+      },
+      {
+        'label': "Archives",
+        'id': "archive-tab",
+        'panel': {
+          'html': archives()
+        }
+      },
+      {
+        'label': "Manage members",
+        'id': "member-tab",
+        'panel': {
+          'html': manage_members()
+        }
+      },
+    ]
+    }) }}
+
+{% endblock %}
