@@ -5,23 +5,29 @@ context('Initial eligibility for all countries', () => {
     cy.get('#content').should('be.visible')
   })
 
-  it('should display "Sorry, this service isn\'t for you" when Northern Ireland is selected', () => {
+  it('should display "The scheme does not apply to homes in Northern Ireland', () => {
     cy.contains('Start').click()
-    cy.get('form', { timeout: 10000 }).should('be.visible')
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"][value="Northern Ireland"]').check()
     cy.contains('Continue').click()
-    cy.get('h1').should('contain', "Sorry, this service isn't for you")
+    cy.get('h1').should(
+      'contain',
+      'The scheme does not apply to homes in Northern Ireland'
+    )
   })
-  it('should display "Sorry, this service isn\'t for you" when Scotland is selected', () => {
+  it('should display "As your property is in Scotland, you must use a different service', () => {
     cy.contains('Start').click()
-    cy.get('form', { timeout: 10000 }).should('be.visible')
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"][value="Scotland"]').check()
     cy.contains('Continue').click()
-    cy.get('h1').should('contain', "Sorry, this service isn't for you")
+    cy.get('h1').should(
+      'contain',
+      'As your property is in Scotland, you must use a different service'
+    )
   })
   it('should display "Do you own your property?" when Wales is selected', () => {
     cy.contains('Start').click()
-    cy.get('form', { timeout: 10000 }).should('be.visible')
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"][value="Wales"]').check()
     cy.contains('Continue').click()
     cy.get('legend').should('contain', 'Do you own your property?')
@@ -29,7 +35,7 @@ context('Initial eligibility for all countries', () => {
 
   it('should display "Do you own your own property?" when England is selected', () => {
     cy.contains('Start').click()
-    cy.get('form', { timeout: 10000 }).should('be.visible')
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"][value="England"]').check()
     cy.contains('Continue').click()
     cy.get('legend').should('contain', 'Do you own your property?')
@@ -43,6 +49,7 @@ context('Shows path to suppliers for different users in Wales', () => {
   })
   it('shows the successful path to the supplier for a detached property in band H with no benefits', () => {
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('Wales')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('owner')
@@ -111,6 +118,7 @@ context('Shows path to suppliers for different users in Wales', () => {
 
   it('shows the successful path to the supplier for a tenant in semi-bungalow property in band B with benefits', () => {
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('Wales')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('tenant')
@@ -177,6 +185,7 @@ context('Shows path to suppliers for different users in Wales', () => {
 
   it('shows the successful path to the supplier for a social tentant flat in band H with no benefits', () => {
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('Wales')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('social-tenant')
@@ -243,6 +252,7 @@ context('Shows path to suppliers for different users in Wales', () => {
 
   it('shows the successful path to the supplier for a landlord in semi-bungalow property in band F with benefits', () => {
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('Wales')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('landlord')
@@ -319,6 +329,7 @@ context('Shows path to suppliers for different users in England', () => {
   it('shows the successful path to the supplier for a detached property in band H with no benefits', () => {
     cy.get('button').should('contain', 'Start now')
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('England')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('owner')
@@ -388,6 +399,7 @@ context('Shows path to suppliers for different users in England', () => {
   it('shows the successful path to the supplier for a tenant in semi-bungalow property in band B with benefits', () => {
     cy.get('button').should('contain', 'Start now')
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('England')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('tenant')
@@ -401,6 +413,7 @@ context('Shows path to suppliers for different users in England', () => {
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('yes')
     cy.contains('Continue').click()
+
     cy.get('select').select('E')
     cy.get('[data-cy="propertyEpcDetails.propertyEpcDate"] label')
       .eq(0)
@@ -455,6 +468,7 @@ context('Shows path to suppliers for different users in England', () => {
   it('shows the successful path to the supplier for a social tentant flat in band C with no benefits', () => {
     cy.get('button').should('contain', 'Start now')
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('England')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('social-tenant')
@@ -522,6 +536,7 @@ context('Shows path to suppliers for different users in England', () => {
   it('shows the successful path to the supplier for a landlord in semi-bungalow property in band F with benefits', () => {
     cy.get('button').should('contain', 'Start now')
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('England')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('landlord')
@@ -596,6 +611,7 @@ context('Shows unhappy path for different users in England', () => {
   })
   it('EPC expired in England', () => {
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('England')
     cy.contains('Continue').click()
 
@@ -605,7 +621,6 @@ context('Shows unhappy path for different users in England', () => {
     cy.get('input[name="address.buildingNumberOrName"]').type('16')
     cy.get('input[name="address.postcode"]').type('EN3 4TE')
     cy.contains('Continue').click()
-
     cy.get('[type="radio"]').first().check()
     cy.contains('Continue').click()
 
@@ -640,6 +655,7 @@ context('Shows unhappy path for different users in England', () => {
 
   it('EPC rating A in England', () => {
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('England')
     cy.contains('Continue').click()
 
@@ -649,7 +665,6 @@ context('Shows unhappy path for different users in England', () => {
     cy.get('input[name="address.buildingNumberOrName"]').type('16')
     cy.get('input[name="address.postcode"]').type('EN3 4TE')
     cy.contains('Continue').click()
-
     cy.get('[type="radio"]').first().check()
     cy.contains('Continue').click()
 
@@ -684,6 +699,7 @@ context('Shows unhappy path for different users in England', () => {
 
   it('Landlord with an expired EPC in England', () => {
     cy.contains('Start now').click()
+    cy.get('form').should('be.visible')
     cy.get('[type="radio"]').check('England')
     cy.contains('Continue').click()
 
@@ -693,7 +709,6 @@ context('Shows unhappy path for different users in England', () => {
     cy.get('input[name="address.buildingNumberOrName"]').type('16')
     cy.get('input[name="address.postcode"]').type('EN3 4TE')
     cy.contains('Continue').click()
-
     cy.get('[type="radio"]').first().check()
     cy.contains('Continue').click()
 
@@ -732,6 +747,7 @@ context('Shows unhappy path for different users in England', () => {
     })
     it('EPC expired in Wales', () => {
       cy.contains('Start now').click()
+      cy.get('form').should('be.visible')
       cy.get('[type="radio"]').check('Wales')
       cy.contains('Continue').click()
 
@@ -741,7 +757,6 @@ context('Shows unhappy path for different users in England', () => {
       cy.get('input[name="address.buildingNumberOrName"]').type('16')
       cy.get('input[name="address.postcode"]').type('CF24 1QG')
       cy.contains('Continue').click()
-
       cy.get('[type="radio"]').first().check()
       cy.contains('Continue').click()
 
@@ -776,6 +791,7 @@ context('Shows unhappy path for different users in England', () => {
 
     it('EPC rating A in Wales', () => {
       cy.contains('Start now').click()
+      cy.get('form').should('be.visible')
       cy.get('[type="radio"]').check('Wales')
       cy.contains('Continue').click()
 
@@ -785,7 +801,6 @@ context('Shows unhappy path for different users in England', () => {
       cy.get('input[name="address.buildingNumberOrName"]').type('16')
       cy.get('input[name="address.postcode"]').type('CF24 1QG')
       cy.contains('Continue').click()
-
       cy.get('[type="radio"]').first().check()
       cy.contains('Continue').click()
 
@@ -820,6 +835,7 @@ context('Shows unhappy path for different users in England', () => {
 
     it('Landlord with an expired EPC in Wales', () => {
       cy.contains('Start now').click()
+      cy.get('form').should('be.visible')
       cy.get('[type="radio"]').check('Wales')
       cy.contains('Continue').click()
 
@@ -829,7 +845,6 @@ context('Shows unhappy path for different users in England', () => {
       cy.get('input[name="address.buildingNumberOrName"]').type('16')
       cy.get('input[name="address.postcode"]').type('CF24 1QG')
       cy.contains('Continue').click()
-
       cy.get('[type="radio"]').first().check()
       cy.contains('Continue').click()
 

@@ -68,6 +68,10 @@ export const HouseholdIncome = (props: {
           {t('HouseholdIncome.title')}
         </GovUK.Fieldset.Legend>
 
+        <GovUK.Paragraph>
+          {t('HouseholdIncome.description') || 'Description not available'}
+        </GovUK.Paragraph>
+
         <GovUK.FormGroup error={submitCount > 0 && !!errors?.householdIncome?.message}>
           <GovUK.Label mb={4}>
             {submitCount > 0 && errors?.householdIncome?.message && (

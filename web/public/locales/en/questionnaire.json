@@ -44,6 +44,7 @@
   "FoundEPC.description": "This certificate may be registered to your property or one of the properties nearby that shares part of your address.",
   "FoundEPC.description.a": "Is this correct?",
   "HouseholdIncome.title": " What is your household income?",
+  "HouseholdIncome.description": "Your annual household income is the total income before paying tax for all adults living in your home.",
   "HouseholdIncome.option.a": "Less than £31,000 a year",
   "HouseholdIncome.option.b": "More than £31,000 a year",
   "KindOfProperty.title": "What kind of property do you have?",

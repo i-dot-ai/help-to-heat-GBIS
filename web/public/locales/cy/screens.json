@@ -1,8 +1,10 @@
 {
   "AddressNotFound.title": "Methwyd canfod eich cyfeiriad",
   "AddressNotFound.description": "Efallai bod hyn oherwydd bod eich eiddo yn newydd neu fod eich cod post wedi'i deipio'n anghywir.",
-  "IneligibleCountry.title": "Ymddiheurwn, nid yw'r gwasanaeth hwn ar eich cyfer chi",
-  "IneligibleCountry.description": "Mae'r gwasanaeth hwn ar gyfer pobl sy'n berchen ar eu cartref eu hunain yng Nghymru a Lloegr yn unig.",
+  "IneligibleCountry.title.ni": "Nid yw'r cynllun yn berthnasol i gartrefi yng Ngogledd Iwerddon",
+  "IneligibleCountry.title.scotland": "Nid yw'r cynllun yn berthnasol i gartrefi yn yr Alban",
+  "IneligibleCountry.description.ni": "Dim ond cartrefi yng Nghymru, Lloegr a'r Alban y mae'r cynlluniau Rhwymedigaeth Cwmnïau Ynni ac Inswleiddio Prydain Fawr ar gael.",
+  "IneligibleCountry.description.scotland": "Yn anffodus, nid yw’r gwasanaeth hwn ar gael i gartrefi yn yr Alban",
   "IneligibleCountry.link.ni": "Gallwch [ddod o hyd i gyngor ar welliannau ynni i'ch cartref ar NIDirect](https://www.nidirect.gov.uk/information-and-services/environment-and-outdoors/energy-advice)",
   "IneligibleCountry.link.scotland": "Gallwch [ddod o hyd i gyngor ac arian ar welliannau ynni i'ch cartref ar Home Energy Scotland](https://www.homeenergyscotland.org/funding/)",
   "ListOfElegibleSchemes.title": "Efallai eich bod yn gymwys ar gyfer y canlynol",

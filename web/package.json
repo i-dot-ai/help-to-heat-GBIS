@@ -20,7 +20,7 @@
     "test:all": "next lint && npm run test:tsc && jest && npm run test:e2e",
     "test:tsc": "tsc --noemit",
     "test:coverage": "jest --coverage",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
+    "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e --record --key b099ca38-0f20-4db5-a73d-ebd8ca9298e9\"",
     "test": "jest",
     "prepare": "npm run build",
     "prepublishOnly": "npm run test:all",
