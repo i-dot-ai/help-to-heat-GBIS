@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { BungalowType } from '@/types'
+import { Button } from '@/components/ui/Button'
 
 type Inputs = {
   bungalow: BungalowType
@@ -122,13 +123,13 @@ export const KindOfPropertyBungalow = (props: {
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

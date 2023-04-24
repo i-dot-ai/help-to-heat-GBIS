@@ -17,5 +17,6 @@
   "country-northern-ireland": "Gogledd Iwerddon",
   "why-do-we-ask": "Pam mae angen i ni wybod hyn?",
   "change": "Newid",
-  "invalid-postcode": "Nodwch god post dilys"
+  "invalid-postcode": "Nodwch god post dilys",
+  "invalid-email-address": "Nodwch gyfeiriad e-bost dilys"
 }

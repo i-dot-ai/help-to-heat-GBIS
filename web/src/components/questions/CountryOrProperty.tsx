@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { LocationType } from '@/types'
+import { Button } from '@/components/ui/Button'
 
 type Inputs = {
   location: LocationType
@@ -109,11 +110,11 @@ export const CountryOrProperty = (props: {
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {t('continue', {
           ns: 'common'
         })}
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
-
+import { Button } from '@/components/ui/Button'
 import { UnorderedList, ListItem, Paragraph } from 'govuk-react'
 import styled from 'styled-components'
 import type { PropertyAddressType } from '@/types'
@@ -100,13 +100,13 @@ export const AddressOfProperty = (props: {
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

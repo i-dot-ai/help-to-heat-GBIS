@@ -24,6 +24,7 @@ import {
   WallType
 } from '@/types'
 import { GO_TO_QUESTION_TYPE } from '@/questionnaireMachine'
+import { Button } from '@/components/ui/Button'
 
 export const CheckYourAnswers = (props: {
   onSubmit: () => void
@@ -86,7 +87,7 @@ export const CheckYourAnswers = (props: {
         </GovUK.Table>
       </GovUK.Fieldset>
 
-      <GovUK.Button
+      <Button
         type="button"
         onClick={() => {
           props.onSubmit()
@@ -97,7 +98,7 @@ export const CheckYourAnswers = (props: {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </div>
   )
 }

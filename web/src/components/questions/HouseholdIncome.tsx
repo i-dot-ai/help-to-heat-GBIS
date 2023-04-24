@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { HouseholdIncomeType } from '@/types'
+import { Button } from '@/components/ui/Button'
 
 type Inputs = {
   householdIncome: HouseholdIncomeType
@@ -95,13 +96,13 @@ export const HouseholdIncome = (props: {
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

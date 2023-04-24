@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { EpcRatingType, PropertyEPCDetailsType } from '@/types'
+import { Button } from '@/components/ui/Button'
 
 type Inputs = {
   propertyEpcDetails: PropertyEPCDetailsType
@@ -169,13 +170,13 @@ export const PropertyEPC = (props: {
         </DateField>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

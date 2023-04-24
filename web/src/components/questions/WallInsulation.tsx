@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
+import { Button } from '@/components/ui/Button'
 
 import { WallInsulationType } from '@/types'
 
@@ -110,13 +111,13 @@ export const WallInsulation = (props: {
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

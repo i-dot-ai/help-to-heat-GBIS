@@ -1,5 +1,5 @@
 import Layout from '@/components/Layout'
-import { Button, GridCol, GridRow, H1 } from 'govuk-react'
+import { GridCol, GridRow, H1 } from 'govuk-react'
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 import { useRouter } from 'next/router'
@@ -7,6 +7,7 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
 
 const NextPage = (_props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter()

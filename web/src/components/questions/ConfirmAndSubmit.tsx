@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'next-i18next'
 import * as GovUK from 'govuk-react'
+import { Button } from '@/components/ui/Button'
 
 export const ConfirmAndSubmit = (props: { onSubmit: () => void }) => {
   const { t } = useTranslation(['questionnaire'])
@@ -12,7 +13,7 @@ export const ConfirmAndSubmit = (props: { onSubmit: () => void }) => {
         </GovUK.Fieldset.Legend>
       </GovUK.Fieldset>
 
-      <GovUK.Button
+      <Button
         type="button"
         onClick={() => {
           props.onSubmit()
@@ -21,7 +22,7 @@ export const ConfirmAndSubmit = (props: { onSubmit: () => void }) => {
         {t('continue', {
           ns: 'common'
         })}
-      </GovUK.Button>
+      </Button>
     </>
   )
 }

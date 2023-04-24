@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { PersonalDetailsType } from '@/types'
+import { Button } from '@/components/ui/Button'
 
 type Inputs = {
   personalDetails: PersonalDetailsType
@@ -124,6 +125,12 @@ export const PersonalAndContactDetails = (props: {
                   message: t('form-required', {
                     ns: 'common'
                   })
+                },
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: t('invalid-email-address', {
+                    ns: 'common'
+                  })
                 }
               })}
             >
@@ -133,13 +140,13 @@ export const PersonalAndContactDetails = (props: {
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

@@ -1,13 +1,13 @@
 import React from 'react'
-import * as GovUK from 'govuk-react'
 import { useTranslation } from 'next-i18next'
+import { Button } from '@/components/ui/Button'
 
 export const ListOfElegibleSchemes = (props: { onSubmit: () => void }) => {
   const { t } = useTranslation(['screens'])
   return (
     <div>
       <h1>{t('ListOfElegibleSchemes.title')}</h1>
-      <GovUK.Button
+      <Button
         type="button"
         onClick={() => {
           props.onSubmit()
@@ -18,7 +18,7 @@ export const ListOfElegibleSchemes = (props: { onSubmit: () => void }) => {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </div>
   )
 }

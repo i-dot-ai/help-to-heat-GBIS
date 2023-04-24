@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next'
 import * as GovUK from 'govuk-react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { EnergySupplierType } from '@/types'
+import { Button } from '@/components/ui/Button'
 
 type Inputs = {
   energySupplier: EnergySupplierType
@@ -150,13 +151,13 @@ export const ChooseSupplier = (props: {
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }

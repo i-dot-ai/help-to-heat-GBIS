@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
 import { Link } from 'govuk-react'
 import { CouncilTaxBandType } from '@/types'
+import { Button } from '@/components/ui/Button'
 
 type Inputs = {
   counciltaxBand: CouncilTaxBandType
@@ -101,13 +102,13 @@ export const CouncilTaxBand = ({
         </GovUK.FormGroup>
       </GovUK.Fieldset>
 
-      <GovUK.Button type="submit">
+      <Button type="submit">
         {
           t('continue', {
             ns: 'common'
           }) as string
         }
-      </GovUK.Button>
+      </Button>
     </form>
   )
 }
