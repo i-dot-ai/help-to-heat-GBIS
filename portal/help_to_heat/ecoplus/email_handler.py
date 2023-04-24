@@ -70,7 +70,7 @@ EMAIL_MAPPING = {
 }
 
 
-def _send_token_email(user, subject, template_name, from_address, url_path, token_generator, OTP=None):
+def _send_token_email(user, subject, template_name, from_address, url_path, token_generator, one_time_password=None):
     user.last_token_sent_at = datetime.datetime.now(tz=pytz.UTC)
     user.save()
     token = token_generator.make_token(user)
