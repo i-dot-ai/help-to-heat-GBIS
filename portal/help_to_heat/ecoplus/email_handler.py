@@ -110,7 +110,9 @@ def send_password_reset_email(user):
         reset_request.save()
     one_time_password = secrets.token_hex(4)
     hashed_one_time_password = make_password(one_time_password)
-    reset_request = models.PasswordResetRequest(user=user, one_time_password=hashed_one_time_password, is_completed=False)
+    reset_request = models.PasswordResetRequest(
+        user=user, one_time_password=hashed_one_time_password, is_completed=False
+    )
     reset_request.save()
     one_time_password_upper = one_time_password.upper()
     data = EMAIL_MAPPING["password-reset"]

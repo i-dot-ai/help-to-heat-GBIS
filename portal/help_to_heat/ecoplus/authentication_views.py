@@ -1,11 +1,10 @@
-from django.shortcuts import render
-from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.contrib.auth.hashers import check_password
-
-from help_to_heat.ecoplus import models, email_handler
+from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
+from help_to_heat.ecoplus import email_handler, models
 from help_to_heat.ecoplus.utils import MethodDispatcher
 
 
@@ -22,7 +21,7 @@ class PasswordReset(MethodDispatcher):
             return render(request, "account/password_reset_done.html", {})
         email_handler.send_password_reset_email(user)
         return render(request, "account/password_reset_done.html", {})
-    
+
 
 @require_http_methods(["GET", "POST"])
 class PasswordChange(MethodDispatcher):
