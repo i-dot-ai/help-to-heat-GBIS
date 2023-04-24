@@ -17,7 +17,7 @@ def save_url_in_chunks(url):
     filename = pathlib.Path(url).stem
     filepath = DATA_DIR / filename
     if not filepath.exists():
-        print(f"Downloading to: {filepath}")
+        print(f"Downloading to: {filepath}")  # noqa: T201
         filepath.parent.mkdir(parents=True, exist_ok=True)
         with filepath.open("wb") as f:
             with httpx.stream("GET", url) as response:
@@ -25,11 +25,11 @@ def save_url_in_chunks(url):
                     text = decompressor.decompress(chunk)
                     f.write(text)
     else:
-        print(f"Skipping download: {filepath} already exists")
+        print(f"Skipping download: {filepath} already exists")  # noqa: T201
 
     sorted_filepath = DATA_DIR / "".join((filepath.stem, "-sorted", filepath.suffix))
     if not sorted_filepath.exists():
-        print(f"Sorting to: {sorted_filepath}")
+        print(f"Sorting to: {sorted_filepath}")  # noqa: T201
         with filepath.open("r") as f:
             lines = f.readlines()
         header = lines[0]
@@ -39,7 +39,7 @@ def save_url_in_chunks(url):
             f.writelines([header])
             f.writelines(lines)
     else:
-        print(f"Skipping sort: {sorted_filepath} already exists")
+        print(f"Skipping sort: {sorted_filepath} already exists")  # noqa: T201
     return sorted_filepath
 
 
