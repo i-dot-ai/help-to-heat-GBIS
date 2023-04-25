@@ -28,6 +28,24 @@ class SupplierChoices(utils.Choices):
     UTILITY_WAREHOUSE = "Utility Warehouse"
 
 
+SUPPLIER_VALUE_MAPPING = {
+    "british-gas": SupplierChoices.BRITISH_GAS,
+    "bulb": SupplierChoices.BULB,
+    "e-energy": SupplierChoices.E_ENERGY,
+    "ecotricity": SupplierChoices.ECOTRICITY,
+    "edf": SupplierChoices.EDF,
+    "eon": SupplierChoices.EON,
+    "esb": SupplierChoices.ESB,
+    "foxglove": SupplierChoices.FOXGLOVE,
+    "octopus": SupplierChoices.OCTOPUS,
+    "ovo": SupplierChoices.OVO,
+    "scottish-power": SupplierChoices.SCOTTISH_POWER,
+    "shell": SupplierChoices.SHELL,
+    "utilita": SupplierChoices.UTILITA,
+    "utility-warehouse": SupplierChoices.UTILITY_WAREHOUSE,
+}
+
+
 def pick_random_supplier():
     return random.choice(SupplierChoices.values)
 
@@ -80,7 +98,9 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     def save(self, *args, **kwargs):
         if not self.supplier:
             if self.data["energySupplier"]:
-                supplier = Supplier.objects.get(name=self.data["energySupplier"])
+                selected_supplier = SUPPLIER_VALUE_MAPPING[self.data["energySupplier"]]
+                selected_supplier_name = selected_supplier.value
+                supplier = Supplier.objects.get(name=selected_supplier_name)
                 self.supplier = supplier
         return super().save(*args, **kwargs)
 
