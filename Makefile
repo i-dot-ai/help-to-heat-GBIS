@@ -16,6 +16,12 @@ reset-db:
 	docker-compose run ${POSTGRES_HOST} createdb -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB}
 	docker-compose kill
 
+
+.PHONY: add-suppliers
+add-suppliers:
+	docker-compose build portal
+	docker-compose run portal python manage.py add_suppliers
+
 # -------------------------------------- Code Style  -------------------------------------
 
 .PHONY: check-python-code
