@@ -6,11 +6,11 @@ export const Success = (props: { referenceNumber: string }) => {
   const { t } = useTranslation(['screens'])
 
   useEffect(() => {
-    localStorage.deleteItem('qs')
+    localStorage.removeItem('qs')
   }, [])
 
   return (
-    <>
+    <div data-cy="success">
       <GovUK.Panel title={t('Success.header')}>
         {t('Success.title')}
         <br />
@@ -18,6 +18,6 @@ export const Success = (props: { referenceNumber: string }) => {
       </GovUK.Panel>
 
       <GovUK.Paragraph>{t('Success.description') as string}</GovUK.Paragraph>
-    </>
+    </div>
   )
 }

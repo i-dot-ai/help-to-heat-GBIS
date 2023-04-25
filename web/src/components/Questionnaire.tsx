@@ -94,7 +94,7 @@ const Questionnaire = (props: {
         <GovUK.BackLink href={`/${locale}`}>{t('back')}</GovUK.BackLink>
       )}
 
-      {!state.matches('property_location') && (
+      {!state.matches('property_location') && !state.matches('complete') && (
         <GovUK.BackLink
           href={`/${locale}`}
           onClick={(e) => {

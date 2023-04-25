@@ -15,21 +15,7 @@ export type WallInsulationType = 'all' | 'some' | 'none' | 'unknown'
 export type LoftType = YesNoType
 export type LoftAccessType = YesNoType
 export type LoftInsulationType = YesNoType | 'unknown'
-export type EnergySupplierType =
-  | 'british-gas'
-  | 'bulb'
-  | 'e-energy'
-  | 'ecotricity'
-  | 'edf'
-  | 'eon'
-  | 'esb'
-  | 'foxglove'
-  | 'octopus'
-  | 'ovo'
-  | 'scottish-power'
-  | 'shell'
-  | 'utilita'
-  | 'utility-warehouse'
+export type EnergySupplierType = string
 
 export type PersonalDetailsType = {
   firstName: string

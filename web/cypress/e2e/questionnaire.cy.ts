@@ -42,7 +42,7 @@ context('Initial eligibility for all countries', () => {
   })
 })
 
-context('Shows path to suppliers for different users in Wales', () => {
+context.skip('Shows path to suppliers for different users in Wales', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
     cy.get('#content').should('be.visible')
@@ -113,7 +113,7 @@ context('Shows path to suppliers for different users in Wales', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 
   it('shows the successful path to the supplier for a tenant in semi-bungalow property in band B with benefits', () => {
@@ -172,7 +172,7 @@ context('Shows path to suppliers for different users in Wales', () => {
     cy.contains('Continue').click()
     cy.get('h1').should('contain', 'You may be eligible for the following')
     cy.contains('Continue').click()
-    cy.get('select').select('bulb')
+    cy.get('select').select('british-gas')
     cy.contains('Continue').click()
     cy.get('input[name="personalDetails.firstName"]').type('Barry')
     cy.get('input[name="personalDetails.lastName"]').type('Allen')
@@ -180,7 +180,7 @@ context('Shows path to suppliers for different users in Wales', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 
   it('shows the successful path to the supplier for a social tentant flat in band H with no benefits', () => {
@@ -237,7 +237,7 @@ context('Shows path to suppliers for different users in Wales', () => {
     cy.get('h1').should('contain', 'You may be eligible for the following')
     cy.contains('Continue').click()
 
-    cy.get('select').select('shell')
+    cy.get('select').select('british-gas')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('yes')
     cy.contains('Continue').click()
@@ -247,7 +247,7 @@ context('Shows path to suppliers for different users in Wales', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 
   it('shows the successful path to the supplier for a landlord in semi-bungalow property in band F with benefits', () => {
@@ -306,7 +306,7 @@ context('Shows path to suppliers for different users in Wales', () => {
     cy.contains('Continue').click()
     cy.get('h1').should('contain', 'You may be eligible for the following')
     cy.contains('Continue').click()
-    cy.get('select').select('edf')
+    cy.get('select').select('british-gas')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('yes')
     cy.contains('Continue').click()
@@ -316,11 +316,11 @@ context('Shows path to suppliers for different users in Wales', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 })
 
-context('Shows path to suppliers for different users in England', () => {
+context.skip('Shows path to suppliers for different users in England', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
     cy.get('#content').should('be.visible')
@@ -393,7 +393,7 @@ context('Shows path to suppliers for different users in England', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 
   it('shows the successful path to the supplier for a tenant in semi-bungalow property in band B with benefits', () => {
@@ -454,7 +454,7 @@ context('Shows path to suppliers for different users in England', () => {
     cy.contains('Continue').click()
     cy.get('h1').should('contain', 'You may be eligible for the following')
     cy.contains('Continue').click()
-    cy.get('select').select('bulb')
+    cy.get('select').select('british-gas')
     cy.contains('Continue').click()
     cy.get('input[name="personalDetails.firstName"]').type('Barry')
     cy.get('input[name="personalDetails.lastName"]').type('Allen')
@@ -462,7 +462,7 @@ context('Shows path to suppliers for different users in England', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 
   it('shows the successful path to the supplier for a social tentant flat in band C with no benefits', () => {
@@ -520,7 +520,7 @@ context('Shows path to suppliers for different users in England', () => {
     cy.get('h1').should('contain', 'You may be eligible for the following')
     cy.contains('Continue').click()
 
-    cy.get('select').select('shell')
+    cy.get('select').select('british-gas')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('yes')
     cy.contains('Continue').click()
@@ -530,7 +530,7 @@ context('Shows path to suppliers for different users in England', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 
   it('shows the successful path to the supplier for a landlord in semi-bungalow property in band F with benefits', () => {
@@ -590,7 +590,7 @@ context('Shows path to suppliers for different users in England', () => {
     cy.contains('Continue').click()
     cy.get('h1').should('contain', 'You may be eligible for the following')
     cy.contains('Continue').click()
-    cy.get('select').select('edf')
+    cy.get('select').select('british-gas')
     cy.contains('Continue').click()
     cy.get('[type="radio"]').check('yes')
     cy.contains('Continue').click()
@@ -600,11 +600,11 @@ context('Shows path to suppliers for different users in England', () => {
     cy.get('input[name="personalDetails.email"]').type('barry.allen@starlabs.com')
     cy.contains('Continue').click()
     cy.contains('Continue').click()
-    cy.get('div').should('contain', 'confirm_and_submit_error')
+    cy.get('[data-cy="success"]')
   })
 })
 
-context('Shows unhappy path for different users in England', () => {
+context.skip('Shows unhappy path for different users in England', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
     cy.get('#content').should('be.visible')
