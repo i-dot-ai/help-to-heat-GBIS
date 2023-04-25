@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         suppliers = models.SupplierChoices
         for supplier in suppliers:
-            print(supplier.label)
             new_supplier, _ = models.Supplier.objects.get_or_create(name=supplier.label)
             new_supplier.save()
+            print(f"Created or added supplier {supplier.label}")  # noqa: T201
 
