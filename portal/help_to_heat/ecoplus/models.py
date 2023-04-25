@@ -99,7 +99,7 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
         if not self.supplier:
             if self.data["energySupplier"]:
                 selected_supplier = SUPPLIER_VALUE_MAPPING[self.data["energySupplier"]]
-                selected_supplier_name = selected_supplier.value
+                selected_supplier_name = selected_supplier.label
                 supplier = Supplier.objects.get(name=selected_supplier_name)
                 self.supplier = supplier
         return super().save(*args, **kwargs)
