@@ -11,4 +11,3 @@ class Command(BaseCommand):
             new_supplier, _ = models.Supplier.objects.get_or_create(name=supplier.label)
             new_supplier.save()
             print(f"Created or added supplier {supplier.label}")  # noqa: T201
-

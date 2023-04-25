@@ -27,6 +27,7 @@ class SupplierChoices(utils.Choices):
     UTILITA = "Utilita"
     UTILITY_WAREHOUSE = "Utility Warehouse"
 
+
 SUPPLIER_VALUE_MAPPING = {
     "british-gas": SupplierChoices.BRITISH_GAS,
     "bulb": SupplierChoices.BULB,
