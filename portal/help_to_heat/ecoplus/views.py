@@ -42,8 +42,9 @@ def homepage_view(request):
         template = "team-member/homepage.html"
     if request.user.is_team_leader:
         supplier = request.user.supplier
-        most_recent_entry = models.ReferralDownload.objects.aggregate(max_created_at=Max('created_at'))[
-            'max_created_at']
+        most_recent_entry = models.ReferralDownload.objects.aggregate(max_created_at=Max("created_at"))[
+            "max_created_at"
+        ]
         if most_recent_entry is None:
             referrals = models.Referral.objects.all()
         else:
