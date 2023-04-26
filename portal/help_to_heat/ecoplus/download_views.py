@@ -34,14 +34,16 @@ def download_csv_by_id_view(request, download_id):
     if referral_download is None:
         return HttpResponse(status=404)
     older_instances = models.ReferralDownload.objects.filter(created_at__lt=referral_download.created_at).order_by(
-        '-created_at')
+        "-created_at"
+    )
     if not older_instances:
         previous_referral_download = None
     else:
         previous_referral_download = older_instances[0]
     if previous_referral_download:
-        referrals = models.Referral.objects.filter(created_at__gt=previous_referral_download.created_at,
-                                                   created_at__lt=referral_download.created_at)
+        referrals = models.Referral.objects.filter(
+            created_at__gt=previous_referral_download.created_at, created_at__lt=referral_download.created_at
+        )
     else:
         referrals = models.Referral.objects.filter(created_at__lt=referral_download.created_at)
     response = create_referral_csv(referrals, referral_download.file_name)
