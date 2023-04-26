@@ -1,9 +1,12 @@
 FROM node:16 as web
 
 ARG PORTAL_URL
+ARG UPRN_API_KEY
+
 
 ENV TZ=UTC
 ENV PORTAL_URL=${PORTAL_URL}
+ENV UPRN_API_KEY=${UPRN_API_KEY}
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
