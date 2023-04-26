@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
 from help_to_heat.ecoplus import (
+    download_views,
     authentication_views,
     supplier_and_user_management_views,
     views,
@@ -61,6 +62,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/referral/", views.create_referral, name="create-referral"),
     path("api/epc-rating/<int:uprn>/", views.lookup_epc_view, name="lookup-epc"),
+    path("data-download/", download_views.download_csv_view, name="data-download"),
     path("accounts/password-reset/", authentication_views.PasswordReset, name="password-reset"),
     path("accounts/change-password/reset/", authentication_views.PasswordChange, name="password-set"),
     path("accounts/", include("allauth.urls")),

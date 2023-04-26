@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Max
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
@@ -41,12 +42,14 @@ def homepage_view(request):
         template = "team-member/homepage.html"
     if request.user.is_team_leader:
         supplier = request.user.supplier
-        unread_leads = 10
-        archives = (
-            {"file_name": "22222222.csv", "downloaded_at": datetime.datetime.now(), "last_downloaded_by": "Tom Smith"},
-            {"file_name": "22222222.csv", "downloaded_at": datetime.datetime.now(), "last_downloaded_by": "Tom Smith"},
-            {"file_name": "22222222.csv", "downloaded_at": datetime.datetime.now(), "last_downloaded_by": "Tom Smith"},
-        )
+        most_recent_entry = models.ReferralDownload.objects.aggregate(max_created_at=Max('created_at'))[
+            'max_created_at']
+        if most_recent_entry is None:
+            referrals = models.Referral.objects.all()
+        else:
+            referrals = models.Referral.objects.filter(created_at__gt=most_recent_entry)
+        unread_leads = len(referrals)
+        archives = models.ReferralDownload.objects.all()
 
         team_members = models.User.objects.filter(supplier=supplier, is_team_member=True)
 

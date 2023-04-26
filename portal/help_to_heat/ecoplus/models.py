@@ -126,3 +126,8 @@ class PasswordResetRequest(UUIDPrimaryKeyBase, TimeStampedModel):
     one_time_password = models.CharField(max_length=128)
     is_completed = models.BooleanField(null=False, blank=False, default=False, auto_created=False)
     is_abandoned = models.BooleanField(null=True, blank=True)
+
+
+class ReferralDownload(UUIDPrimaryKeyBase, TimeStampedModel):
+    file_name = models.CharField(max_length=255, blank=True, null=True)
+    downloaded_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)

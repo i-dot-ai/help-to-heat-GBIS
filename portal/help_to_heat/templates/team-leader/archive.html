@@ -14,10 +14,10 @@
     <tr class="govuk-table__row">
       <td class="govuk-table__cell"><a href="#" class="govuk-link">{{archive.file_name}}</a></td>
       <td class="govuk-table__cell">
-        <span>{{archive.downloaded_at.strftime('%H:%m')}}</span><br>
-        <span>{{archive.downloaded_at.strftime('%d/%m/%Y')}}</span>
+        <span>{{archive.created_at.strftime('%H:%m')}}</span><br>
+        <span>{{archive.created_at.strftime('%d/%m/%Y')}}</span>
       </td>
-      <td class="govuk-table__cell">{{archive.last_downloaded_by}}</td>
+      <td class="govuk-table__cell">{{archive.downloaded_by.full_name}}</td>
     </tr>
   {% endfor %}
   </tbody>
