@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'next-i18next'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as GovUK from 'govuk-react'
-import { SuggestedEPCIsCorrectType } from '@/types'
+import { PropertyEPCDetailsType, SuggestedEPCIsCorrectType } from '@/types'
 import { Button } from '@/components/ui/Button'
 
 type Inputs = {
@@ -29,6 +29,7 @@ export const FoundEPC = (props: {
   defaultValues?: {
     suggestedEPCIsCorrect?: SuggestedEPCIsCorrectType
   }
+  propertyEpcRating?: PropertyEPCDetailsType
 }) => {
   const { t } = useTranslation(['questionnaire'])
   const {
@@ -67,6 +68,8 @@ export const FoundEPC = (props: {
         <GovUK.Fieldset.Legend size="L">{t('FoundEPC.title')}</GovUK.Fieldset.Legend>
         <GovUK.Paragraph>{t('FoundEPC.description') as string}</GovUK.Paragraph>
         <GovUK.Paragraph>{t('FoundEPC.description.a') as string}</GovUK.Paragraph>
+
+        <pre>{JSON.stringify(props.propertyEpcRating, null, 2)}</pre>
 
         <GovUK.FormGroup
           error={submitCount > 0 && !!errors?.suggestedEPCIsCorrect?.message}

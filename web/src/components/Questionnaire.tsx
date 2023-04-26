@@ -199,6 +199,7 @@ const Questionnaire = (props: {
           defaultValues={{
             suggestedEPCIsCorrect: state.context.suggestedEPCIsCorrect
           }}
+          propertyEpcRating={state.context.propertyEpcDetails}
         />
       )}
       {state.matches('epc_does_owner_have_details') && (
