@@ -24,6 +24,7 @@ jobs:
       IMAGE_TAG: ${{ github.ref_name }}
       DOCKER_REPOSITORY: ghcr.io
       PORTAL_URL: http://help-to-heat-portal-${{ github.ref_name }}.apps.internal:8012
+      UPRN_API_KEY: ${{ secrets.UPRN_API_KEY }}
 
     strategy:
       matrix:
@@ -54,7 +55,7 @@ jobs:
           DOCKER_IMAGE: ${{ matrix.app }}
 
         run: |
-          docker build . --file $DOCKER_FILE --tag $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --build-arg PORTAL_URL=$PORTAL_URL
+          docker build . --file $DOCKER_FILE --tag $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --build-arg PORTAL_URL=$PORTAL_URL --build-arg UPRN_API_KEY=$UPRN_API_KEY
           docker push -a $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE
 
   deploy_image:
