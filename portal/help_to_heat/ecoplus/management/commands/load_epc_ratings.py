@@ -51,8 +51,10 @@ def read_rows(filepath):
 
 
 def write_rows(rows):
+    print("Loading to database")  # noqa: T201
     if models.EpcRating.objects.exists():
         latest_date = str(models.EpcRating.objects.latest("date").date)
+        print(f"Resuming from {latest_date}")  # noqa: T201
     else:
         latest_date = str(datetime.date(1970, 1, 1))
     for row in rows:
@@ -69,6 +71,7 @@ def write_rows(rows):
                 ).all()
                 for epc_rating in epc_ratings[1:]:
                     epc_rating.delete()
+    print("Finished loading")  # noqa: T201
 
 
 class Command(BaseCommand):
