@@ -43,3 +43,4 @@ next-env.d.ts
 web/tsconfig.tsbuildinfo
 web/.env
 /web/cypress/videos
+/web/.env
