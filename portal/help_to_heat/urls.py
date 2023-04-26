@@ -63,6 +63,7 @@ urlpatterns = [
     path("api/referral/", views.create_referral, name="create-referral"),
     path("api/epc-rating/<int:uprn>/", views.lookup_epc_view, name="lookup-epc"),
     path("data-download/", download_views.download_csv_view, name="data-download"),
+    path("data-download/<uuid:download_id>/", download_views.download_csv_by_id_view, name="download-csv-by-id"),
     path("accounts/password-reset/", authentication_views.PasswordReset, name="password-reset"),
     path("accounts/change-password/reset/", authentication_views.PasswordChange, name="password-set"),
     path("accounts/", include("allauth.urls")),

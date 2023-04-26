@@ -130,4 +130,4 @@ class PasswordResetRequest(UUIDPrimaryKeyBase, TimeStampedModel):
 
 class ReferralDownload(UUIDPrimaryKeyBase, TimeStampedModel):
     file_name = models.CharField(max_length=255, blank=True, null=True)
-    downloaded_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)
+    last_downloaded_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)

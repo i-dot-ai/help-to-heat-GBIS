@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ("modified_at", models.DateTimeField(auto_now=True)),
                 ("file_name", models.CharField(blank=True, max_length=255, null=True)),
                 (
-                    "downloaded_by",
+                    "last_downloaded_by",
                     models.ForeignKey(
                         blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL
                     ),
