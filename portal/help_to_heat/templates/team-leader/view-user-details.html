@@ -39,6 +39,30 @@
       {{user.email}}
     </dd>
   </div>
+   <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+    <dt class="govuk-summary-list__key">
+      Date added
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{user.date_joined.strftime('%d/%m/%Y')}}
+    </dd>
+  </div>
+   <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+    <dt class="govuk-summary-list__key">
+      Status
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {% if not user.is_active %}
+        <strong class="govuk-tag govuk-tag--red">
+          Disabled
+        </strong>
+        {% else %}
+        <strong class="govuk-tag govuk-tag--green">
+          Enabled
+        </strong>
+        {% endif %}
+    </dd>
+  </div>
 </dl>
 <br>
 <a href="{{url('remove-user', supplier_id, user.id)}}" class="govuk-button govuk-button--warning">Remove user</a>

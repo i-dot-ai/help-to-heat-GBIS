@@ -8,6 +8,7 @@
       <th scope="col" class="govuk-table__header">Name</th>
       <th scope="col" class="govuk-table__header">Role</th>
       <th scope="col" class="govuk-table__header">Date added</th>
+      <th scope="col" class="govuk-table__header">Status</th>
       <th scope="col" class="govuk-table__header"></th>
     </tr>
   </thead>
@@ -17,7 +18,18 @@
       <th scope="row" class="govuk-table__header">{{team_member.full_name}}</th>
       <td class="govuk-table__cell">{% if team_member.is_team_leader %}Team leader{% elif team_member.is_team_member %}Team member{% endif %}</td>
       <td class="govuk-table__cell">{{team_member.date_joined.strftime('%d/%m/%Y')}}</td>
-      <td class="govuk-table__cell govuk-table__cell--numeric"><a href="{{url('user-details', data.supplier.id, team_member.id)}}" class="govuk-button govuk-button--secondary">View</a></td>
+      <td class="govuk-table__cell">
+        {% if not team_member.is_active %}
+        <strong class="govuk-tag govuk-tag--red">
+          Disabled
+        </strong>
+        {% else %}
+        <strong class="govuk-tag govuk-tag--green">
+          Enabled
+        </strong>
+        {% endif %}
+      </td>
+      <td class="govuk-table__cell govuk-table__cell--numeric"><a href="{{url('user-details', data.supplier.id, team_member.id)}}" class="govuk-link">View</a></td>
     </tr>
   {% endfor %}
   </tbody>

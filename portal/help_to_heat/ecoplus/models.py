@@ -94,9 +94,22 @@ class User(BaseUser, UUIDPrimaryKeyBase):
         return super().save(*args, **kwargs)
 
 
+class ReferralDownload(UUIDPrimaryKeyBase, TimeStampedModel):
+    file_name = models.CharField(max_length=255, blank=True, null=True)
+    last_downloaded_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)
+
+
 class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT, related_name="referrals")
+    referral_download = models.ForeignKey(
+        ReferralDownload,
+        blank=True,
+        null=True,
+        default=None,
+        on_delete=models.PROTECT,
+        related_name="referral_download",
+    )
 
     def save(self, *args, **kwargs):
         if not self.supplier:
