@@ -39,15 +39,9 @@ def homepage_view(request):
         template = "team-member/homepage.html"
     if request.user.is_team_leader:
         supplier = request.user.supplier
-        most_recent_entry = models.ReferralDownload.objects.aggregate(max_created_at=Max("created_at"))[
-            "max_created_at"
-        ]
-        if most_recent_entry is None:
-            referrals = models.Referral.objects.all()
-        else:
-            referrals = models.Referral.objects.filter(created_at__gt=most_recent_entry)
+        referrals = models.Referral.objects.filter(referral_download=None)
         unread_leads = len(referrals)
-        archives = models.ReferralDownload.objects.all()
+        archives = models.ReferralDownload.objects.all().order_by("-created_at")
 
         team_members = models.User.objects.filter(supplier=supplier, is_team_member=True)
 
