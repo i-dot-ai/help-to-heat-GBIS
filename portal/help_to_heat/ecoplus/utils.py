@@ -1,6 +1,8 @@
 import enum
 import types
 
+from django.http import HttpResponseNotAllowed
+
 
 class ChoicesMeta(enum.EnumMeta):
     """A metaclass for creating a enum choices."""
@@ -69,3 +71,14 @@ class Choices(enum.Enum, metaclass=ChoicesMeta):
 
     def __hash__(self):
         return hash(self._name_)
+
+
+class MethodDispatcher:
+    def __new__(cls, request, *args, **kwargs):
+        view = super().__new__(cls)
+        method_name = request.method.lower()
+        method = getattr(view, method_name, None)
+        if method:
+            return method(request, *args, **kwargs)
+        else:
+            return HttpResponseNotAllowed(request)

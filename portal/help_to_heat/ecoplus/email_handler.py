@@ -1,8 +1,10 @@
 import datetime
+import secrets
 
 import furl as furl
 import pytz
 from django.conf import settings
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -68,13 +70,13 @@ EMAIL_MAPPING = {
 }
 
 
-def _send_token_email(user, subject, template_name, from_address, url_path, token_generator):
+def _send_token_email(user, subject, template_name, from_address, url_path, token_generator, one_time_password=None):
     user.last_token_sent_at = datetime.datetime.now(tz=pytz.UTC)
     user.save()
     token = token_generator.make_token(user)
     base_url = settings.BASE_URL
     url = str(furl.furl(url=base_url, path=url_path, query_params={"code": token, "user_id": str(user.id)}))
-    context = dict(user=user, url=url, contact_address=settings.CONTACT_EMAIL)
+    context = dict(user=user, url=url, contact_address=settings.CONTACT_EMAIL, one_time_password=one_time_password)
     body = render_to_string(template_name, context)
     response = send_mail(
         subject=subject,
@@ -102,7 +104,19 @@ def send_verification_email(user):
 
 
 def send_password_reset_email(user):
+    reset_requests = models.PasswordResetRequest.objects.filter(user=user, is_completed=False, is_abandoned=False)
+    for reset_request in reset_requests:
+        reset_request.is_abandoned = True
+        reset_request.save()
+    one_time_password = secrets.token_hex(4)
+    hashed_one_time_password = make_password(one_time_password)
+    reset_request = models.PasswordResetRequest(
+        user=user, one_time_password=hashed_one_time_password, is_completed=False
+    )
+    reset_request.save()
+    one_time_password_upper = one_time_password.upper()
     data = EMAIL_MAPPING["password-reset"]
+    data["one_time_password"] = one_time_password_upper
     return _send_token_email(user, **data)
 
 

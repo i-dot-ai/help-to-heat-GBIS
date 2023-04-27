@@ -81,6 +81,9 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     is_supplier_admin = models.BooleanField(default=False)
     is_team_leader = models.BooleanField(default=False)
     is_team_member = models.BooleanField(default=False)
+    last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
+    invited_at = models.DateTimeField(default=None, blank=True, null=True)
+    invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
 
     @property
     def referral_count(self):
@@ -115,3 +118,11 @@ class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
 
     def __str__(self):
         return f"<EpcRating uprn={self.uprn}>"
+
+
+class PasswordResetRequest(UUIDPrimaryKeyBase, TimeStampedModel):
+    user = models.ForeignKey(User, blank=False, null=False, on_delete=models.PROTECT, related_name="reset_requests")
+    reset_sent_at = models.DateTimeField(editable=False, auto_now_add=True)
+    one_time_password = models.CharField(max_length=128)
+    is_completed = models.BooleanField(null=False, blank=False, default=False, auto_created=False)
+    is_abandoned = models.BooleanField(null=True, blank=True)

@@ -12,6 +12,7 @@ from . import models
 
 
 @require_http_methods(["GET"])
+@login_required
 def index_view(request):
     return render(
         request,

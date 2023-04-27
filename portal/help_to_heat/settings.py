@@ -12,6 +12,11 @@ STATIC_URL = STATIC_URL
 STATICFILES_DIRS = STATICFILES_DIRS
 STATIC_ROOT = STATIC_ROOT
 
+BASE_URL = env.str("BASE_URL")
+
+CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
+FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
@@ -46,6 +51,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+CORS_APPS = [
+    "corsheaders",
+]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -56,6 +65,16 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# CSRF settings
+CSRF_COOKIE_HTTPONLY = True
+
+CORS_MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+]
+
+if DEBUG:
+    MIDDLEWARE = MIDDLEWARE + CORS_MIDDLEWARE
 
 ROOT_URLCONF = "help_to_heat.urls"
 
@@ -131,3 +150,18 @@ ACCOUNT_USERNAME_REQUIRED = False
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = "homepage"
+
+EMAIL_BACKEND_TYPE = env.str("EMAIL_BACKEND_TYPE")
+
+if EMAIL_BACKEND_TYPE == "FILE":
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = env.str("EMAIL_FILE_PATH")
+elif EMAIL_BACKEND_TYPE == "CONSOLE":
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
+    EMAIL_BACKEND = "django_gov_notify.backends.NotifyEmailBackend"
+    GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
+    GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+else:
+    if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
+        raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")

@@ -1,11 +1,14 @@
 from django.contrib import admin
 from django.urls import include, path
-from help_to_heat.ecoplus import supplier_and_user_management_views, views
+from help_to_heat.ecoplus import (
+    authentication_views,
+    supplier_and_user_management_views,
+    views,
+)
 
 urlpatterns = [
-    path("", views.index_view, name="index"),
+    path("", views.homepage_view, name="homepage"),
     path("unauthorised/", views.unauthorised_view, name="unauthorised"),
-    path("home/", views.homepage_view, name="homepage"),
     path("add-supplier/", supplier_and_user_management_views.add_supplier_view, name="add-supplier"),
     path(
         "supplier/<uuid:supplier_id>/edit/", supplier_and_user_management_views.edit_supplier_view, name="edit-supplier"
@@ -58,5 +61,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/referral/", views.create_referral, name="create-referral"),
     path("api/epc-rating/<int:uprn>/", views.lookup_epc_view, name="lookup-epc"),
+    path("accounts/password-reset/", authentication_views.PasswordReset, name="password-reset"),
+    path("accounts/change-password/reset/", authentication_views.PasswordChange, name="password-set"),
     path("accounts/", include("allauth.urls")),
 ]
