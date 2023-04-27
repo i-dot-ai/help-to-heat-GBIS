@@ -29,9 +29,7 @@ def download_csv_by_id_view(request, download_id):
     referral_download = models.ReferralDownload.objects.get(pk=download_id)
     if referral_download is None:
         return HttpResponse(status=404)
-    referrals = models.Referral.objects.filter(
-        referral_download=referral_download
-    )
+    referrals = models.Referral.objects.filter(referral_download=referral_download)
     response = create_referral_csv(referrals, referral_download.file_name)
     referral_download.last_downloaded_by = request.user
     referral_download.save()
