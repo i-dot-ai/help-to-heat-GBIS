@@ -1,9 +1,12 @@
 Hi,
 
-You've been invited to participate in the Help to heat scheme. Please use the link below to access the site and setup your password.
+You've been invited to participate in the help to heat scheme. Please use the link below to access the site and setup your password.
 {{url|safe}}
 
 You can then start using the system.
+
+Your temporary password is
+{{one_time_password}}
 
 The link is valid for 24 hours. If you use the link more than once, it will expire.
 
