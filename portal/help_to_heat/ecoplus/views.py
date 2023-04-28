@@ -41,7 +41,6 @@ def homepage_view(request):
         supplier = request.user.supplier
         referrals = models.Referral.objects.filter(referral_download=None, supplier=supplier)
         unread_leads = len(referrals)
-        print(supplier)
         archives = models.ReferralDownload.objects.filter(referral_download__supplier=supplier).order_by("-created_at")
 
         team_members = models.User.objects.filter(supplier=supplier, is_team_member=True)
