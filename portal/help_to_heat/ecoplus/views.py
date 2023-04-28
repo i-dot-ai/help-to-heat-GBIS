@@ -39,9 +39,10 @@ def homepage_view(request):
         template = "team-member/homepage.html"
     if request.user.is_team_leader:
         supplier = request.user.supplier
-        referrals = models.Referral.objects.filter(referral_download=None)
+        referrals = models.Referral.objects.filter(referral_download=None, supplier=supplier)
         unread_leads = len(referrals)
-        archives = models.ReferralDownload.objects.all().order_by("-created_at")
+        print(supplier)
+        archives = models.ReferralDownload.objects.filter(referral_download__supplier=supplier).order_by("-created_at")
 
         team_members = models.User.objects.filter(supplier=supplier, is_team_member=True)
 
