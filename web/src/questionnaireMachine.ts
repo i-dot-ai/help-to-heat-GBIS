@@ -112,6 +112,36 @@ const assignCouncilTaxBand = assign({
   ) => event.payload
 })
 
+const assignSuggestedEPC = assign({
+  suggestedEPCFound: (_context, event: any) => {
+    const { date, rating } = event.data
+
+    if (date && rating) {
+      return true
+    }
+
+    return false
+  },
+  propertyEpcDetails: (_context, event: any) => {
+    const { date, rating } = event.data
+
+    if (!date || !rating) {
+      return undefined
+    }
+
+    const segmentedDate = date.split('-')
+
+    return {
+      propertyEpcDate: {
+        day: segmentedDate[2],
+        month: segmentedDate[1],
+        year: segmentedDate[0]
+      },
+      propertyEpcRating: rating as EpcRatingType
+    }
+  }
+})
+
 export const questionnaireMachine = createMachine(
   {
     /** @xstate-layout N4IgpgJg5mDOIC5QDMD2AnAtgOgA7tVzHQBcBPAfQBtUBjAQxIEtUA7AYgEEA5AZQHUAogCUA2gAYAuolC5UsJszYyQAD0QBGAJwA2cdh0AOAOwBWAMxaN58QCZDhgDQgyiW6cOnsWgCw-dPjo+pj6GtuYAvhHOaFh4BESklDQMShw8AiKiGtJIIHIKaSrqCNp6BiYWVjb2Ti6aWlrG2OY2WuLG1va2PrZRMRg4+ITE5BSoAO6sxLAAFky4XHxCYlIqBYosrMVuOrb6Gp1Wng7+1s6uCO4attiBhj7iN+LmGo-G-SCxQwmjlJPTdBzBbsAAKwkEADUAJIAeQAqrwJLlZPJNso8iVbBpxD5sJ4tDZDDprDobMYLm4LF4-P5TKZjJ4gk1Pt94iMkhR6BAIOg4LAwRCYQikWs8hsipi3MZzHjxB0HLZ9hoNKZVZSrnpDN5sWqtErjI0NKzBuzEmNubz+UtMqsUfk0ZLQFjjH5sNoLOZjDotIZ2riNfZTPpeqqOj4NHtZSa4sNzZRLXzYLAKMgmKwIMRqKhuemoOwIGwwNh0wA3VAAa2LyDAJFos04PKTsF4AFcoDBYGlYMj1o6tjsEIZzF4dEdxH7jMZxHsNbKZdgOlPgrZfcO+tEvqa438uU3+an05n0Nnc6x88QCOg8FRGGya3WG-vk22O3Bu73xf2Mc7EMPR+Ok7TrO9QIK0Y7YAyy42JYHg+DGPwchaz4pmmGZZjQZ75uCUJwoin6ooUA5SkOI4GIBTTAbYc5PM0NyBK8so+ns8GbmyO6comB5ocep4QHmNorARDpET+ah-mRY7aBOlEztRoG2GYtxBIY4i+lY+wzghZq7lxyaHuhJ6Xhggq4SKwkSsRv6lI85iLuEvQRjcMqMnO5h+ouITkkEexQdpHHIVa+mwGAVBgLQJCmcK+FioR6LbCRbwvPZso9CqilenUlyyqpLS4m0pj2Lo5g6P5vycShFAhWFEWCVksUifFg5JXZdipU5GWuaBJXWPi+WWMS5iKd6ZVIZQsDtp2JCQBQYC4LQfECYW0wlqw5ZVtg7HlWME1vl2M1zQtmH8eeCBlnQjBbMiFnfgl1llPoRhmJY1h2A4c56Bonk+K88phFoDKjfGVWTe+B3zYt57sMZ164LeJD3tu23jaD+0QLNEPHXmZ1rRdaTXQ1lliSUD0VM91RvVliAlb4kHhg8rRvBohhA7utCoK2rC0EwVAUCQ9CqFFeGivaRN3eJmr7O6RzMx4DzVB99LYNiw66BYbzkqznLs5z3O8-zgsZEJhO3YO+yri0piEsShgqj6Zhzk02q6LihL7J0JKlWxSNjRQOtczzfMC3VYg5H2oni1i8pfdiE7yv4JjaBSoHvDSpLpUNTwbgMcSHamHMZkL5kmxHzUmO6oR+G82JDa6phzicys4sGvihMOPgfN7ucQ2gnMQCHN2l4l5dvA8EahrXwQan4OgAToY5DWEinZ1u3cLb3hdG1kYdfkP90j5X4814pU8p4azTL27YRDZG2l54WcDjFMWazPQpZgBQmb8zzAo4dFIvhyaiRfYXgcSElnoVGcehxD1xThGUB3p55+CVD9LQd8IYPxTACF+b8P5f3oD-Iu+Ed5xSdBLf85FpJATktPHotw7aIMOFnL2OccD31QI-bBJ5X7v0-rWAhVABRbztIAshJQKFSXaNQkClxAgWEggxGUtsOhWHQQtTBT9AQUB4Xg-hhDhHZFFqbEiEiKJThoXA70ytoFx31D0VirDsB5z5AAR1bO+Ph39BFEIAbvIB1kAjYE6GpRo1Qwiumnr0LwZhQn6iGk5NRFBXHuK7J4gRQjlj1SMXvCWLUUqOXSi5KmCAq52RKmOQ0wRfSukSckjx+D9GZNDtk-xuTbL5LSs5TK08W74m0JOSuxh3CJNYKgEgs0qBMCgEwAARmFHxg9Wkk2DDoShbsDTMmniVW4xIKkznlLiVU2k+S0DAEwUseYKAzLANMNMJBf5CmFossRDRyhPSqK9WoWy9j4nnuYmx8DjnhTORc88VyblgDuRk20zyrK5JdmTD5NR3opytniQ4bwyTVzsKYbSswOYhXxVQdG6Z2aYDAAskuSy3A4jxASIkJISrkh6T9ShXpVQA2HJELuOB8WtkJagYlFBSWoHJQPKlLzJYHBliceW5xUW6G8LiQ0qpqQODxQSsARKSVc1FRSgxJDGqStsHsaV2hZanAVinKBBgO5mBJJ8t42kUj0F5v7PWINcByFIJSlpxqZRygVEvJ4qp1SosCHcZVByOgDWdRdN1BcPUTS9RgSKABhWE3AAAq0JuDwkELC4m1Nma3DkhYToSo1LmBZasx4Hcwg+i9IDHl2AKxHnGMgCgAUyC+tEXCkoN99Cx05XJEcPgemKvaB3CcxIhk2FxS2ttGYO1duRgsw1YtByvDCIuXy7LK2Emnt6OyWo7BWEZDOY0i722oE7d28Vfr+3U0rS0X0EYRyfReDoQMq4tDunlLoRlvhGTaSXejW9q6xoDw3cY6y27tQ9EaAycChxhxuSVkuRO+oLB+lAzeu9a6DG2EfUWsCzMEP+ABjKHqjJq3dXlncPwZhvQmEND0PDy6IPdu0Zq3tfjjWmulua2VZw6OXFjnS10J9wgscOBx8DBHfZ8pCg+vtpGTVSwxccOWonAyqpaK6EqDJhwmG5Y4sDK7uMzM5lAV1kw+OkKfVKoT2nLXyuyg5FoikG2qiVISMzq8cAWa48jK5Nm7MTFU-xpzGmzWublWJ4tXp8Sul8lXCcDjAutvw5B4GyB4YOaNTFwTWmLUJenk8VZbxGS-tgh3eTlnQv5cYFFxz6mSsyp01a7K05onM0eB8k1rRtKsFbJga5J4IPXN5KgUVDyzIxRI5HYtO6y37v2IehSIRbjBjrlYOOJgRtjYmyu6bBA5utaK6R7dpa90Vo24lq4sFIIhEjEYFZs6tZjAmK67xf8nkSqc0NAG+JfTBhjR3T0gZ-ClpjWOUwJI-QsKy9xn7VBvEGMB9dmwqyJxWwR+EdwdgNTkeaFJOwU5PRTgC2yNHvN0wTXhlsQrm7gEdeE119zbgYF4i9BGBtVh-DaTp8K1gjPLpsEu6z6ysWXNld06BSMhJGOBHnlbacqoWYtpoMgSK-3i5LbNgGxcQbK0qjVLAy4qG-2TlnUSFBndHE68ipjw3bOPB0ynADOws8niPY5aso0hp56vDSnG3X0G3cy7JPoEchJXQThYh0En7gdueBq5eu2WvHH0FoKc-SJBUDZgj-rxbanlvOdKyJ7rmgQi1vPTAvHrttK5-zymQvxeXdNMLRX2XVfOf+8sH+nDhnkMTleOH8ZDPWxM8l6X3xbXe-G-lGYNUwQGSHBJ3SbwVhW72F6PqSfovxdpCl7BiWJ90UA0OITxHJUSfNwMPEv0ql2XI7ZPWcKFYKBkA5ieegYuEwMwLO5+WI7O8WCuVu5si4TI7Qa+2GNOpon+tA3+v+rY-+gBwB8+hi5eZs4B8uNepQsof6LwxIkCJqfocmLayBqBf+XImBQI7AGa2aua+aPeeBmmnWbm-uMCoCtcq48oq4VsaC1BswX+P+dBABsAQBjBAA4rCBQFmgoeCLCKCCIFmgAJoUAAAysIaanAOama7BiUCK7yL0yKxSzMiqjM1groQyDk7+pokyqSEGoUYA0ycyH8sAn+5K82-8xhMuy+puyooalumg8cT+Q2dcY4RgmWbIzh4yrhYUHhYUVUPhcATBmaOaeaBaWOFeN2u67g62VaJOERZI9gb0q4oQCO2k9Ys2IUnqcMTAxAIBOSA6QhoOngK+84UOiuvB7oQ0COTKdgvQjuWWdR8gXhrYXqkyLRruuBJEQ0UsA076COTwX6GoxI+g7Qeg7KIaQQtR+KkxjRsx6AkeCxcG2gtwROqoho2GVsj2hUtwAM5I9IlBTQjhcQt4GYNA6A6MiQmATAyYzO2BeRW6JahR5aNwD2GoJIf6jwewx68cHQzqABEAvx-xxAgJwJku8x0W6mroV+VOPofoTwGokCdwFgHQbxu+I0LaiQsAbArq9B6M7MrA-MEUaShCoJUeF++B1eXOCACe7o9IRoi8M4ng-kMwTJvMaJfsbAHJ4yDSf2jy5kMGbRuwnBHO3BsJkYSqiJMeuIKJ9J0prAzJcpbJipXJGO3eYJbOWpEBhBXodklGvgJguIa+wQtRbAaYWALJIMMygJeuqpZe+JS+soJujIwa5uYasiPo3ghUb6+U8oJI3prAvpmA-pE0gZigTBEIBhggOhggnAAAIgERftOHiC8aSBlialoJsV9ODn7lJO7B4GmRmVma2DmeMljFDMtMWOdBtLQHyIwGANoWANyOWSTKYZUOYZTCTg8NqMOObrthbu2UwH6XKdmUGZDBeOgFeDeHeEgSOdNOOZOXafdDOeTJ8iih5niE2SON6GlD9GMR-j6RuZmVuV2Tub2dhCGQvldhXqTGYRTF8gpHYMrJRt6Mxq3K+Uge+ZucutuYoLNPuSZDyRcXyQ6QQYKUNK1AckqOrEaSvGyOmKFFMrMqkf7CQOgD2hhWGWbLSviA8YnqSMyorr4KssODJOEr+rfJ8KMpmPAHkN8JhSUAALTfqgSSVfbJB4xwrS65Lej3k1YAzX5XGPbKjajkiBAYqegT70mhZcLAi4BiVuCyhVmHB2KWB47EiBghByj2A2Avnzy2xwWxihZ6TCWL5my+A7JhCmaU4dBvD2VqiRlVI4iqSHaGW+xeUGS8S-lmUlI9CUJ+gfH2z6iBi+j0I9AsRnBqTWCyV7hBSoRHhZgwxJUqjJQeD45PB+AI7FLgS45eQdCtUGlFVxXVThQkCVXPADGqQ9BDFuXJzZQdyNktVjhVLuDuWITAy7RTTgxHQ5gnRQCVUQIKI+jhCqSqg+gfS9QXp+juQa4I5xE+zAzuqBwGxJV+Z2QBo2BPCVArIfRDRNyqz44eApmJIbwQBJW9CRK9SHDzxBC9A9CWCJIaJcLaK4LWneWAWDhqh2RNnpS+g4hKiRLhBBLCGNCE4JItrOJgBuL1J6KCK9XlDWD47BD7IeDySyI-S84-StB1pbUjgjJjITIUWeFrVKx15xLbUI71kpzsqUnrGvbRynVxAnIgqXLXK3KKCw2KUkzASUnbp0jhgMgsroqdARirg2U3Aar8paqCo6pkpgDXUlTNCHJ7Bqy+C4jjqoqFTKwhCU6vBVXi04AuoJq6yBzJreo9UMXAIvGRrlGJkhKBA9IhDeAOA4hehKjzwiHmY5bdpJVjp4jU4w4Moyh6bYh3AcqGi4gEgLoJ2caKbAzKam3+0y7lL4hx6hAaaeA000q2yWxqT7DlLuQkWmjBYl27jWbngRZm2PB5TToVoRg+5zgyZeY1YkhPH+YNYha+zNZ+0+XAJHWe42yzxjw-QNxDI6jWC+AAxq4sgtqjbjZZhTaQDnaYDy2gFuCB3pUOX+DIKaUw6e7m0I5WH0hFV07X0algQOVBIBpxKJ6Z0cUpX2x6BNCNCj7C6-bH4z4S7iwK1uAM0tA3A2UvkwIjWaCGjRJ2pVXtA3DzyT7XV+X4gBUuRmDBV21QFWAJkrJVUOCyhXo5554Hgd7O7XU-SrI+jbYhr77+7BhfQPCoaqTzzaBg3a63pT5i7wNkJINXCkOKiBWUNa0P69AGBWzBVdETjDKiHiFoEYHSEzBm1WL45GhjgOQwIP42BBImB7DhA4bMNZYJErpuEpFeHpE-3UoKPqNKMUO7YhV9G9S6i+h6D1rxyHH1FTEzHNHoDJ3-1p1AN27kk-JLGQIAblFOPxFokYldpYlAkKBiTyNCF-pJRq67HORYMID0ilqvSknpSRgzV4CmnmnLqWm55KnE1ePGrxLKyUFfq2QmDknBAGA6MTh72rj8WOJskdlfndkkO+PkNegqOBOXBNAtCtBLGwQ+jx3jEIWflIXfkoWJUV25KzylMIkkhKQzgLl0oHKywmp6CrjrmIXozIXjIVWnNYhLGvqU1NBE7ThVN4V0yCFFG0p2DemYBwy1jl3L0y461BKyj3XMyr43OK6eB4g9AXpDZYrZ5ZZkWTLuPymcw0WXBwsX4It3XRyPVotW5rEtD87B5oMYtRBRBAA */
@@ -260,40 +290,21 @@ export const questionnaireMachine = createMachine(
       property_suggested_epc_loading: {
         invoke: {
           src: 'getEPCForUPRN',
-          onDone: {
-            target: 'property_council_tax',
-            actions: assign({
-              suggestedEPCFound: (_context, event) => {
-                const { date, rating } = event.data
-
-                if (date && rating) {
-                  return true
-                }
-
-                return false
-              },
-              propertyEpcDetails: (_context, event) => {
-                const { date, rating } = event.data
-
-                if (!date || !rating) {
-                  return undefined
-                }
-
-                const segmentedDate = date.split('-')
-
-                return {
-                  propertyEpcDate: {
-                    day: segmentedDate[2],
-                    month: segmentedDate[1],
-                    year: segmentedDate[0]
-                  },
-                  propertyEpcRating: rating as EpcRatingType
-                }
+          onDone: [
+            {
+              target: 'epc_found',
+              actions: assignSuggestedEPC,
+              cond: (_context, event) => {
+                return !!event?.data?.rating
               }
-            })
-          },
+            },
+            {
+              target: 'epc_not_found',
+              actions: assignSuggestedEPC
+            }
+          ],
           onError: {
-            target: 'property_council_tax',
+            target: 'epc_not_found',
             actions: assign({
               suggestedEPCFound: () => false
             })
@@ -301,34 +312,21 @@ export const questionnaireMachine = createMachine(
         }
       },
 
-      property_council_tax: {
-        entry: ['calculateCouncilTaxBandSize'],
+      epc_not_found: {
         on: {
           PREVIOUS: {
             target: 'property_address'
           },
-          ANSWER: [
-            {
-              actions: assignCouncilTaxBand,
-              target: 'epc_found',
-              cond: (context) => {
-                // debugger
-                // console.log({ context })
-                return context.suggestedEPCFound
-              }
-            },
-            {
-              actions: assignCouncilTaxBand,
-              target: 'epc_does_owner_have_details'
-            }
-          ]
+          CONTINUE: {
+            target: 'epc_does_owner_have_details'
+          }
         }
       },
 
       epc_found: {
         on: {
           PREVIOUS: {
-            target: 'property_council_tax'
+            target: 'property_address'
           },
           ANSWER: [
             {
@@ -346,11 +344,12 @@ export const questionnaireMachine = createMachine(
                 suggestedEPCIsCorrect: (_context, event) =>
                   event.payload as SuggestedEPCIsCorrectType
               }),
-              target: 'receiving_benefits'
+              target: 'property_council_tax'
             }
           ]
         }
       },
+
       epc_does_owner_have_details: {
         on: {
           PREVIOUS: [
@@ -361,7 +360,7 @@ export const questionnaireMachine = createMachine(
               }
             },
             {
-              target: 'property_council_tax'
+              target: 'property_address'
             }
           ],
           ANSWER: [
@@ -369,7 +368,7 @@ export const questionnaireMachine = createMachine(
               actions: assign({
                 propertyHasEpc: (_context, event) => event.payload as PropertyHasEPCType
               }),
-              target: 'receiving_benefits',
+              target: 'property_council_tax',
               cond: (_context, event) => {
                 return (event.payload as PropertyHasEPCType) === 'no'
               }
@@ -401,7 +400,7 @@ export const questionnaireMachine = createMachine(
             },
             {
               actions: assignPropertyEpcDetails,
-              target: 'receiving_benefits'
+              target: 'property_council_tax'
             }
           ]
         }
@@ -412,6 +411,50 @@ export const questionnaireMachine = createMachine(
           PREVIOUS: {
             target: 'epc_request_details'
           }
+        }
+      },
+
+      property_council_tax: {
+        entry: ['calculateCouncilTaxBandSize'],
+        on: {
+          PREVIOUS: [
+            {
+              target: 'epc_request_details',
+              cond: (_context) => {
+                return (
+                  (_context.suggestedEPCIsCorrect === 'no' &&
+                    _context.propertyHasEpc === 'yes') ||
+                  (!!_context.propertyEpcDetails?.propertyEpcRating &&
+                    !_context.suggestedEPCFound)
+                )
+              }
+            },
+            {
+              target: 'epc_does_owner_have_details',
+              cond: (_context) => {
+                return (
+                  (_context.suggestedEPCIsCorrect === 'no' &&
+                    _context.propertyHasEpc === 'no') ||
+                  !_context.suggestedEPCFound
+                )
+              }
+            },
+            {
+              target: 'epc_found',
+              cond: (_context) => {
+                return _context.suggestedEPCFound
+              }
+            },
+            {
+              target: 'property_address'
+            }
+          ],
+          ANSWER: [
+            {
+              actions: assignCouncilTaxBand,
+              target: 'receiving_benefits'
+            }
+          ]
         }
       },
 
@@ -797,6 +840,7 @@ export const questionnaireMachine = createMachine(
     },
     services: {
       getAddressSuggestions: (context) => fetchAddressSuggestions(context.address),
+      // @ts-expect-error TODO: refactor this
       getEPCForUPRN: (context) => fetchEPCForUPRN(context.addressUPRN),
       submitForm: (context) => createLead(context)
     }

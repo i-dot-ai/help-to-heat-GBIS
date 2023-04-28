@@ -67,6 +67,7 @@ import { ListOfElegibleSchemes } from '@/components/screens/ListOfElegibleScheme
 import { Success } from '@/components/screens/Success'
 import { useRouter } from 'next/router'
 import { StateFrom } from 'xstate'
+import { AddressEPCNotFound } from './screens/AddressEPCNotFound'
 
 const IS_DEV = process.env.IS_DEV
 
@@ -173,18 +174,13 @@ const Questionnaire = (props: {
         <div>property_suggested_epc_loading</div>
       )}
 
-      {state.matches('property_council_tax') && (
-        <CouncilTaxBand
-          onSubmit={(response: CouncilTaxBandType) => {
+      {state.matches('epc_not_found') && (
+        <AddressEPCNotFound
+          onSubmit={() => {
             send({
-              type: 'ANSWER',
-              payload: response
+              type: 'CONTINUE'
             })
           }}
-          defaultValues={{
-            counciltaxBand: state.context.councilTaxBand
-          }}
-          counciltaxBandsSize={state.context.counciltaxBandsSize}
         />
       )}
 
@@ -202,6 +198,22 @@ const Questionnaire = (props: {
           propertyEpcRating={state.context.propertyEpcDetails}
         />
       )}
+
+      {state.matches('property_council_tax') && (
+        <CouncilTaxBand
+          onSubmit={(response: CouncilTaxBandType) => {
+            send({
+              type: 'ANSWER',
+              payload: response
+            })
+          }}
+          defaultValues={{
+            counciltaxBand: state.context.councilTaxBand
+          }}
+          counciltaxBandsSize={state.context.counciltaxBandsSize}
+        />
+      )}
+
       {state.matches('epc_does_owner_have_details') && (
         <AskAboutEPC
           onSubmit={(response: PropertyHasEPCType) => {
@@ -486,6 +498,7 @@ const Questionnaire = (props: {
 
       {state.matches('complete') && <Success referenceNumber="HDJ2123F" />}
       {IS_DEV && <pre>{JSON.stringify(state.context, null, 2)}</pre>}
+      {IS_DEV && <pre>{JSON.stringify(state.value, null, 2)}</pre>}
     </div>
   )
 }

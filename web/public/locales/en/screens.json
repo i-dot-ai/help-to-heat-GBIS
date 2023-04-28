@@ -12,7 +12,11 @@
   "LocalCouncilSupport.description.a": "Because you have told us your household income is less than £31,000 and no-one in your household receives benefits, your local council may be able to offer you more support for home energy.",
   "LocalCouncilSupport.description.b": "If you unsure who your local council is, you can [find your local council](https://www.gov.uk/find-local-council).",
   "LocalCouncilSupport.description.c": "You can still use this service to check what other home energy measures you may be entitled to.",
-  "PropertyIneligible.title": " Your property does not meet the minimum EPC eligibility requirements.",
+  "PropertyIneligible.title": "Sorry, this service is not for you",
+  "PropertyIneligible.description": "This service is for homes with lower energy performance ratings, from D to G.",
+  "PropertyIneligible.descriptionBody1": "Check out what other help you can get with your energy bills from the government's [Help for Households](https://example.org).",
+  "PropertyIneligible.descriptionBody2": "Find out if you can get support from your local council from the [Household Support Fund](https://example.org).",
+  "PropertyIneligible.subTitle": "Find other support",
   "Success.header": "Referral successful",
   "Success.title": "Your reference number",
   "Success.description": "Your application has been referred successfully. The energy supplier you selected will contact you within 14 working days to confirm their process."

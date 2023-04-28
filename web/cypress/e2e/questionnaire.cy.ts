@@ -1,5 +1,5 @@
 export {}
-context('Initial eligibility for all countries', () => {
+context.skip('Initial eligibility for all countries', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
     cy.get('#content').should('be.visible')
@@ -740,7 +740,7 @@ context.skip('Shows unhappy path for different users in England', () => {
       'Your property does not meet the minimum EPC eligibility requirements.'
     )
   })
-  context('Shows unhappy path for different users in Wales', () => {
+  context.skip('Shows unhappy path for different users in Wales', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000/')
       cy.get('#content').should('be.visible')

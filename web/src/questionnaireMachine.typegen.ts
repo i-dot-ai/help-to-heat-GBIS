@@ -13,18 +13,9 @@ export interface Typegen0 {
       data: unknown
       __tip: 'See the XState TS docs to learn how to strongly type this.'
     }
-    'done.invoke.form.property_suggested_epc_loading:invocation[0]': {
-      type: 'done.invoke.form.property_suggested_epc_loading:invocation[0]'
-      data: unknown
-      __tip: 'See the XState TS docs to learn how to strongly type this.'
-    }
     'error.platform.createLead': { type: 'error.platform.createLead'; data: unknown }
     'error.platform.fetchAddressSuggestions': {
       type: 'error.platform.fetchAddressSuggestions'
-      data: unknown
-    }
-    'error.platform.form.property_suggested_epc_loading:invocation[0]': {
-      type: 'error.platform.form.property_suggested_epc_loading:invocation[0]'
       data: unknown
     }
     'xstate.init': { type: 'xstate.init' }
@@ -42,10 +33,7 @@ export interface Typegen0 {
     services: never
   }
   eventsCausingActions: {
-    calculateCouncilTaxBandSize:
-      | 'PREVIOUS'
-      | 'done.invoke.form.property_suggested_epc_loading:invocation[0]'
-      | 'error.platform.form.property_suggested_epc_loading:invocation[0]'
+    calculateCouncilTaxBandSize: 'ANSWER' | 'PREVIOUS'
     clearAddressSuggestions: 'ANSWER' | 'PREVIOUS' | 'xstate.stop'
     clearAddressSuggestionsError: 'PREVIOUS' | 'xstate.stop'
   }
@@ -67,6 +55,7 @@ export interface Typegen0 {
     | 'epc_does_owner_have_details'
     | 'epc_found'
     | 'epc_not_eligible'
+    | 'epc_not_found'
     | 'epc_request_details'
     | 'household_income'
     | 'ineligible_country'
