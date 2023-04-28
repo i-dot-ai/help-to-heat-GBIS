@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
@@ -31,25 +31,27 @@ class CustomLoginView(MethodDispatcher):
                     user_id = request.GET.get("user_id", None)
                     token = request.GET.get("code", None)
                     if not user_id or not token:
-                        messages.error(request,
-                                       "The email address or password you entered is incorrect. Please try again.")
+                        messages.error(
+                            request, "The email address or password you entered is incorrect. Please try again."
+                        )
                         context = {
-                            'code': token,
-                            'user_id': user_id,
+                            "code": token,
+                            "user_id": user_id,
                         }
                         query_string = urlencode(context)
-                        url = reverse('account_login') + '?' + query_string
+                        url = reverse("account_login") + "?" + query_string
                         return redirect(url)
                     result = email_handler.verify_token(user_id, token, "invite-user")
                     if not result:
-                        messages.error(request,
-                                       "The email address or password you entered is incorrect. Please try again.")
+                        messages.error(
+                            request, "The email address or password you entered is incorrect. Please try again."
+                        )
                         context = {
-                            'code': token,
-                            'user_id': user_id,
+                            "code": token,
+                            "user_id": user_id,
                         }
                         query_string = urlencode(context)
-                        url = reverse('account_login') + '?' + query_string
+                        url = reverse("account_login") + "?" + query_string
                         return redirect(url)
                     return redirect("account_login_set_password", user.id)
                 login(request, user)
