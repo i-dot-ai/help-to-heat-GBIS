@@ -64,7 +64,7 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: invitation to system",
         "template_name": "email/invite-user.txt",
-        "url_path": "/accounts/accept-invite/",
+        "url_path": "/accounts/login/",
         "token_generator": INVITE_TOKEN_GENERATOR,
     },
 }
@@ -123,7 +123,10 @@ def send_password_reset_email(user):
 def send_invite_email(user):
     data = EMAIL_MAPPING["invite-user"]
     user.invited_at = datetime.datetime.now()
+    initial_password = secrets.token_hex(8)
+    user.set_password(initial_password.upper())
     user.save()
+    data["one_time_password"] = initial_password.upper()
     return _send_token_email(user, **data)
 
 
