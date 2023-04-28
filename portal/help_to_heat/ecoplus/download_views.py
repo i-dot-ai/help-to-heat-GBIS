@@ -10,7 +10,7 @@ from help_to_heat.ecoplus import models
 @require_http_methods(["GET"])
 @login_required
 def download_csv_view(request):
-    referrals = models.Referral.objects.filter(referral_download=None)
+    referrals = models.Referral.objects.filter(referral_download=None, supplier=request.user.supplier)
     downloaded_at = datetime.now()
     file_name = downloaded_at.strftime("%d-%m-%Y %H_%M")
     new_referral_download = models.ReferralDownload.objects.create(

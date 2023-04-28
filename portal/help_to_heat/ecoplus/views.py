@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
@@ -39,11 +40,13 @@ def homepage_view(request):
         template = "team-member/homepage.html"
     if request.user.is_team_leader:
         supplier = request.user.supplier
-        referrals = models.Referral.objects.filter(referral_download=None)
+        referrals = models.Referral.objects.filter(referral_download=None, supplier=supplier)
         unread_leads = len(referrals)
-        archives = models.ReferralDownload.objects.all().order_by("-created_at")
+        archives = models.ReferralDownload.objects.filter(referral_download__supplier=supplier).order_by("-created_at")
 
-        team_members = models.User.objects.filter(supplier=supplier, is_team_member=True)
+        team_members = models.User.objects.filter(
+            Q(supplier=supplier) & (Q(is_team_member=True) | Q(is_team_leader=True))
+        )
 
         data = {
             "supplier": supplier,
