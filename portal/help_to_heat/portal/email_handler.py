@@ -50,14 +50,14 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: confirm your email address",
         "template_name": "email/verification.txt",
-        "url_path": "/accounts/verify/",
+        "url_name": "account_verify",
         "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
     "password-reset": {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: password reset",
         "template_name": "email/password-reset.txt",
-        "url_path": "/accounts/change-password/reset/",
+        "url_path": "password-reset-change",
         "token_generator": PASSWORD_RESET_TOKEN_GENERATOR,
     },
     "invite-user": {
