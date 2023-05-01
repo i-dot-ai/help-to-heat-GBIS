@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0009_supplier_is_disabled"),
+        ("portal", "0009_supplier_is_disabled"),
     ]
 
     operations = [

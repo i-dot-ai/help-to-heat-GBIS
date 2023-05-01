@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0007_rename_is_supplier_user_user_is_supplier"),
+        ("portal", "0007_rename_is_supplier_user_user_is_supplier"),
     ]
 
     operations = [

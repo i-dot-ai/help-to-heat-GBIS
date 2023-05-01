@@ -6,7 +6,7 @@ import pathlib
 import httpx
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from help_to_heat.ecoplus import models
+from help_to_heat.portal import models
 
 DATA_DIR = settings.BASE_DIR / "temp-data"
 CHUNK_SIZE = 16 * 1024

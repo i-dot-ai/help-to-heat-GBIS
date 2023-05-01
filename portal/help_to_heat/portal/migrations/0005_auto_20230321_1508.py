@@ -8,7 +8,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0004_auto_20230321_1343"),
+        ("portal", "0004_auto_20230321_1343"),
     ]
 
     operations = [
@@ -28,14 +28,14 @@ class Migration(migrations.Migration):
             model_name="referral",
             name="supplier",
             field=models.ForeignKey(
-                blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="ecoplus.supplier"
+                blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="portal.supplier"
             ),
         ),
         migrations.AlterField(
             model_name="user",
             name="supplier",
             field=models.ForeignKey(
-                blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="ecoplus.supplier"
+                blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="portal.supplier"
             ),
         ),
     ]

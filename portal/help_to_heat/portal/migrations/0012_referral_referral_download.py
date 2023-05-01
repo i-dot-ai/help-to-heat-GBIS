@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0011_referraldownload"),
+        ("portal", "0011_referraldownload"),
     ]
 
     operations = [
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 null=True,
                 on_delete=django.db.models.deletion.PROTECT,
                 related_name="referral_download",
-                to="ecoplus.referraldownload",
+                to="portal.referraldownload",
             ),
         ),
     ]

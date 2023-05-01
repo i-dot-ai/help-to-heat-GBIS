@@ -6,7 +6,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0005_auto_20230321_1508"),
+        ("portal", "0005_auto_20230321_1508"),
     ]
 
     operations = [
@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 null=True,
                 on_delete=django.db.models.deletion.PROTECT,
                 related_name="referrals",
-                to="ecoplus.supplier",
+                to="portal.supplier",
             ),
         ),
     ]

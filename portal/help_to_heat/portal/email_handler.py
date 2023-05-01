@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from help_to_heat.ecoplus import models
+from help_to_heat.portal import models
 
 
 def _strip_microseconds(dt):

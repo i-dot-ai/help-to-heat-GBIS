@@ -5,8 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0012_referral_referral_download"),
-        ("ecoplus", "0012_user_invite_accepted_at_user_invited_at_and_more"),
+        ("portal", "0012_referral_referral_download"),
+        ("portal", "0012_user_invite_accepted_at_user_invited_at_and_more"),
     ]
 
     operations = []

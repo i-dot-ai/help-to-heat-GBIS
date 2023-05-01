@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
-from help_to_heat.ecoplus import (
+from help_to_heat.portal import (
     authentication_views,
     download_views,
     supplier_and_user_management_views,

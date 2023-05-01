@@ -37,7 +37,7 @@ VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 # Application definition
 
 INSTALLED_APPS = [
-    "help_to_heat.ecoplus",
+    "help_to_heat.portal",
     "rest_framework",
     "allauth",
     "allauth.account",
@@ -141,7 +141,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "ecoplus.User"
+AUTH_USER_MODEL = "portal.User"
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True

@@ -9,7 +9,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0010_user_full_name"),
+        ("portal", "0010_user_full_name"),
     ]
 
     operations = [

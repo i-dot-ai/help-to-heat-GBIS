@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("ecoplus", "0011_passwordresetrequest"),
+        ("portal", "0011_passwordresetrequest"),
     ]
 
     operations = [
