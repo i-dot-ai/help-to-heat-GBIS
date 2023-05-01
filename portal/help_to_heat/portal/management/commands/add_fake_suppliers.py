@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from help_to_heat.ecoplus import fakers
+from help_to_heat.portal import fakers
 
 
 class Command(BaseCommand):

@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from help_to_heat.ecoplus import email_handler, models
+from help_to_heat.portal import email_handler, models
 
 
 def add_supplier_view(request):

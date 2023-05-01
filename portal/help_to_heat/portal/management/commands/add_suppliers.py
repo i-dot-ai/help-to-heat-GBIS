@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from help_to_heat.ecoplus import models
+from help_to_heat.portal import models
 
 
 class Command(BaseCommand):

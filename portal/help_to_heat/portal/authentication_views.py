@@ -9,8 +9,8 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
-from help_to_heat.ecoplus import email_handler, models
-from help_to_heat.ecoplus.utils import MethodDispatcher
+from help_to_heat.portal import email_handler, models
+from help_to_heat.portal.utils import MethodDispatcher
 
 
 @require_http_methods(["GET", "POST"])
