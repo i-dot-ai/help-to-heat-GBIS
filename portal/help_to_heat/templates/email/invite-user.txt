@@ -1,6 +1,6 @@
 Hi,
 
-You've been invited to participate in the help to heat scheme. Please use the link below to access the site and setup your password.
+You've been invited to participate in the Help to Heat scheme. Please use the link below to access the site and setup your password.
 {{url|safe}}
 
 You can then start using the system.
