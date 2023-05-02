@@ -166,3 +166,5 @@ elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
 else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
+
+SHOW_FRONTDOOR = env.bool("SHOW_FRONTDOOR", default=False)
