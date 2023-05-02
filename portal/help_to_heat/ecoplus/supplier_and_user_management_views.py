@@ -124,7 +124,9 @@ def team_member_details_view(request, supplier_id, user_id):
 def team_member_change_status_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
-        return render(request, "team-leader/confirm-change-team-member-status.html", {"supplier_id": supplier_id, "user": user})
+        return render(
+            request, "team-leader/confirm-change-team-member-status.html", {"supplier_id": supplier_id, "user": user}
+        )
     else:
         user = models.User.objects.get(pk=user_id)
         user.is_active = not user.is_active
