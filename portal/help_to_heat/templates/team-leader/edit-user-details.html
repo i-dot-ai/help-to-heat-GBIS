@@ -17,13 +17,13 @@
       <label class="govuk-label" for="team-role">Team role</label>
       <div class="govuk-radios" data-module="govuk-radios">
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="team-role-1" name="team-role" type="radio" value="team-member" required>
+          <input class="govuk-radios__input" id="team-role-1" name="team-role" {% if user.is_team_member == True %} checked="checked" {% endif %} type="radio" value="team-member" required>
           <label class="govuk-label govuk-radios__label" for="team-role-1">
             Team member
           </label>
         </div>
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="team-role-2" name="team-role" type="radio" value="team-leader">
+          <input class="govuk-radios__input" id="team-role-2" name="team-role" {% if user.is_team_leader == True %} checked="checked" {% endif %} type="radio" value="team-leader">
           <label class="govuk-label govuk-radios__label" for="team-role-2">
             Team leader
           </label>
@@ -34,7 +34,7 @@
       <label class="govuk-label" for="user-name">
         Full name
       </label>
-      <input required class="govuk-input" id="user-name" name="user-name" type="text">
+      <input value="{{user.full_name}}" required class="govuk-input govuk-!-width-one-half" id="user-name" name="user-name" type="text">
     </div>
     <div class="govuk-form-group">
       <label class="govuk-label" for="user-email">
@@ -44,8 +44,8 @@
     </div>
     <br>
     <div class="govuk-button-group">
-      <button class="govuk-button" data-module="govuk-button" type="submit">Add {% if user_role == "team-member" %}team member{% else %}team leader{% endif %}</button>
-      <a class="govuk-link" href="{{url('homepage')}}">Cancel</a>
+      <button class="govuk-button" data-module="govuk-button" type="submit">Save changes</button>
+      <a class="govuk-link" href="{{url('user-details', supplier_id, user.id)}}">Cancel</a>
     </div>
   </fieldset>
   </div>

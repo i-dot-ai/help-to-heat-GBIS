@@ -121,12 +121,31 @@ def team_member_details_view(request, supplier_id, user_id):
     return render(request, "team-leader/view-user-details.html", {"supplier_id": supplier_id, "user": user})
 
 
-def team_member_remove_view(request, supplier_id, user_id):
+def team_member_change_status_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
-        return render(request, "team-leader/remove-user.html", {"supplier_id": supplier_id, "user": user})
+        return render(request, "team-leader/confirm-change-team-member-status.html", {"supplier_id": supplier_id, "user": user})
     else:
         user = models.User.objects.get(pk=user_id)
-        user.is_active = False
+        user.is_active = not user.is_active
         user.save()
-        return redirect("homepage")
+        return redirect("user-details", supplier_id, user_id)
+
+
+def team_member_edit_view(request, supplier_id, user_id):
+    if request.method == "GET":
+        user = models.User.objects.get(pk=user_id)
+        return render(request, "team-leader/edit-user-details.html", {"supplier_id": supplier_id, "user": user})
+    else:
+        user_name = request.POST.get("user-name")
+        team_role = request.POST.get("team-role")
+        user, _ = models.User.objects.get_or_create(pk=user_id)
+        user.full_name = user_name
+        if team_role == "team-leader":
+            user.is_team_leader = True
+            user.is_team_member = False
+        elif team_role == "team-member":
+            user.is_team_member = True
+            user.is_team_leader = False
+        user.save()
+        return redirect("user-details", supplier_id, user_id)
