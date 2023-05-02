@@ -1,4 +1,4 @@
-{% extends "base_generic_gov.html" %}
+{% extends "portal/base_generic_gov.html" %}
 
 {% block content %}
 
@@ -6,19 +6,18 @@
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h1 class="govuk-fieldset__heading">
-        Edit energy supplier name
+        Add a new energy supplier
       </h1>
     </legend>
-    <p>Edit an energy supplier on the platform.</p>
     {{csrf_input}}
     <div class="govuk-form-group">
       <label class="govuk-label" for="supplier_name">
-        Name
+        Name of energy supplier
       </label>
-      <input value="{{supplier}}" required class="govuk-input govuk-!-width-one-half" id="supplier_name" name="supplier_name" type="text">
+      <input required class="govuk-input govuk-!-width-one-half" id="supplier_name" name="supplier_name" type="text">
     </div>
     <div class="govuk-button-group">
-      <button class="govuk-button" data-module="govuk-button" type="submit">Save changes</button>
+      <button class="govuk-button" data-module="govuk-button" type="submit">Add energy supplier</button>
       <a class="govuk-link" href="{{url('homepage')}}">Cancel</a>
     </div>
   </fieldset>
