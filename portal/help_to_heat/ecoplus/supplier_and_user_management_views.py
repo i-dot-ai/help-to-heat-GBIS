@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from help_to_heat.ecoplus import models
+from help_to_heat.ecoplus import email_handler, models
 
 
 def add_supplier_view(request):
@@ -55,6 +55,7 @@ def supplier_team_leads_add_view(request, supplier_id):
         user.is_team_leader = True
         user.supplier = supplier
         user.save()
+        email_handler.send_invite_email(user)
         return redirect("supplier-team-leads", supplier.id)
 
 
@@ -113,6 +114,7 @@ def team_member_add_details_view(request, supplier_id, user_role):
             user.is_team_member = True
         user.supplier = supplier
         user.save()
+        email_handler.send_invite_email(user)
         return redirect("homepage")
 
 

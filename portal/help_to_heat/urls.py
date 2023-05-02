@@ -66,5 +66,11 @@ urlpatterns = [
     path("data-download/<uuid:download_id>/", download_views.download_csv_by_id_view, name="download-csv-by-id"),
     path("accounts/password-reset/", authentication_views.PasswordReset, name="password-reset"),
     path("accounts/change-password/reset/", authentication_views.PasswordChange, name="password-set"),
+    path("accounts/login/", authentication_views.CustomLoginView, name="account_login"),
+    path(
+        "accounts/login/<uuid:user_id>/set-password/",
+        authentication_views.SetPassword,
+        name="account_login_set_password",
+    ),
     path("accounts/", include("allauth.urls")),
 ]
