@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.urls import reverse
 from help_to_heat.portal import models
 
 
@@ -57,24 +58,25 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: password reset",
         "template_name": "email/password-reset.txt",
-        "url_path": "password-reset-change",
+        "url_name": "password-reset-change",
         "token_generator": PASSWORD_RESET_TOKEN_GENERATOR,
     },
     "invite-user": {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: invitation to system",
         "template_name": "email/invite-user.txt",
-        "url_path": "/accounts/login/",
+        "url_name": "account_login",
         "token_generator": INVITE_TOKEN_GENERATOR,
     },
 }
 
 
-def _send_token_email(user, subject, template_name, from_address, url_path, token_generator, one_time_password=None):
+def _send_token_email(user, subject, template_name, from_address, url_name, token_generator, one_time_password=None):
     user.last_token_sent_at = datetime.datetime.now(tz=pytz.UTC)
     user.save()
     token = token_generator.make_token(user)
     base_url = settings.BASE_URL
+    url_path = reverse(url_name)
     url = str(furl.furl(url=base_url, path=url_path, query_params={"code": token, "user_id": str(user.id)}))
     context = dict(user=user, url=url, contact_address=settings.CONTACT_EMAIL, one_time_password=one_time_password)
     body = render_to_string(template_name, context)
