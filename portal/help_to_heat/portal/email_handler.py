@@ -47,13 +47,6 @@ INVITE_TOKEN_GENERATOR = InviteTokenGenerator()
 
 
 EMAIL_MAPPING = {
-    "email-verification": {
-        "from_address": settings.FROM_EMAIL,
-        "subject": "Help to heat: confirm your email address",
-        "template_name": "email/verification.txt",
-        "url_name": "account_verify",
-        "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
-    },
     "password-reset": {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: password reset",
@@ -98,11 +91,6 @@ def _send_normal_email(subject, template_name, from_address, to_address, context
         recipient_list=[to_address],
     )
     return response
-
-
-def send_verification_email(user):
-    data = EMAIL_MAPPING["email-verification"]
-    return _send_token_email(user, **data)
 
 
 def send_password_reset_email(user):
