@@ -21,7 +21,7 @@ def index_view(request):
 
 
 def unauthorised_view(request):
-    return render(request, "unauthorised.html", {}, status=403)
+    return render(request, "portal/unauthorised.html", {}, status=403)
 
 
 is_supplier = user_passes_test(
@@ -35,6 +35,8 @@ def homepage_view(request):
     user = request.user
     if not user.is_supplier_admin and not user.is_team_leader and not user.is_team_member:
         return redirect("unauthorised")
+    if not user.supplier:
+        return unauthorised_view(request)
     template = "unauthorised"
     data = {}
     if user.is_team_member:
