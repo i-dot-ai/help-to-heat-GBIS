@@ -54,7 +54,7 @@ def homepage_view(request):
             "archives": archives,
             "team_members": team_members,
         }
-        template = "team-leader/homepage.html"
+        template = "portal/team-leader/homepage.html"
     if request.user.is_supplier_admin:
         template = "supplier-admin/homepage.html"
         suppliers = models.Supplier.objects.all()
