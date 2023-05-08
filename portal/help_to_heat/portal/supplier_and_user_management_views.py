@@ -90,7 +90,7 @@ def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id
 
 def team_member_add_role_view(request, supplier_id):
     if request.method == "GET":
-        return render(request, "team-leader/add-user-role-select.html", {"supplier_id": supplier_id})
+        return render(request, "portal/team-leader/add-user-role-select.html", {"supplier_id": supplier_id})
     else:
         user_role = request.POST.get("team-role")
         return redirect("add-user-details-select", user_role=user_role, supplier_id=supplier_id)
@@ -99,7 +99,7 @@ def team_member_add_role_view(request, supplier_id):
 def team_member_add_details_view(request, supplier_id, user_role):
     if request.method == "GET":
         return render(
-            request, "team-leader/add-user-details.html", {"user_role": user_role, "supplier_id": supplier_id}
+            request, "portal/team-leader/add-user-details.html", {"user_role": user_role, "supplier_id": supplier_id}
         )
     else:
         supplier = models.Supplier.objects.get(pk=supplier_id)
