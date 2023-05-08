@@ -32,14 +32,15 @@ is_supplier = user_passes_test(
 @require_http_methods(["GET"])
 @login_required
 def homepage_view(request):
-    if not request.user.is_supplier_admin and not request.user.is_team_leader and not request.user.is_team_member:
+    user = request.user
+    if not user.is_supplier_admin and not user.is_team_leader and not user.is_team_member:
         return redirect("unauthorised")
     template = "unauthorised"
     data = {}
-    if request.user.is_team_member:
+    if user.is_team_member:
         template = "team-member/homepage.html"
-    if request.user.is_team_leader:
-        supplier = request.user.supplier
+    if user.is_team_leader:
+        supplier = user.supplier
         referrals = models.Referral.objects.filter(referral_download=None, supplier=supplier)
         unread_leads = len(referrals)
         archives = models.ReferralDownload.objects.filter(referral_download__supplier=supplier).order_by("-created_at")
@@ -55,7 +56,7 @@ def homepage_view(request):
             "team_members": team_members,
         }
         template = "portal/team-leader/homepage.html"
-    if request.user.is_supplier_admin:
+    if user.is_supplier_admin:
         template = "supplier-admin/homepage.html"
         suppliers = models.Supplier.objects.all()
 
