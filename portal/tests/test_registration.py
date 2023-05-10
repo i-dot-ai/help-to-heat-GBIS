@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth import authenticate
 from help_to_heat.portal import models
 
 from . import utils
@@ -22,10 +23,9 @@ def login(client, email, password):
 
 
 def login_as_team_leader(client, email, password):
-    if not models.User.objects.filter(email=email).exists():
-        user = models.User.objects.create_user(email, password)
-    else:
-        user = models.User.objects.get(email=email)
+    if models.User.objects.filter(email=email).exists():
+        user = models.User.objects.get(email=email).delete()
+    user = models.User.objects.create_user(email, password)
     user.invite_accepted_at = datetime.datetime.now()
     user.is_team_leader = True
     user.supplier_id = models.Supplier.objects.get(name="Octopus").id
@@ -88,3 +88,27 @@ def test_no_supplier_set():
     login(client, email, password)
     page = client.get(utils.make_url("/"))
     assert page.status_code == 403
+
+
+def test_password_reset():
+    email = "team-leader@example.com"
+    new_password = "Bl4mbl3Bl4mbl3"
+    client = utils.get_client()
+    page = login_as_team_leader(client, email=email, password="Fl1bbl3Fl1bbl3")
+    page = client.get(utils.make_url("/accounts/login/"))
+    page = page.click(contains="Request password reset")
+    form = page.get_form()
+    form["email"] = email
+    page = form.submit().follow()
+
+    invite_url = utils.get_latest_email_url()
+    otp = utils.get_latest_email_password()
+    page = client.get(invite_url)
+    form = page.get_form()
+    form["verification-code"] = otp
+    form["password1"] = new_password
+    form["password2"] = new_password
+    page = form.submit().follow()
+
+    user = authenticate(None, email=email, password=new_password)
+    assert user.email == email
