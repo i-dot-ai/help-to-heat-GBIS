@@ -4,7 +4,7 @@ from help_to_heat.portal import email_handler, models
 
 def add_supplier_view(request):
     if request.method == "GET":
-        return render(request, "supplier-admin/add-supplier.html", {})
+        return render(request, "portal/supplier-admin/add-supplier.html", {})
     else:
         supplier_name = request.POST.get("supplier_name")
         new_supplier = models.Supplier(name=supplier_name, is_disabled=False)

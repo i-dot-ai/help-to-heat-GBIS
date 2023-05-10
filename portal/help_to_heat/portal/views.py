@@ -59,7 +59,7 @@ def homepage_view(request):
         }
         template = "portal/team-leader/homepage.html"
     if user.is_supplier_admin:
-        template = "supplier-admin/homepage.html"
+        template = "portal/supplier-admin/homepage.html"
         suppliers = models.Supplier.objects.all()
 
         data = {
