@@ -65,6 +65,12 @@ portal_patterns = [
     path("data-download/<uuid:download_id>/", download_views.download_csv_by_id_view, name="download-csv-by-id"),
     path("accounts/password-reset/", authentication_views.PasswordReset, name="password-reset"),
     path("accounts/change-password/reset/", authentication_views.PasswordChange, name="password-reset-change"),
+    path("accounts/password-reset-done/", authentication_views.password_reset_done, name="password-reset-done"),
+    path(
+        "accounts/password-reset-from-key-done/",
+        authentication_views.password_reset_from_key_done,
+        name="password-reset-from-key-done",
+    ),
     path(
         "accounts/login/<uuid:user_id>/set-password/",
         authentication_views.SetPassword,

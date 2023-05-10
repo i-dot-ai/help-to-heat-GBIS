@@ -99,9 +99,17 @@ class PasswordReset(MethodDispatcher):
         try:
             user = models.User.objects.get(email=email)
         except models.User.DoesNotExist:
-            return render(request, "account/password_reset_done.html", {})
+            return redirect("password-reset-done")
         email_handler.send_password_reset_email(user)
-        return render(request, "account/password_reset_done.html", {})
+        return redirect("password-reset-done")
+
+
+def password_reset_done(request):
+    return render(request, "account/password_reset_done.html", {})
+
+
+def password_reset_from_key_done(request):
+    return render(request, "account/password_reset_from_key_done.html", {})
 
 
 @require_http_methods(["GET", "POST"])
@@ -172,4 +180,4 @@ class PasswordChange(MethodDispatcher):
         token_matching_reset_request.save()
         user.set_password(pwd1)
         user.save()
-        return render(request, "account/password_reset_from_key_done.html", {})
+        return redirect("password-reset-from-key-done")
