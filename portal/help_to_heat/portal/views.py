@@ -35,7 +35,7 @@ def homepage_view(request):
     user = request.user
     if not user.is_supplier_admin and not user.is_team_leader and not user.is_team_member:
         return redirect("unauthorised")
-    if not user.supplier:
+    if (user.is_team_leader or user.is_team_member) and not user.supplier:
         return unauthorised_view(request)
     template = "unauthorised"
     data = {}
