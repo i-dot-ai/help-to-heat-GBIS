@@ -137,5 +137,5 @@ class PasswordResetRequest(UUIDPrimaryKeyBase, TimeStampedModel):
     user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, related_name="reset_requests")
     reset_sent_at = models.DateTimeField(editable=False, auto_now_add=True)
     one_time_password = models.CharField(max_length=128)
-    is_completed = models.BooleanField(null=False, blank=False, default=False, auto_created=False)
-    is_abandoned = models.BooleanField(null=True, blank=True)
+    is_completed = models.BooleanField(null=False, blank=False, default=False)
+    is_abandoned = models.BooleanField(null=False, blank=False, default=False)
