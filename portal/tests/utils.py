@@ -48,6 +48,6 @@ def get_latest_email_password():
     text = get_latest_email_text()
     lines = iter(text.splitlines())
     for line in lines:
-        if line.startswith("Your temporary password is"):
+        if line.startswith("Your temporary password is") or line.startswith("Your one time password code is"):
             token = next(lines).strip()
             return token
