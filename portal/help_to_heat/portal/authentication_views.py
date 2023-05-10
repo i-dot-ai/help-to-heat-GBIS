@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 from django.contrib import messages
@@ -11,6 +12,8 @@ from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
 from help_to_heat.portal.utils import MethodDispatcher
+
+logger = logging.getLogger(__name__)
 
 
 @require_http_methods(["GET", "POST"])
@@ -112,10 +115,12 @@ class PasswordChange(MethodDispatcher):
         token = request.GET.get("code", None)
         valid_request = False
         if not user_id or not token:
+            logger.error("No user_id or no token")
             messages.error(request, self.password_reset_error_message)
         else:
             result = email_handler.verify_token(user_id, token, "password-reset")
             if not result:
+                logger.error("No result")
                 messages.error(request, self.password_reset_error_message)
             else:
                 valid_request = True
@@ -134,14 +139,17 @@ class PasswordChange(MethodDispatcher):
         pwd2 = request.POST.get("password2", None)
         one_time_password = request.POST.get("verification-code", None)
         if pwd1 != pwd2:
+            logger.error("Passwords don't match")
             messages.error(request, "Passwords must match.")
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         if not valid_request:
+            logger.error("Not valid request")
             messages.error(request, self.password_reset_error_message)
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         user = models.User.objects.get(pk=user_id)
         reset_requests = models.PasswordResetRequest.objects.filter(user=user, is_completed=False, is_abandoned=False)
         if not reset_requests:
+            logger.error("Not requests found")
             messages.error(request, self.password_reset_error_message)
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         token_matching_reset_request = None
@@ -150,12 +158,14 @@ class PasswordChange(MethodDispatcher):
                 token_matching_reset_request = reset_request
                 break
         if not token_matching_reset_request:
+            logger.error("Not token_matching_reset_request")
             messages.error(request, self.password_reset_error_message)
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         try:
             validate_password(pwd1, user)
         except ValidationError as e:
             for msg in e:
+                logger.error(str(msg))
                 messages.error(request, str(msg))
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         token_matching_reset_request.is_completed = True
