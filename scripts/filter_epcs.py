@@ -29,10 +29,13 @@ def collect_data():
 
 
 def save_data(data):
+    print("Sorting output")
+    rows = reversed(sorted(data, key=lambda row: row['uprn']))
+    print(f"Writing to {OUTPUT_FILEPATH}")
     with bz2.open(OUTPUT_FILEPATH, "wt", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=("date", "uprn", "epc_rating"))
         writer.writeheader()
-        for item in data:
+        for item in rows:
             writer.writerow(item)
 
 
