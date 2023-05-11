@@ -57,6 +57,7 @@ def write_rows(rows):
         print(f"Resuming from {latest_date}")  # noqa: T201
     else:
         latest_date = str(datetime.date(1970, 1, 1))
+        print("Starting from beginning")  # noqa: T201
     for row in rows:
         if row["date"] > latest_date:
             epc_rating = models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
