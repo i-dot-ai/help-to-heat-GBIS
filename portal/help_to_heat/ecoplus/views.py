@@ -90,7 +90,7 @@ def create_referral(request):
 @require_http_methods(["GET"])
 def lookup_epc_view(request, uprn):
     try:
-        epc_rating = models.EpcRating.objects.get(uprn=uprn)
+        epc_rating = models.EpcRating.objects.filter(uprn=uprn).latest("date")
     except models.EpcRating.DoesNotExist:
         return JsonResponse({"errors": "Not found"}, status=400)
     data = {

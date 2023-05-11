@@ -1,0 +1,53 @@
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+
+<form method="POST">
+  {{csrf_input}}
+  <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h1 class="govuk-fieldset__heading">
+      Edit details for {{user.full_name}}
+    </h1>
+  </legend>
+    <p>Edit the name and role of the user below.</p>
+    <h2>Details</h2>
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="team-role">Team role</label>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="team-role-1" name="team-role" {% if user.is_team_member == True %} checked="checked" {% endif %} type="radio" value="team-member" required>
+          <label class="govuk-label govuk-radios__label" for="team-role-1">
+            Team member
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="team-role-2" name="team-role" {% if user.is_team_leader == True %} checked="checked" {% endif %} type="radio" value="team-leader">
+          <label class="govuk-label govuk-radios__label" for="team-role-2">
+            Team leader
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="user-name">
+        Full name
+      </label>
+      <input value="{{user.full_name}}" required class="govuk-input govuk-!-width-one-half" id="user-name" name="user-name" type="text">
+    </div>
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="user-email">
+        Email
+      </label>
+      <input value="{{user.email}}" disabled="true" class="govuk-input govuk-!-width-one-half" id="user-email" name="user-email" type="email">
+    </div>
+    <br>
+    <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button" type="submit">Save changes</button>
+      <a class="govuk-link" href="{{url('user-details', supplier_id, user.id)}}">Cancel</a>
+    </div>
+  </fieldset>
+  </div>
+</form>
+{% endblock %}

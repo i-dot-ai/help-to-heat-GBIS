@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<a href="{{url('homepage')}}" class="govuk-back-link">Back</a>
-<h1 class="govuk-heading-l">View and manage details for [{{user.full_name}}]</h1>
+<a href="{{url('homepage')}}#member-tab" class="govuk-back-link">Back</a>
+<h1 class="govuk-heading-l">View and manage details for {{user.full_name}}</h1>
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
@@ -13,8 +13,8 @@
       {% if user.is_team_member %}Team member{% else %}Team leader{% endif %}
     </dd>
     <dd class="govuk-summary-list__actions">
-      <a class="govuk-link" href="#">
-        Change<span class="govuk-visually-hidden"> role</span>
+      <a class="govuk-link" href="{{url('edit-user', supplier_id, user.id)}}">
+        Edit<span class="govuk-visually-hidden"> user details</span>
       </a>
     </dd>
   </div>
@@ -26,8 +26,8 @@
       {{user.full_name}}
     </dd>
     <dd class="govuk-summary-list__actions">
-      <a class="govuk-link" href="#">
-        Change<span class="govuk-visually-hidden"> name</span>
+      <a class="govuk-link" href="{{url('edit-user', supplier_id, user.id)}}">
+        Edit<span class="govuk-visually-hidden"> user details</span>
       </a>
     </dd>
   </div>
@@ -65,5 +65,5 @@
   </div>
 </dl>
 <br>
-<a href="{{url('remove-user', supplier_id, user.id)}}" class="govuk-button govuk-button--warning">Remove user</a>
+<a href="{{url('change-user-status', supplier_id, user.id)}}" class="govuk-button govuk-button--secondary">{{user.is_active and "Disable" or "Enable"}}</a>
 {% endblock %}
