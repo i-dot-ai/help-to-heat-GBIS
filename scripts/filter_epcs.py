@@ -12,10 +12,10 @@ DATA_DIR = __here__.parent / "all-domestic-certificates"
 
 def collect_data():
     for filepath in DATA_DIR.glob("**/certificates.csv"):
-        print(filepath)  # noqa
+        print(f"Processing: {filepath}")  # noqa
         with filepath.open() as f:
             reader = csv.DictReader(f)
-            rows = reversed(sorted(reader, key=lambda row: row['LODGEMENT_DATE']))
+            rows = reversed(sorted(reader, key=lambda row: row["LODGEMENT_DATE"]))
         seen_uprns = set()
         for row in rows:
             if row["UPRN"]:
@@ -29,9 +29,9 @@ def collect_data():
 
 
 def save_data(data):
-    print("Sorting output")
-    rows = reversed(sorted(data, key=lambda row: row['uprn']))
-    print(f"Writing to {OUTPUT_FILEPATH}")
+    print("Sorting output")  # noqa
+    rows = reversed(sorted(data, key=lambda row: row["uprn"]))
+    print(f"Writing to {OUTPUT_FILEPATH}")  # noqa
     with bz2.open(OUTPUT_FILEPATH, "wt", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=("date", "uprn", "epc_rating"))
         writer.writeheader()
