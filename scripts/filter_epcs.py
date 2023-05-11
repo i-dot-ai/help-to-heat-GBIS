@@ -30,7 +30,7 @@ def collect_data():
 
 def save_data(data):
     print("Sorting output")  # noqa
-    rows = reversed(sorted(data, key=lambda row: row["uprn"]))
+    rows = sorted(data, key=lambda row: row["date"])
     print(f"Writing to {OUTPUT_FILEPATH}")  # noqa
     with bz2.open(OUTPUT_FILEPATH, "wt", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=("date", "uprn", "epc_rating"))
