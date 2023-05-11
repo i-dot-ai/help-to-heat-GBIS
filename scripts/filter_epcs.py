@@ -15,8 +15,12 @@ def collect_data():
         print(filepath)  # noqa
         with filepath.open() as f:
             reader = csv.DictReader(f)
-            for row in reader:
-                if row["UPRN"]:
+            rows = reversed(sorted(reader, key=lambda row: row['LODGEMENT_DATE']))
+        seen_uprns = set()
+        for row in rows:
+            if row["UPRN"]:
+                if row["UPRN"] not in seen_uprns:
+                    seen_uprns.add(row["UPRN"])
                     yield {
                         "uprn": row["UPRN"],
                         "epc_rating": row["CURRENT_ENERGY_RATING"],
