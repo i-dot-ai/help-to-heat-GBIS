@@ -1,6 +1,8 @@
 import datetime
 
+import django.db.utils
 from help_to_heat.ecoplus import models
+from nose.tools import assert_raises
 
 from . import utils
 
@@ -14,13 +16,6 @@ def test_epc_duplicates(client):
     }
     epc1 = models.EpcRating(**data)
     epc1.save()
-    epc2 = models.EpcRating(**data)
-    epc2.save()
-
-    result = client.get("/api/epc-rating/12345/")
-    expected = {
-        "uprn": "12345",
-        "rating": "A",
-        "date": "2020-12-25",
-    }
-    assert result.json() == expected
+    with assert_raises(django.db.utils.IntegrityError):
+        epc2 = models.EpcRating(**data)
+        epc2.save()
