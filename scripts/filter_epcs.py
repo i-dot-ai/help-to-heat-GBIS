@@ -7,7 +7,7 @@ import pathlib
 __here__ = pathlib.Path(__file__).parent
 OUTPUT_DIR = __here__.parent / "data"
 OUTPUT_FILEPATH = OUTPUT_DIR / "epc_ratings.csv.bz2"
-DATA_DIR = __here__ / "all-domestic-certificates"
+DATA_DIR = __here__.parent / "all-domestic-certificates"
 
 
 def collect_data():
