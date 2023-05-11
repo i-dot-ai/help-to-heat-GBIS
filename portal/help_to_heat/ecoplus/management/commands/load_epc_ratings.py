@@ -50,14 +50,19 @@ def read_rows(filepath):
             yield row
 
 
-def write_rows(rows):
-    print("Loading to database")  # noqa: T201
+def get_latest_date():
     if models.EpcRating.objects.exists():
         latest_date = str(models.EpcRating.objects.latest("date").date)
         print(f"Resuming from {latest_date}")  # noqa: T201
     else:
         latest_date = str(datetime.date(1970, 1, 1))
         print("Starting from beginning")  # noqa: T201
+    return latest_date
+
+
+def write_rows(rows):
+    print("Loading to database")  # noqa: T201
+    latest_date = get_latest_date()
     for row in rows:
         if row["date"] > latest_date:
             models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
