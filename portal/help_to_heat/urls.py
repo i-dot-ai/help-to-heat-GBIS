@@ -55,9 +55,14 @@ urlpatterns = [
         name="user-details",
     ),
     path(
-        "supplier/<uuid:supplier_id>/user/<uuid:user_id>/remove/",
-        supplier_and_user_management_views.team_member_remove_view,
-        name="remove-user",
+        "supplier/<uuid:supplier_id>/user/<uuid:user_id>/change-status/",
+        supplier_and_user_management_views.team_member_change_status_view,
+        name="change-user-status",
+    ),
+    path(
+        "supplier/<uuid:supplier_id>/user/<uuid:user_id>/edit/",
+        supplier_and_user_management_views.team_member_edit_view,
+        name="edit-user",
     ),
     path("admin/", admin.site.urls),
     path("api/referral/", views.create_referral, name="create-referral"),
