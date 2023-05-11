@@ -26,7 +26,7 @@ def edit_supplier_view(request, supplier_id):
 def change_supplier_disabled_status_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
-        return render(request, "supplier-admin/disable-supplier-confirmation.html", {"supplier": supplier})
+        return render(request, "portal/supplier-admin/disable-supplier-confirmation.html", {"supplier": supplier})
     else:
         supplier = models.Supplier.objects.get(pk=supplier_id)
         supplier.is_disabled = not supplier.is_disabled

@@ -45,3 +45,15 @@ def test_service_manager_add_supplier():
     form["supplier_name"] = f"{supplier_name} v2"
     page = form.submit().follow()
     assert page.status_code == 200
+
+    assert page.has_one(f"""th:contains("{supplier_name} v2")""")
+
+    page = page.click(f"""th:contains("{supplier_name} v2") ~ td:nth-of-type(3) a""")
+    page = page.click(contains="Disable")
+    assert page.status_code == 200
+
+    assert page.has_text("""Disable energy supplier""")
+    form = page.get_form()
+    page = form.submit().follow()
+
+    assert page.has_one(f"""th:contains("{supplier_name} v2") ~ td:nth-of-type(1):contains("Disabled")""")
