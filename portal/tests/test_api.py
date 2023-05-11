@@ -23,6 +23,4 @@ def test_epc_duplicates(client):
         "rating": "A",
         "date": "2020-12-25",
     }
-    print(result)
-    print(result.content)
     assert result.json() == expected
