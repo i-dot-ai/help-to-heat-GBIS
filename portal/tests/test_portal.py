@@ -1,6 +1,5 @@
 import datetime
 
-from django.contrib.auth import authenticate
 from help_to_heat.portal import models
 
 from . import utils
@@ -34,6 +33,15 @@ def test_service_manager_add_supplier():
     page = login_as_service_manager(client, email="service-manager@example.com", password="Fl1bbl3Fl1bbl3")
     page = page.click(contains="Add a new energy supplier")
     form = page.get_form()
-    form['supplier_name'] = supplier_name
+    form["supplier_name"] = supplier_name
     page = form.submit().follow()
-    assert page.has_one(f'''th:contains("{supplier_name}")''')
+    assert page.has_one(f"""th:contains("{supplier_name}")""")
+
+    page = page.click(f"""th:contains("{supplier_name}") ~ td:nth-of-type(3) a""")
+    page = page.click(contains="Edit")
+    assert page.status_code == 200
+
+    form = page.get_form()
+    form["supplier_name"] = f"{supplier_name} v2"
+    page = form.submit().follow()
+    assert page.status_code == 200
