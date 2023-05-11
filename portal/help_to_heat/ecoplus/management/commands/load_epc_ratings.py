@@ -64,11 +64,11 @@ def write_rows(rows):
     print("Loading to database")  # noqa: T201
     latest_date = get_latest_date()
     for row in rows:
-        if row["date"] > latest_date:
-            models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
-        elif row["date"] == latest_date:
-            if not models.EpcRating.objects.filter(uprn=row["uprn"]).exists():
-                models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
+        if row["date"] >= latest_date:
+            models.EpcRating.objects.update_or_create(
+                uprn=row["uprn"],
+                defaults={"epc_rating": row["epc_rating"], "date": row["date"]},
+            )
     print("Finished loading")  # noqa: T201
 
 
