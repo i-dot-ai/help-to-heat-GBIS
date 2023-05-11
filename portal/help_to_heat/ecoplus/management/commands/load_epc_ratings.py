@@ -60,18 +60,10 @@ def write_rows(rows):
         print("Starting from beginning")  # noqa: T201
     for row in rows:
         if row["date"] > latest_date:
-            epc_rating = models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
+            models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
         elif row["date"] == latest_date:
-            try:
-                epc_rating, created = models.EpcRating.objects.get_or_create(
-                    uprn=row["uprn"], rating=row["epc_rating"], date=row["date"]
-                )
-            except models.EpcRating.MultipleObjectsReturned:
-                epc_ratings = models.EpcRating.objects.filter(
-                    uprn=row["uprn"], rating=row["epc_rating"], date=row["date"]
-                ).all()
-                for epc_rating in epc_ratings[1:]:
-                    epc_rating.delete()
+            if not models.EpcRating.objects.filter(uprn=row["uprn"]).exists():
+                models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
     print("Finished loading")  # noqa: T201
 
 
