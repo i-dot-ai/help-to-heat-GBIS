@@ -6,7 +6,7 @@ import pathlib
 
 __here__ = pathlib.Path(__file__).parent
 OUTPUT_DIR = __here__.parent / "data"
-OUTPUT_FILEPATH = OUTPUT_DIR / "epc_ratings.csv.bz2"
+OUTPUT_FILEPATH = OUTPUT_DIR / "epc_ratings_unique.csv.bz2"
 DATA_DIR = __here__.parent / "all-domestic-certificates"
 
 
