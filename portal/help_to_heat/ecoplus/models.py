@@ -124,8 +124,8 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
         return f"<referral id={self.id} supplier={self.supplier}>"
 
 
-class EpcRating(UUIDPrimaryKeyBase, TimeStampedModel):
-    uprn = models.CharField(max_length=12, unique=True)
+class EpcRating(TimeStampedModel):
+    uprn = models.CharField(max_length=12, primary_key=True)
     rating = models.CharField(max_length=32, choices=epc_rating_choices)
     date = models.DateField(blank=True, null=True)
 
