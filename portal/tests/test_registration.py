@@ -26,6 +26,7 @@ def login_as_team_leader(client, email, password):
     if models.User.objects.filter(email=email).exists():
         user = models.User.objects.get(email=email).delete()
     user = models.User.objects.create_user(email, password)
+    user.full_name = "Test Team Lead"
     user.invite_accepted_at = datetime.datetime.now()
     user.is_team_leader = True
     user.supplier_id = models.Supplier.objects.get(name="Octopus").id
@@ -39,6 +40,7 @@ def test_email():
     client = utils.get_client()
     email = f"bob-the-leader+{utils.make_code}@example.com"
     new_password = "N3wP455w0rd"
+    team_lead_name = f"Bob the Leader {utils.make_code}"
     page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
     page = page.click(contains="Add a new team member or leader")
 
@@ -47,9 +49,11 @@ def test_email():
     page = form.submit().follow()
 
     form = page.get_form()
-    form["user-name"] = "Bob the Leader"
+    form["user-name"] = team_lead_name
     form["user-email"] = email
-    page = form.submit()
+    page = form.submit().follow()
+
+    assert page.has_text(team_lead_name)
 
     invite_url = utils.get_latest_email_url()
     password = utils.get_latest_email_password()
@@ -72,7 +76,23 @@ def test_email():
     form["password"] = new_password
     page = form.submit().follow()
 
-    assert page.has_one("""h1:contains("Manage team members")""")
+    assert page.has_one("""h1:contains('Manage team members')""")
+
+    page = page.click(f"""th:contains('{team_lead_name}') ~ td:nth-of-type(4) a""")
+
+    assert page.status_code == 200
+
+    page = page.click("""dt:contains('Role') ~ dd:nth-of-type(2) a:contains('Edit')""")
+
+    form = page.get_form()
+    form["user-name"] = f"{team_lead_name} v2"
+    page = form.submit().follow()
+    page = page.click(contains="Disable")
+
+    form = page.get_form()
+    page = form.submit().follow()
+
+    assert page.has_one("dt:contains('Status') ~ dd:contains('Disabled')")
 
 
 def test_no_supplier_set():

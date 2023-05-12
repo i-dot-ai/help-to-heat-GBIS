@@ -124,14 +124,16 @@ def team_member_add_details_view(request, supplier_id, user_role):
 
 def team_member_details_view(request, supplier_id, user_id):
     user = models.User.objects.get(pk=user_id)
-    return render(request, "team-leader/view-user-details.html", {"supplier_id": supplier_id, "user": user})
+    return render(request, "portal/team-leader/view-user-details.html", {"supplier_id": supplier_id, "user": user})
 
 
 def team_member_change_status_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
         return render(
-            request, "team-leader/confirm-change-team-member-status.html", {"supplier_id": supplier_id, "user": user}
+            request,
+            "portal/team-leader/confirm-change-team-member-status.html",
+            {"supplier_id": supplier_id, "user": user},
         )
     else:
         user = models.User.objects.get(pk=user_id)
@@ -143,7 +145,7 @@ def team_member_change_status_view(request, supplier_id, user_id):
 def team_member_edit_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
-        return render(request, "team-leader/edit-user-details.html", {"supplier_id": supplier_id, "user": user})
+        return render(request, "portal/team-leader/edit-user-details.html", {"supplier_id": supplier_id, "user": user})
     else:
         user_name = request.POST.get("user-name")
         team_role = request.POST.get("team-role")
