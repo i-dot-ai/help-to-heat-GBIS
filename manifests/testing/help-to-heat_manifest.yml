@@ -1,0 +1,12 @@
+---
+applications:
+- name: help-to-heat-testing
+  routes:
+  - route: help-to-heat-testing.london.cloudapps.digital
+    protocol: http1
+  processes:
+  - type: web
+    instances: 1
+    memory: 1024M
+    disk_quota: 4092M
+    health-check-type: port
