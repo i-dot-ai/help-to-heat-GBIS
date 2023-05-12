@@ -65,14 +65,14 @@ def test_service_manager_add_supplier():
     assert page.status_code == 200
 
     form = page.get_form()
-    form['team-leader-name'] = team_lead_name
-    form['team-leader-email'] = team_lead_email
+    form["team-leader-name"] = team_lead_name
+    form["team-leader-email"] = team_lead_email
     page = form.submit().follow()
 
     page = page.click(f"""th:contains("{team_lead_name}") ~ td:nth-of-type(3) a""")
 
     form = page.get_form()
-    form['team-leader-name'] = f"{team_lead_name} v2"
+    form["team-leader-name"] = f"{team_lead_name} v2"
     page = form.submit().follow()
 
     page = page.click(f"""th:contains("{team_lead_name} v2") ~ td:nth-of-type(3) a""")

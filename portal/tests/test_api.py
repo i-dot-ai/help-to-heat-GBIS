@@ -14,7 +14,7 @@ def test_epc_duplicates(client):
     uprn = "".join(random.choices(string.digits, k=5))
     data = {
         "uprn": uprn,
-"rating": "A",
+        "rating": "A",
         "date": datetime.date(2020, 12, 25),
     }
     epc1 = models.EpcRating(**data)

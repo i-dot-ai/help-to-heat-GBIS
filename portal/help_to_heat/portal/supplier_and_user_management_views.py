@@ -65,7 +65,9 @@ def supplier_team_leads_edit_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
         supplier = models.Supplier.objects.get(pk=supplier_id)
-        return render(request, "portal/supplier-admin/edit-supplier-team-lead.html", {"supplier": supplier, "user": user})
+        return render(
+            request, "portal/supplier-admin/edit-supplier-team-lead.html", {"supplier": supplier, "user": user}
+        )
     else:
         user = models.User.objects.get(pk=user_id)
         supplier = models.Supplier.objects.get(pk=supplier_id)
