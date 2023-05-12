@@ -9,6 +9,7 @@ on:
       - sandbox
       - develop
       - staging
+      - suppliers
 
 permissions:
   packages: write
