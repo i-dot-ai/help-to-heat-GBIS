@@ -46,7 +46,7 @@ def supplier_team_leads_view(request, supplier_id):
 def supplier_team_leads_add_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
-        return render(request, "supplier-admin/add-supplier-team-lead.html", {"supplier": supplier})
+        return render(request, "portal/supplier-admin/add-supplier-team-lead.html", {"supplier": supplier})
     else:
         supplier = models.Supplier.objects.get(pk=supplier_id)
         leader_name = request.POST.get("team-leader-name")
@@ -65,7 +65,7 @@ def supplier_team_leads_edit_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
         supplier = models.Supplier.objects.get(pk=supplier_id)
-        return render(request, "supplier-admin/edit-supplier-team-lead.html", {"supplier": supplier, "user": user})
+        return render(request, "portal/supplier-admin/edit-supplier-team-lead.html", {"supplier": supplier, "user": user})
     else:
         user = models.User.objects.get(pk=user_id)
         supplier = models.Supplier.objects.get(pk=supplier_id)
@@ -81,7 +81,7 @@ def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id
         supplier = models.Supplier.objects.get(pk=supplier_id)
         user = models.User.objects.get(pk=user_id)
         return render(
-            request, "supplier-admin/disable-team-lead-confirmation.html", {"supplier": supplier, "user": user}
+            request, "portal/supplier-admin/disable-team-lead-confirmation.html", {"supplier": supplier, "user": user}
         )
     else:
         user = models.User.objects.get(pk=user_id)
