@@ -67,7 +67,7 @@ def write_rows(rows):
         if row["date"] >= latest_date:
             models.EpcRating.objects.update_or_create(
                 uprn=row["uprn"],
-                defaults={"epc_rating": row["epc_rating"], "date": row["date"]},
+                defaults={"rating": row["epc_rating"], "date": row["date"]},
             )
     print("Finished loading")  # noqa: T201
 
