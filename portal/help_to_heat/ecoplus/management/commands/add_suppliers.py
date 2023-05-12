@@ -11,4 +11,4 @@ class Command(BaseCommand):
             if not models.Supplier.objects.filter(name=supplier_choice.label).exists():
                 supplier = models.Supplier(name=supplier_choice.label)
                 supplier.save()
-            print(f"Created or added supplier {supplier.name}")  # noqa: T201
+                print(f"Created or added supplier {supplier.name}")  # noqa: T201
