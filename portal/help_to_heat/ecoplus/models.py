@@ -66,7 +66,7 @@ class TimeStampedModel(models.Model):
 
 
 class Supplier(UUIDPrimaryKeyBase, TimeStampedModel):
-    name = models.CharField(max_length=256)
+    name = models.CharField(max_length=256, unique=True)
     is_disabled = models.BooleanField(default=False, null=False, blank=False)
 
     def __str__(self):
