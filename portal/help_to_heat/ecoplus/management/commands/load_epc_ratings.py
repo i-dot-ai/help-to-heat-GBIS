@@ -50,27 +50,25 @@ def read_rows(filepath):
             yield row
 
 
-def write_rows(rows):
-    print("Loading to database")  # noqa: T201
+def get_latest_date():
     if models.EpcRating.objects.exists():
         latest_date = str(models.EpcRating.objects.latest("date").date)
         print(f"Resuming from {latest_date}")  # noqa: T201
     else:
         latest_date = str(datetime.date(1970, 1, 1))
+        print("Starting from beginning")  # noqa: T201
+    return latest_date
+
+
+def write_rows(rows):
+    print("Loading to database")  # noqa: T201
+    latest_date = get_latest_date()
     for row in rows:
-        if row["date"] > latest_date:
-            epc_rating = models.EpcRating.objects.create(uprn=row["uprn"], rating=row["epc_rating"], date=row["date"])
-        elif row["date"] == latest_date:
-            try:
-                epc_rating, created = models.EpcRating.objects.get_or_create(
-                    uprn=row["uprn"], rating=row["epc_rating"], date=row["date"]
-                )
-            except models.EpcRating.MultipleObjectsReturned:
-                epc_ratings = models.EpcRating.objects.filter(
-                    uprn=row["uprn"], rating=row["epc_rating"], date=row["date"]
-                ).all()
-                for epc_rating in epc_ratings[1:]:
-                    epc_rating.delete()
+        if row["date"] >= latest_date:
+            models.EpcRating.objects.update_or_create(
+                uprn=row["uprn"],
+                defaults={"epc_rating": row["epc_rating"], "date": row["date"]},
+            )
     print("Finished loading")  # noqa: T201
 
 
