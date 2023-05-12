@@ -6,9 +6,9 @@ class Command(BaseCommand):
     help = "Add the required suppliers to the database"
 
     def handle(self, *args, **kwargs):
-        suppliers = models.SupplierChoices
-        for supplier in suppliers:
-            if not models.Supplier.objects.filter(name=supplier.label).exists():
-                supplier = models.Supplier(name=supplier.label)
+        supplier_choices = models.SupplierChoices
+        for supplier_choice in supplier_choices:
+            if not models.Supplier.objects.filter(name=supplier_choice.label).exists():
+                supplier = models.Supplier(name=supplier_choice.label)
                 supplier.save()
-            print(f"Created or added supplier {supplier.label}")  # noqa: T201
+            print(f"Created or added supplier {supplier.name}")  # noqa: T201
