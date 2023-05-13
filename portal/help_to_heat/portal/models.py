@@ -5,7 +5,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
-from . import utils
+from help_to_heat import utils
 
 epc_rating_choices = tuple((letter, letter) for letter in string.ascii_letters.upper()[:8])
 

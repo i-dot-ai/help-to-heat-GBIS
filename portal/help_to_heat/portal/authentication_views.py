@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
-from help_to_heat.portal.utils import MethodDispatcher
+from help_to_heat.utils import MethodDispatcher
 
 logger = logging.getLogger(__name__)
 
