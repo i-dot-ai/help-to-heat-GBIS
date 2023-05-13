@@ -36,24 +36,21 @@ def login_as_team_leader(client, email, password):
     return page
 
 
-def test_email():
+def invite_user(name, email, password, role):
     client = utils.get_client()
-    email = f"bob-the-leader+{utils.make_code}@example.com"
-    new_password = "N3wP455w0rd"
-    team_lead_name = f"Bob the Leader {utils.make_code}"
     page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
     page = page.click(contains="Add a new team member or leader")
 
     form = page.get_form()
-    form["team-role"] = "team-leader"
+    form["team-role"] = role
     page = form.submit().follow()
 
     form = page.get_form()
-    form["user-name"] = team_lead_name
+    form["user-name"] = name
     form["user-email"] = email
     page = form.submit().follow()
 
-    assert page.has_text(team_lead_name)
+    assert page.has_text(name)
 
     invite_url = utils.get_latest_email_url()
     password = utils.get_latest_email_password()
@@ -67,14 +64,26 @@ def test_email():
     page = form.submit().follow()
 
     form = page.get_form()
-    form["password1"] = new_password
-    form["password2"] = new_password
+    form["password1"] = password
+    form["password2"] = password
     page = form.submit().follow()
 
     form = page.get_form()
     form["login"] = email
-    form["password"] = new_password
+    form["password"] = password
     page = form.submit().follow()
+    return page
+
+
+def test_team_leader():
+    client = utils.get_client()
+    email = f"bob-the-leader+{utils.make_code}@example.com"
+    new_password = "N3wP455w0rd"
+    team_lead_name = f"Bob the Leader {utils.make_code}"
+    page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
+    page = page.click(contains="Add a new team member or leader")
+
+    page = invite_user(team_lead_name, email, new_password, "team-leader")
 
     assert page.has_one("""h1:contains('Manage team members')""")
 
