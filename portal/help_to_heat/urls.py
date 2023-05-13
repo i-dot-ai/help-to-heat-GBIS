@@ -6,8 +6,8 @@ from help_to_heat.portal.urls import api_patterns, portal_patterns
 
 if settings.SHOW_FRONTDOOR:
     urlpatterns = [
-        path("", include(frontdoor_patterns)),
         path("portal/", include(portal_patterns)),
+        path("", include(frontdoor_patterns)),
     ]
 else:
     urlpatterns = [
@@ -15,7 +15,7 @@ else:
     ]
 
 
-urlpatterns = urlpatterns + [
+urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(api_patterns)),
-]
+] + urlpatterns
