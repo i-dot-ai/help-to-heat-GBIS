@@ -46,10 +46,6 @@ SUPPLIER_VALUE_MAPPING = {
 }
 
 
-def pick_random_supplier():
-    return random.choice(SupplierChoices.values)
-
-
 class UUIDPrimaryKeyBase(models.Model):
     class Meta:
         abstract = True
