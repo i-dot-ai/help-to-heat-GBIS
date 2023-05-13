@@ -77,13 +77,14 @@ def invite_user(name, email, password, role):
 
 def test_team_leader():
     client = utils.get_client()
-    email = f"bob-the-leader+{utils.make_code}@example.com"
+    email = f"larry-the-leader+{utils.make_code}@example.com"
     new_password = "N3wP455w0rd"
-    team_lead_name = f"Bob the Leader {utils.make_code}"
+    team_lead_name = f"Larry the Leader {utils.make_code}"
+    role = "team-leader"
     page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
     page = page.click(contains="Add a new team member or leader")
 
-    page = invite_user(team_lead_name, email, new_password, "team-leader")
+    page = invite_user(team_lead_name, email, new_password, role)
 
     assert page.has_one("""h1:contains('Manage team members')""")
 
@@ -102,6 +103,20 @@ def test_team_leader():
     page = form.submit().follow()
 
     assert page.has_one("dt:contains('Status') ~ dd:contains('Disabled')")
+
+
+def test_team_member():
+    client = utils.get_client()
+    email = f"milly-the-member+{utils.make_code}@example.com"
+    new_password = "N3wP455w0rd"
+    team_lead_name = f"Milly the member {utils.make_code}"
+    role = "team-member"
+    page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
+    page = page.click(contains="Add a new team member or leader")
+
+    page = invite_user(team_lead_name, email, new_password, role)
+    assert page.status_code == 200
+    assert not page.has_one("""h1:contains('Manage team members')""")
 
 
 def test_no_supplier_set():

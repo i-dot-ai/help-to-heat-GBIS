@@ -40,7 +40,7 @@ def homepage_view(request):
     template = "unauthorised"
     data = {}
     if user.is_team_member:
-        template = "team-member/homepage.html"
+        template = "portal/team-member/homepage.html"
     if user.is_team_leader:
         supplier = user.supplier
         referrals = models.Referral.objects.filter(referral_download=None, supplier=supplier)
