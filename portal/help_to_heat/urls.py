@@ -6,12 +6,12 @@ from help_to_heat.portal.urls import api_patterns, portal_patterns
 
 if settings.SHOW_FRONTDOOR:
     urlpatterns = [
-        path("portal/", include(portal_patterns)),
-        path("", include(frontdoor_patterns)),
+        path("portal/", include((portal_patterns, "portal"))),
+        path("", include((frontdoor_patterns, "frontdoor"))),
     ]
 else:
     urlpatterns = [
-        path("", include(portal_patterns)),
+        path("", include((portal_patterns, "portal"))),
     ]
 
 

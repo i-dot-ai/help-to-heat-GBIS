@@ -42,7 +42,7 @@ class CustomLoginView(MethodDispatcher):
                             "user_id": user_id,
                         }
                         query_string = urlencode(context)
-                        url = reverse("account_login") + "?" + query_string
+                        url = reverse("portal:account_login") + "?" + query_string
                         return redirect(url)
                     result = email_handler.verify_token(user_id, token, "invite-user")
                     if not result:
@@ -54,11 +54,11 @@ class CustomLoginView(MethodDispatcher):
                             "user_id": user_id,
                         }
                         query_string = urlencode(context)
-                        url = reverse("account_login") + "?" + query_string
+                        url = reverse("portal:account_login") + "?" + query_string
                         return redirect(url)
-                    return redirect("account_login_set_password", user.id)
+                    return redirect("portal:account_login_set_password", user.id)
                 login(request, user)
-                return redirect("portal-homepage")
+                return redirect("portal:portal-homepage")
             else:
                 messages.error(request, "The email address or password you entered is incorrect. Please try again.")
                 return render(request, "account/login.html", {})
@@ -86,7 +86,7 @@ class SetPassword(MethodDispatcher):
         user.invite_accepted_at = timezone.now()
         user.save()
         messages.info(request, "Password successfully set, please login to the system.")
-        return redirect("account_login")
+        return redirect("portal:account_login")
 
 
 @require_http_methods(["GET", "POST"])
@@ -99,9 +99,9 @@ class PasswordReset(MethodDispatcher):
         try:
             user = models.User.objects.get(email=email)
         except models.User.DoesNotExist:
-            return redirect("password-reset-done")
+            return redirect("portal:password-reset-done")
         email_handler.send_password_reset_email(user)
-        return redirect("password-reset-done")
+        return redirect("portal:password-reset-done")
 
 
 def password_reset_done(request):
@@ -180,4 +180,4 @@ class PasswordChange(MethodDispatcher):
         token_matching_reset_request.save()
         user.set_password(pwd1)
         user.save()
-        return redirect("password-reset-from-key-done")
+        return redirect("portal:password-reset-from-key-done")

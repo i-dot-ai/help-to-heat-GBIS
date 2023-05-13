@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<a href="{{url('add-user-role-select', supplier_id)}}" class="govuk-back-link">Back</a>
+<a href="{{url('portal:add-user-role-select', supplier_id)}}" class="govuk-back-link">Back</a>
 <form method="POST">
   {{csrf_input}}
   <div class="govuk-form-group">
@@ -29,7 +29,7 @@
     <br>
     <div class="govuk-button-group">
       <button class="govuk-button" data-module="govuk-button" type="submit">Add {% if user_role == "team-member" %}team member{% else %}team leader{% endif %}</button>
-      <a class="govuk-link" href="{{url('portal-homepage')}}">Cancel</a>
+      <a class="govuk-link" href="{{url('portal:portal-homepage')}}">Cancel</a>
     </div>
   </fieldset>
   </div>

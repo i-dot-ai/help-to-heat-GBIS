@@ -50,14 +50,14 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: password reset",
         "template_name": "portal/email/password-reset.txt",
-        "url_name": "password-reset-change",
+        "url_name": "portal:password-reset-change",
         "token_generator": PASSWORD_RESET_TOKEN_GENERATOR,
     },
     "invite-user": {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: invitation to system",
         "template_name": "portal/email/invite-user.txt",
-        "url_name": "account_login",
+        "url_name": "portal:account_login",
         "token_generator": INVITE_TOKEN_GENERATOR,
     },
 }
