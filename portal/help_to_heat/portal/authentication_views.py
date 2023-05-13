@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -9,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.http import urlencode
+from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
 from help_to_heat.portal.utils import MethodDispatcher
@@ -83,7 +83,7 @@ class SetPassword(MethodDispatcher):
             return render(request, "account/login_set_password.html", {"user_id": user_id})
         user = models.User.objects.get(pk=user_id)
         user.set_password(pwd1)
-        user.invite_accepted_at = datetime.now()
+        user.invite_accepted_at = timezone.now()
         user.save()
         messages.info(request, "Password successfully set, please login to the system.")
         return redirect("account_login")

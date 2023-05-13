@@ -1,6 +1,6 @@
-import datetime
-
 from django.contrib.auth import authenticate
+from django.utils import timezone
+
 from help_to_heat.portal import models
 
 from . import utils
@@ -27,7 +27,7 @@ def login_as_team_leader(client, email, password):
         models.User.objects.get(email=email).delete()
     user = models.User.objects.create_user(email, password)
     user.full_name = "Test Team Lead"
-    user.invite_accepted_at = datetime.datetime.now()
+    user.invite_accepted_at = timezone.now()
     user.is_team_leader = True
     user.supplier_id = models.Supplier.objects.get(name="Octopus").id
     user.save()
@@ -123,7 +123,7 @@ def test_no_supplier_set():
     email = f"nancy-no-supplier+{utils.make_code}@example.com"
     password = "Fl1bbl3Fl1bbl3"
     user = models.User.objects.create_user(email, password)
-    user.invite_accepted_at = datetime.datetime.now()
+    user.invite_accepted_at = timezone.now()
     user.is_team_leader = True
     user.supplier_id = None
     user.save()

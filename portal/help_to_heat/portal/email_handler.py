@@ -1,14 +1,13 @@
-import datetime
 import secrets
 
 import furl
-import pytz
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
 from help_to_heat.portal import models
 
 
@@ -65,7 +64,7 @@ EMAIL_MAPPING = {
 
 
 def _send_token_email(user, subject, template_name, from_address, url_name, token_generator, one_time_password=None):
-    user.last_token_sent_at = datetime.datetime.now(tz=pytz.UTC)
+    user.last_token_sent_at = timezone.now()
     user.save()
     token = token_generator.make_token(user)
     base_url = settings.BASE_URL
@@ -112,7 +111,7 @@ def send_password_reset_email(user):
 
 def send_invite_email(user):
     data = EMAIL_MAPPING["invite-user"]
-    user.invited_at = datetime.datetime.now()
+    user.invited_at = timezone.now()
     initial_password = secrets.token_hex(8)
     user.set_password(initial_password.upper())
     user.save()
