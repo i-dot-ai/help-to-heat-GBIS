@@ -7,8 +7,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.utils.http import urlencode
 from django.utils import timezone
+from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
 from help_to_heat.portal.utils import MethodDispatcher
