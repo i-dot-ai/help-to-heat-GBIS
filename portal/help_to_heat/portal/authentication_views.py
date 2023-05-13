@@ -58,7 +58,7 @@ class CustomLoginView(MethodDispatcher):
                         return redirect(url)
                     return redirect("account_login_set_password", user.id)
                 login(request, user)
-                return redirect("homepage")
+                return redirect("portal-homepage")
             else:
                 messages.error(request, "The email address or password you entered is incorrect. Please try again.")
                 return render(request, "account/login.html", {})

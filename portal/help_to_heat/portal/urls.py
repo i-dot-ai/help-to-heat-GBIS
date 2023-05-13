@@ -8,7 +8,7 @@ from . import (
 )
 
 portal_patterns = [
-    path("", views.homepage_view, name="homepage"),
+    path("", views.homepage_view, name="portal-homepage"),
     path("unauthorised/", views.unauthorised_view, name="unauthorised"),
     path("add-supplier/", supplier_and_user_management_views.add_supplier_view, name="add-supplier"),
     path(
