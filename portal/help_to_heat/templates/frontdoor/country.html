@@ -1,0 +1,13 @@
+{% extends "frontdoor/base.html" %}
+
+{% block content %}
+  <form method="POST">
+    {{csrf_input}}
+    <select id="country" name="country">
+      {% for country in countries %}
+        <option value="{{country}}">{{country}}</option>
+      {% endfor %}
+    </select>
+    <input type="submit">
+  </form>
+{% endblock content %}

@@ -6,9 +6,18 @@ from . import utils
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
-def test_flow():
+def test_flow_northern_ireland():
     client = utils.get_client()
     page = client.get("/")
 
     assert page.status_code == 200
     assert page.has_one("h1:contains('Homepage')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    form = page.get_form()
+    form["country"] = "Northern Ireland"
+    page = form.submit().follow()
+
+    assert page.has_text("Not available in Northern Ireland")
