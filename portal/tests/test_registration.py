@@ -24,7 +24,7 @@ def login(client, email, password):
 
 def login_as_team_leader(client, email, password):
     if models.User.objects.filter(email=email).exists():
-        user = models.User.objects.get(email=email).delete()
+        models.User.objects.get(email=email).delete()
     user = models.User.objects.create_user(email, password)
     user.full_name = "Test Team Lead"
     user.invite_accepted_at = datetime.datetime.now()
@@ -132,3 +132,19 @@ def test_password_reset():
 
     user = authenticate(None, email=email, password=new_password)
     assert user.email == email
+
+
+def test_login_without_invite():
+    email = f"admin-user{utils.make_code()}@example.com"
+    password = "Fl1bbl3Fl1bbl3"
+
+    models.User.objects.create_user(email, password)
+    client = utils.get_client()
+
+    page = client.get(utils.make_url("/accounts/login/"))
+    form = page.get_form()
+    form["login"] = email
+    form["password"] = password
+    page = form.submit()
+    page = page.follow()
+    assert page.has_text("The email address or password you entered is incorrect. Please try again.")

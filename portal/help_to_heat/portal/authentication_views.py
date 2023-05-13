@@ -31,8 +31,8 @@ class CustomLoginView(MethodDispatcher):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 if user.invite_accepted_at is None:
-                    user_id = request.GET.get("user_id", None)
-                    token = request.GET.get("code", None)
+                    user_id = request.GET.get("user_id", "")
+                    token = request.GET.get("code", "")
                     if not user_id or not token:
                         messages.error(
                             request, "The email address or password you entered is incorrect. Please try again."
