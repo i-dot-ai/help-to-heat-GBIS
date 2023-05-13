@@ -1,7 +1,7 @@
 {% extends "portal/base_generic_gov.html" %}
 
 {% block content %}
-<a href="{{url('portal:portal-homepage')}}" class="govuk-back-link">Back</a>
+<a href="{{url('portal:homepage')}}" class="govuk-back-link">Back</a>
 <h1 class="govuk-heading-l">Manage [{{supplier.name}}]'s team leads and details</h1>
 <div class="govuk-button-group">
   <a href="{{url('portal:edit-supplier', supplier.id)}}" class="govuk-button govuk-button--secondary">Edit</a>

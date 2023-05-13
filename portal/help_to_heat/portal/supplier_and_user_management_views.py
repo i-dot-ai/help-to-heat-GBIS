@@ -9,7 +9,7 @@ def add_supplier_view(request):
         supplier_name = request.POST.get("supplier_name")
         new_supplier = models.Supplier(name=supplier_name, is_disabled=False)
         new_supplier.save()
-        return redirect("portal:portal-homepage")
+        return redirect("portal:homepage")
 
 
 def edit_supplier_view(request, supplier_id):
@@ -20,7 +20,7 @@ def edit_supplier_view(request, supplier_id):
         supplier = models.Supplier.objects.get(pk=supplier_id)
         supplier.name = request.POST.get("supplier_name")
         supplier.save()
-        return redirect("portal:portal-homepage")
+        return redirect("portal:homepage")
 
 
 def change_supplier_disabled_status_view(request, supplier_id):
@@ -31,7 +31,7 @@ def change_supplier_disabled_status_view(request, supplier_id):
         supplier = models.Supplier.objects.get(pk=supplier_id)
         supplier.is_disabled = not supplier.is_disabled
         supplier.save()
-        return redirect("portal:portal-homepage")
+        return redirect("portal:homepage")
 
 
 def supplier_team_leads_view(request, supplier_id):
@@ -119,7 +119,7 @@ def team_member_add_details_view(request, supplier_id, user_role):
         user.supplier = supplier
         user.save()
         email_handler.send_invite_email(user)
-        return redirect("portal:portal-homepage")
+        return redirect("portal:homepage")
 
 
 def team_member_details_view(request, supplier_id, user_id):
