@@ -1,0 +1,35 @@
+{% extends "frontdoor/base.html" %}
+
+{% block content %}
+  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+        {{csrf_input}}
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">
+                Do you own your property?
+              </h1>
+            </legend>
+            <div class="govuk-radios" data-module="govuk-radios">
+              {% for own_property_option in own_property_options %}
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="own-property-{{slugify(own_property_option)}}" name="own-property" type="radio"
+                    value="{{own_property_option}}">
+                  <label class="govuk-label govuk-radios__label" for="own-property-{{slugify(own_property_option)}}">
+                    {{own_property_option}}
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+          </fieldset>
+        </div>
+        <button class="govuk-button" data-module="govuk-button">
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
