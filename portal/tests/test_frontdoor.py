@@ -42,6 +42,9 @@ def test_flow():
     page = page.click(contains="Start")
     assert page.status_code == 200
 
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
     form = page.get_form()
     form["country"] = "England"
     page = form.submit().follow()
@@ -51,3 +54,6 @@ def test_flow():
     form = page.get_form()
     form["own-property"] = "Yes, I own my property and live in it"
     page = form.submit().follow()
+
+    answer = models.Answer.objects.filter(session_id=session_id, page_name="own-property").get()
+    assert answer.data["own-property"] == "Yes, I own my property and live in it"
