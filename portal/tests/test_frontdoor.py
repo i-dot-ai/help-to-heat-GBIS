@@ -11,7 +11,7 @@ def test_flow_northern_ireland():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Homepage')")
+    assert page.has_one("h1:contains('Get home energy improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
