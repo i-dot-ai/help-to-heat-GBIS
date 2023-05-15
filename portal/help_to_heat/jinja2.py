@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.text import slugify
 
 
 def url(path, *args, **kwargs):
@@ -32,6 +33,7 @@ def environment(**options):
             "get_messages": messages.get_messages,
             "DEBUG": settings.DEBUG,
             "space_name": settings.VCAP_APPLICATION.get("space_name", "unknown"),
+            "slugify": slugify,
         }
     )
     return env
