@@ -4,6 +4,7 @@ import marshmallow
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from help_to_heat import utils
+from help_to_heat.frontdoor import models
 
 from . import schemas
 
@@ -40,6 +41,7 @@ class CountryView(utils.MethodDispatcher):
 
     def post(self, request, session_id, page_name):
         result = schemas.CountrySchema(unknown=marshmallow.EXCLUDE).load(request.POST)
+        models.Answer.objects.create(data=result, session_id=session_id, page_name=page_name)
         if result["country"] == "Northern Ireland":
             return redirect("frontdoor:page", session_id=session_id, page_name="northern-ireland")
         else:

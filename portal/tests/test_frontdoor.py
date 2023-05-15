@@ -1,7 +1,8 @@
-import uuid
 import unittest
+import uuid
 
 from django.conf import settings
+from help_to_heat.frontdoor import models
 
 from . import utils
 
@@ -25,6 +26,9 @@ def test_flow_northern_ireland():
     page = form.submit().follow()
 
     assert page.has_text("Not available in Northern Ireland")
+
+    answer = models.Answer.objects.filter(session_id=session_id, page_name="country").get()
+    assert answer.data["country"] == "Northern Ireland"
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
