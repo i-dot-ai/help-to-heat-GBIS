@@ -44,6 +44,7 @@ VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 
 INSTALLED_APPS = [
     "help_to_heat.portal",
+    "help_to_heat.frontdoor",
     "rest_framework",
     "allauth",
     "allauth.account",
