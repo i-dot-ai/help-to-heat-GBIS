@@ -7,6 +7,11 @@ from . import schemas
 
 page_map = {}
 
+page_order = (
+    "country",
+    "own-property",
+)
+
 
 def register_page(name):
     def _inner(func):
@@ -32,7 +37,20 @@ class CountryView(utils.MethodDispatcher):
         if result["country"] == "Northern Ireland":
             return redirect("frontdoor:page", page_name="northern-ireland")
         else:
-            return self.get(request)
+            next_page_name = page_order[page_order.index("country") + 1]
+            return redirect("frontdoor:page", page_name=next_page_name)
+
+
+@register_page("own-property")
+class OwnPropertyView(utils.MethodDispatcher):
+    def get(self, request):
+        context = {"own_property_options": schemas.own_property_options}
+        return render(request, template_name="frontdoor/own-property.html", context=context)
+
+    def post(self, request):
+        result = schemas.OwnPropertySchema(unknown=marshmallow.EXCLUDE).load(request.POST)
+        next_page_name = page_order[page_order.index("country") + 1]
+        return redirect("frontdoor:page", page_name=next_page_name)
 
 
 def page_view(request, page_name):
