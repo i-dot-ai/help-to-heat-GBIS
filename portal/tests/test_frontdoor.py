@@ -1,3 +1,4 @@
+import uuid
 import unittest
 
 from django.conf import settings
@@ -15,6 +16,9 @@ def test_flow_northern_ireland():
 
     page = page.click(contains="Start")
     assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
 
     form = page.get_form()
     form["country"] = "Northern Ireland"

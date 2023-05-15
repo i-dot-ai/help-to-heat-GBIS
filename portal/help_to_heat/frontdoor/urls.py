@@ -4,5 +4,5 @@ from . import views
 
 frontdoor_patterns = [
     path("", views.homepage_view, name="homepage"),
-    path("<path:page_name>", views.page_view, name="page"),
+    path("<uuid:session_id>/<path:page_name>", views.page_view, name="page"),
 ]
