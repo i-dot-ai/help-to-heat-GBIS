@@ -1,5 +1,6 @@
 import marshmallow
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from help_to_heat import utils
 
 from . import schemas
@@ -16,7 +17,8 @@ def register_page(name):
 
 
 def homepage_view(request):
-    return render(request, template_name="frontdoor/homepage.html")
+    context = {"next_url": reverse("frontdoor:page", kwargs=dict(page_name="country"))}
+    return render(request, template_name="frontdoor/homepage.html", context=context)
 
 
 @register_page("country")
