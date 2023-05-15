@@ -2,8 +2,8 @@ import enum
 import types
 import uuid
 
-from django.http import HttpResponseNotAllowed
 from django.db import models
+from django.http import HttpResponseNotAllowed
 
 
 class ChoicesMeta(enum.EnumMeta):
@@ -84,7 +84,6 @@ class MethodDispatcher:
             return method(request, *args, **kwargs)
         else:
             return HttpResponseNotAllowed(request)
-
 
 
 class UUIDPrimaryKeyBase(models.Model):
