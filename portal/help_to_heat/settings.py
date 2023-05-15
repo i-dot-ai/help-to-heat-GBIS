@@ -168,3 +168,6 @@ else:
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
 
 SHOW_FRONTDOOR = env.bool("SHOW_FRONTDOOR", default=False)
+
+if SHOW_FRONTDOOR:
+    LOGOUT_REDIRECT_URL = "account_login"
