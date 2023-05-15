@@ -24,7 +24,7 @@ def homepage_view(request):
 @register_page("country")
 class CountryView(utils.MethodDispatcher):
     def get(self, request):
-        context = {"countries": schemas.countries_options}
+        context = {"country_options": schemas.country_options}
         return render(request, template_name="frontdoor/country.html", context=context)
 
     def post(self, request):
