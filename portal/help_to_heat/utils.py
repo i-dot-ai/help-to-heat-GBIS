@@ -1,7 +1,9 @@
 import enum
 import types
+import uuid
 
 from django.http import HttpResponseNotAllowed
+from django.db import models
 
 
 class ChoicesMeta(enum.EnumMeta):
@@ -82,3 +84,19 @@ class MethodDispatcher:
             return method(request, *args, **kwargs)
         else:
             return HttpResponseNotAllowed(request)
+
+
+
+class UUIDPrimaryKeyBase(models.Model):
+    class Meta:
+        abstract = True
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+
+class TimeStampedModel(models.Model):
+    created_at = models.DateTimeField(editable=False, auto_now_add=True)
+    modified_at = models.DateTimeField(editable=False, auto_now=True)
+
+    class Meta:
+        abstract = True

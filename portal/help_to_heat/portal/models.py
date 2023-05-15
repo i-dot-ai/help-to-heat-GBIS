@@ -1,5 +1,4 @@
 import string
-import uuid
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
@@ -44,22 +43,7 @@ SUPPLIER_VALUE_MAPPING = {
 }
 
 
-class UUIDPrimaryKeyBase(models.Model):
-    class Meta:
-        abstract = True
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-
-class TimeStampedModel(models.Model):
-    created_at = models.DateTimeField(editable=False, auto_now_add=True)
-    modified_at = models.DateTimeField(editable=False, auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class Supplier(UUIDPrimaryKeyBase, TimeStampedModel):
+class Supplier(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     name = models.CharField(max_length=256, unique=True)
     is_disabled = models.BooleanField(default=False, null=False, blank=False)
 
@@ -67,7 +51,7 @@ class Supplier(UUIDPrimaryKeyBase, TimeStampedModel):
         return f"<Supplier {self.name}>"
 
 
-class User(BaseUser, UUIDPrimaryKeyBase):
+class User(BaseUser, utils.UUIDPrimaryKeyBase):
     objects = BaseUserManager()
     username = None
     full_name = models.CharField(max_length=255, blank=True, null=True)
@@ -88,12 +72,12 @@ class User(BaseUser, UUIDPrimaryKeyBase):
         return super().save(*args, **kwargs)
 
 
-class ReferralDownload(UUIDPrimaryKeyBase, TimeStampedModel):
+class ReferralDownload(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     file_name = models.CharField(max_length=255, blank=True, null=True)
     last_downloaded_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)
 
 
-class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
+class Referral(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT, related_name="referrals")
     referral_download = models.ForeignKey(
@@ -118,7 +102,7 @@ class Referral(UUIDPrimaryKeyBase, TimeStampedModel):
         return f"<referral id={self.id} supplier={self.supplier}>"
 
 
-class EpcRating(TimeStampedModel):
+class EpcRating(utils.TimeStampedModel):
     uprn = models.CharField(max_length=12, primary_key=True)
     rating = models.CharField(max_length=32, choices=epc_rating_choices)
     date = models.DateField(blank=True, null=True)
@@ -127,7 +111,7 @@ class EpcRating(TimeStampedModel):
         return f"<EpcRating uprn={self.uprn}>"
 
 
-class PasswordResetRequest(UUIDPrimaryKeyBase, TimeStampedModel):
+class PasswordResetRequest(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, related_name="reset_requests")
     reset_sent_at = models.DateTimeField(editable=False, auto_now_add=True)
     one_time_password = models.CharField(max_length=128)
