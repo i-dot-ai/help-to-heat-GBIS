@@ -32,7 +32,7 @@ class CountryView(utils.MethodDispatcher):
         if result["country"] == "Northern Ireland":
             return redirect("frontdoor:page", page_name="northern-ireland")
         else:
-            return self.GET(request)
+            return self.get(request)
 
 
 def page_view(request, page_name):
