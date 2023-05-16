@@ -15,6 +15,7 @@ pages = (
     "council-tax-band",
     "benefits",
     "household-income",
+    "property-type",
     "end",
 )
 
@@ -121,6 +122,12 @@ class BenefitsView(PageView):
 class HouseholdIncomeView(PageView):
     def get_context(self, *args, **kwargs):
         return {"household_income_options": schemas.household_income_options}
+
+
+@register_page("property-type")
+class PropertyTypeView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"property_type_options": schemas.property_type_options}
 
 
 def page_view(request, session_id, page_name):

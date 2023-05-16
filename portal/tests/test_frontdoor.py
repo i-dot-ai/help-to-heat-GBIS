@@ -83,6 +83,12 @@ def test_flow():
     form["household_income"] = "Less than £31,000 a year"
     page = form.submit().follow()
 
+    assert page.has_one("h1:contains('What kind of property do you have?')")
+
+    form = page.get_form()
+    form["property_type"] = "House"
+    page = form.submit().follow()
+
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_back_button():

@@ -1,0 +1,42 @@
+{% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros %}
+
+{% block content %}
+<a href="{{prev_url}}" class="govuk-back-link">Back</a>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form method="post" novalidate>
+      {{csrf_input}}
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading">
+              What kind of property do you have?
+            </h1>
+          </legend>
+
+          <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                Why do we need to know this?
+              </span>
+            </summary>
+            <div class="govuk-details__text">
+              <p class="govuk-body">Energy use varies between different buildings, particularly for heating.</p>
+              <p class="govuk-body">Some home improvements are only possible or appropriate for certain buildings.</p>
+            </div>
+          </details>
+
+          {{macros.radios('property-type', 'property_type', property_type_options, data)}}
+
+        </fieldset>
+      </div>
+
+      <button class="govuk-button" data-module="govuk-button">
+        Continue
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

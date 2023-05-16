@@ -10,6 +10,7 @@ own_property_options = (
 council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
+property_type_options = ("House", "Bungalow", "Apartment, flat or masionette")
 
 
 class SessionSchema(Schema):
