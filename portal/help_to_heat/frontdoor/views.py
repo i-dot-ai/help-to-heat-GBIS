@@ -13,7 +13,8 @@ page_map = {}
 page_order = (
     "country",
     "own-property",
-    "address"
+    "address",
+    "end",
 )
 
 
