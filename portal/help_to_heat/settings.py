@@ -37,7 +37,7 @@ VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 # Application definition
 
 INSTALLED_APPS = [
-    "help_to_heat.ecoplus",
+    "help_to_heat.portal",
     "rest_framework",
     "allauth",
     "allauth.account",
@@ -141,7 +141,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "ecoplus.User"
+AUTH_USER_MODEL = "portal.User"
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
@@ -150,6 +150,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = "homepage"
+LOGIN_URL = "account_login"
 
 EMAIL_BACKEND_TYPE = env.str("EMAIL_BACKEND_TYPE")
 
@@ -165,3 +166,8 @@ elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
 else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
+
+SHOW_FRONTDOOR = env.bool("SHOW_FRONTDOOR", default=False)
+
+if SHOW_FRONTDOOR:
+    LOGOUT_REDIRECT_URL = "account_login"

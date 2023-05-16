@@ -1,7 +1,9 @@
 import datetime
+import random
+import string
 
 import django.db.utils
-from help_to_heat.ecoplus import models
+from help_to_heat.portal import models
 from nose.tools import assert_raises
 
 from . import utils
@@ -9,8 +11,9 @@ from . import utils
 
 @utils.with_client
 def test_epc_duplicates(client):
+    uprn = "".join(random.choices(string.digits, k=5))
     data = {
-        "uprn": "12345",
+        "uprn": uprn,
         "rating": "A",
         "date": datetime.date(2020, 12, 25),
     }
