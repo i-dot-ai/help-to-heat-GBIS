@@ -11,6 +11,13 @@ def url(path, *args, **kwargs):
     return reverse(path, args=args, kwargs=kwargs)
 
 
+def is_checked(data, name, value):
+    if str(data.get(name)) == str(value):
+        return "checked"
+    else:
+        return ""
+
+
 def environment(**options):
     extra_options = dict(
         loader=jinja2.ChoiceLoader(
@@ -34,6 +41,7 @@ def environment(**options):
             "DEBUG": settings.DEBUG,
             "space_name": settings.VCAP_APPLICATION.get("space_name", "unknown"),
             "slugify": slugify,
+            "is_checked": is_checked,
         }
     )
     return env
