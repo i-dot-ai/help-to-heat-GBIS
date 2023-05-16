@@ -76,3 +76,40 @@ def test_flow():
     form = page.get_form()
     form["benefits"] = "Yes"
     page = form.submit().follow()
+
+
+@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+def test_back_button():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Get home energy improvements')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    form = page.get_form()
+    form["country"] = "England"
+    page = form.submit().follow()
+
+    assert page.has_text("Do you own your property?")
+
+    form = page.get_form()
+    form["own_property"] = "Yes, I own my property and live in it"
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('What is the address of your property?')")
+
+    page = page.click(contains=("Back"))
+
+    form = page.get_form()
+    assert form["own_property"] == "Yes, I own my property and live in it"
+
+    page = page.click(contains=("Back"))
+
+    form = page.get_form()
+    assert form["country"] == "England"
