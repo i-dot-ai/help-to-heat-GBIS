@@ -10,7 +10,7 @@ from . import schemas
 
 page_map = {}
 
-page_order = (
+pages = (
     "country",
     "own-property",
     "address",
@@ -51,7 +51,7 @@ class PageView(utils.MethodDispatcher):
         return {}
 
     def handle_post(self, request, session_id, page_name, data):
-        next_page_name = page_order[page_order.index(page_name) + 1]
+        next_page_name = pages[pages.index(page_name) + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
@@ -64,7 +64,7 @@ class CountryView(PageView):
         if data["country"] == "Northern Ireland":
             return redirect("frontdoor:page", session_id=session_id, page_name="northern-ireland")
         else:
-            next_page_name = page_order[page_order.index(page_name) + 1]
+            next_page_name = pages[pages.index(page_name) + 1]
             return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
