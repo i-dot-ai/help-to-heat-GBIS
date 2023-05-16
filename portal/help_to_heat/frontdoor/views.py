@@ -65,8 +65,9 @@ def get_prev_next_urls(session_id, page_name):
 class PageView(utils.MethodDispatcher):
     def get(self, request, session_id, page_name):
         prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
+        data = interface.api.session.get_answer(session_id, page_name)
         extra_context = self.get_context(request, session_id, page_name)
-        context = {"prev_url": prev_page_url, "next_url": next_page_url, **extra_context}
+        context = {"data": data, "prev_url": prev_page_url, "next_url": next_page_url, **extra_context}
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
     def post(self, request, session_id, page_name):
