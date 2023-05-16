@@ -192,7 +192,7 @@ def with_schema(default=None, load=None, dump=None):
     return _decorator
 
 
-class Facade:
+class Interface:
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
