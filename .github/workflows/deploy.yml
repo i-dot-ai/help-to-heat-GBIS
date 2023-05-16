@@ -9,6 +9,7 @@ on:
       - sandbox
       - develop
       - staging
+      - suppliers
 
 permissions:
   packages: write
@@ -88,7 +89,7 @@ jobs:
               "temp": {"CF_SPACE": "temp"},
               "develop": {"CF_SPACE": "develop"},
               "staging": {"CF_SPACE": "staging"},
-              "pentest": {"CF_SPACE": "pentest"},
+              "suppliers": {"CF_SPACE": "suppliers"},
               "feature/deploy-from-main": {"CF_SPACE": "flibble"}
             }
 
