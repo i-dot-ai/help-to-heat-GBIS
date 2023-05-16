@@ -13,6 +13,7 @@ page_map = {}
 page_order = (
     "country",
     "own-property",
+    "address"
 )
 
 
@@ -58,7 +59,7 @@ class OwnPropertyView(utils.MethodDispatcher):
     def post(self, request, session_id, page_name):
         result = schemas.SessionSchema(unknown=marshmallow.EXCLUDE).load(request.POST)
         models.Answer.objects.create(data=result, session_id=session_id, page_name=page_name)
-        next_page_name = page_order[page_order.index("country") + 1]
+        next_page_name = page_order[page_order.index("own-property") + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 

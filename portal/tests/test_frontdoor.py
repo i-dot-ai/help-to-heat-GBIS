@@ -57,3 +57,5 @@ def test_flow():
 
     answer = models.Answer.objects.filter(session_id=session_id, page_name="own-property").get()
     assert answer.data["own_property"] == "Yes, I own my property and live in it"
+
+    assert page.has_one("h1:contains('What is the address of your property?')")
