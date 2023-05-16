@@ -37,9 +37,36 @@ def homepage_view(request):
     return render(request, template_name="frontdoor/homepage.html", context=context)
 
 
+def get_prev_next_page_name(page_name):
+    assert page_name in pages
+    page_index = pages.index(page_name)
+    if page_index == 0:
+        prev_page_name = None
+    else:
+        prev_page_name = pages[page_index - 1]
+    if page_index + 1 == len(pages):
+        next_page_name = None
+    else:
+        next_page_name = pages[page_index + 1]
+    return prev_page_name, next_page_name
+
+
+def get_prev_next_urls(session_id, page_name):
+    prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+    prev_page_url = prev_page_name and reverse(
+        "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
+    )
+    next_page_url = next_page_name and reverse(
+        "frontdoor:page", kwargs=dict(session_id=session_id, page_name=next_page_name)
+    )
+    return prev_page_url, next_page_url
+
+
 class PageView(utils.MethodDispatcher):
     def get(self, request, session_id, page_name):
-        context = self.get_context(request, session_id, page_name)
+        prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
+        extra_context = self.get_context(request, session_id, page_name)
+        context = {"prev_url": prev_page_url, "next_url": next_page_url, **extra_context}
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
     def post(self, request, session_id, page_name):
