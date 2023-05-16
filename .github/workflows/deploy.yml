@@ -28,11 +28,13 @@ jobs:
 
     strategy:
       matrix:
-        app: [help-to-heat, help-to-heat-portal]
+        app: [help-to-heat, help-to-heat-portal, help-to-heat-frontdoor]
         include:
           - app: help-to-heat
             dockerfile: docker/web/Dockerfile
           - app: help-to-heat-portal
+            dockerfile: docker/portal/Dockerfile
+          - app: help-to-heat-frontdoor
             dockerfile: docker/portal/Dockerfile
 
     steps:
@@ -69,7 +71,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [help-to-heat, help-to-heat-portal]
+        app: [help-to-heat, help-to-heat-portal, help-to-heat-frontdoor]
 
     steps:
       - uses: actions/checkout@v3
