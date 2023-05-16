@@ -6,7 +6,7 @@ from django.urls import reverse
 from help_to_heat import utils
 from help_to_heat.frontdoor import models
 
-from . import schemas
+from . import interface, schemas
 
 page_map = {}
 
@@ -70,8 +70,7 @@ class PageView(utils.MethodDispatcher):
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
     def post(self, request, session_id, page_name):
-        data = schemas.SessionSchema(unknown=marshmallow.EXCLUDE).load(request.POST)
-        models.Answer.objects.create(data=data, session_id=session_id, page_name=page_name)
+        data = interface.api.session.save_answer(session_id, page_name, request.POST)
         return self.handle_post(request, session_id, page_name, data)
 
     def get_context(self, *args, **kwargs):
