@@ -102,6 +102,18 @@ def test_flow():
     form["property_type"] = "House"
     page = form.submit().follow()
 
+    data = interface.api.session.get_answer(session_id, page_name="property-type")
+    assert data["property_type"] == "House"
+
+    assert page.has_one("h1:contains('Number of bedrooms')")
+
+    form = page.get_form()
+    form["number_of_bedrooms"] = "Two bedrooms"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="number-of-bedrooms")
+    assert data["number_of_bedrooms"] == "Two bedrooms"
+
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_back_button():

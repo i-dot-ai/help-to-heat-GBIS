@@ -119,6 +119,12 @@ class PropertyTypeView(PageView):
         return {"property_type_options": schemas.property_type_options}
 
 
+@register_page("number-of-bedrooms")
+class NumberOfBedroomsView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"number_of_bedrooms_options": schemas.number_of_bedrooms_options}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:

@@ -24,6 +24,7 @@ council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
 property_type_options = ("House", "Bungalow", "Apartment, flat or masionette")
+number_of_bedrooms_options = ("Studio", "One bedroom", "Two bedrooms", "Three or more bedrooms")
 
 
 class SessionSchema(Schema):
@@ -35,3 +36,4 @@ class SessionSchema(Schema):
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))
     property_type = fields.String(validate=validate.OneOf(property_type_options))
+    number_of_bedrooms = fields.String(validate=validate.OneOf(number_of_bedrooms_options))
