@@ -14,6 +14,7 @@ page_order = (
     "country",
     "own-property",
     "address",
+    "council-tax-band",
     "end",
 )
 
@@ -74,6 +75,19 @@ class AddressView(utils.MethodDispatcher):
         result = schemas.SessionSchema(unknown=marshmallow.EXCLUDE).load(request.POST)
         models.Answer.objects.create(data=result, session_id=session_id, page_name=page_name)
         next_page_name = page_order[page_order.index("address") + 1]
+        return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+
+
+@register_page("council-tax-band")
+class CouncilTaxBandView(utils.MethodDispatcher):
+    def get(self, request, session_id, page_name):
+        context = {"council_tax_band_options": schemas.council_tax_band_options}
+        return render(request, template_name="frontdoor/council-tax-band.html", context=context)
+
+    def post(self, request, session_id, page_name):
+        result = schemas.SessionSchema(unknown=marshmallow.EXCLUDE).load(request.POST)
+        models.Answer.objects.create(data=result, session_id=session_id, page_name=page_name)
+        next_page_name = page_order[page_order.index("council-tax-band") + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 

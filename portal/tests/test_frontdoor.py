@@ -64,3 +64,9 @@ def test_flow():
     form["address_line_1"] = "999 Letsby Avenue"
     form["postcode"] = "PO99 9PO"
     page = form.submit().follow()
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")
+
+    form = page.get_form()
+    form["council_tax_band"] = "B"
+    page = form.submit().follow()
