@@ -1,4 +1,5 @@
 {% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros %}
 
 {% block content %}
   <a href="#" class="govuk-back-link">Back</a>
@@ -14,17 +15,7 @@
               </h1>
             </legend>
 
-            <div class="govuk-radios" data-module="govuk-radios">
-              {% for country_option in country_options %}
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="country-{{slugify(country_option)}}" name="country" type="radio"
-                    value="{{country_option}}">
-                  <label class="govuk-label govuk-radios__label" for="country">
-                    {{country_option}}
-                  </label>
-                </div>
-              {% endfor %}
-            </div>
+            {{macros.radios('country', 'country', country_options)}}
 
           </fieldset>
         </div>

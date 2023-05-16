@@ -1,4 +1,5 @@
 {% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros %}
 
 {% block content %}
   <a href="{{prev_url}}" class="govuk-back-link">Back</a>
@@ -14,17 +15,7 @@
               </h1>
             </legend>
 
-            <div class="govuk-radios" data-module="govuk-radios">
-              {% for own_property_option in own_property_options %}
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="own-property-{{slugify(own_property_option)}}" name="own_property" type="radio"
-                    value="{{own_property_option}}">
-                  <label class="govuk-label govuk-radios__label" for="own-property-{{slugify(own_property_option)}}">
-                    {{own_property_option}}
-                  </label>
-                </div>
-              {% endfor %}
-            </div>
+            {{macros.radios('own-property', 'own_property', own_property_options)}}
 
           </fieldset>
         </div>
