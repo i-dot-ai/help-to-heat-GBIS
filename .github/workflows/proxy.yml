@@ -6,6 +6,7 @@ on:
     branches:
       - sandbox
       - staging
+      - suppliers
     paths:
       - .github/workflows/proxy.yml
       - 'proxy/**'
@@ -14,7 +15,7 @@ on:
       - temp
       - demo
       - sandbox
-      - pentest
+      - suppliers
       - develop
       - prod
 
