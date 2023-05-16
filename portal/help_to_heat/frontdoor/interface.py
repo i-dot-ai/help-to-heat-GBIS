@@ -19,7 +19,11 @@ class Session(Entity):
     @with_schema(load=SaveAnswerSchema, dump=schemas.SessionSchema)
     @register_event(models.Event, "Answer saved")
     def save_answer(self, session_id, page_name, data):
-        answer = models.Answer.objects.create(data=data, session_id=session_id, page_name=page_name)
+        answer, created = models.Answer.objects.update_or_create(
+            session_id=session_id,
+            page_name=page_name,
+            defaults={"data": data},
+        )
         return answer.data
 
     @with_schema(load=GetAnswerSchema, dump=schemas.SessionSchema)
