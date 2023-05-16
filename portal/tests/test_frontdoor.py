@@ -59,3 +59,8 @@ def test_flow():
     assert answer.data["own_property"] == "Yes, I own my property and live in it"
 
     assert page.has_one("h1:contains('What is the address of your property?')")
+
+    form = page.get_form()
+    form["address_line_1"] = "999 Letsby Avenue"
+    form["postcode"] = "PO99 9PO"
+    page = form.submit().follow()

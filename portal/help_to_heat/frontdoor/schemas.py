@@ -12,3 +12,5 @@ own_property_options = (
 class SessionSchema(Schema):
     country = fields.String(validate=validate.OneOf(country_options))
     own_property = fields.String(validate=validate.OneOf(own_property_options))
+    address_line_1 = fields.String()
+    postcode = fields.String()

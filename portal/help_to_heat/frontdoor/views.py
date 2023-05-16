@@ -64,6 +64,19 @@ class OwnPropertyView(utils.MethodDispatcher):
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
+@register_page("address")
+class AddressView(utils.MethodDispatcher):
+    def get(self, request, session_id, page_name):
+        context = {}
+        return render(request, template_name="frontdoor/address.html", context=context)
+
+    def post(self, request, session_id, page_name):
+        result = schemas.SessionSchema(unknown=marshmallow.EXCLUDE).load(request.POST)
+        models.Answer.objects.create(data=result, session_id=session_id, page_name=page_name)
+        next_page_name = page_order[page_order.index("address") + 1]
+        return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:
