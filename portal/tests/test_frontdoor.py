@@ -52,8 +52,8 @@ def test_flow():
     assert page.has_text("Do you own your property?")
 
     form = page.get_form()
-    form["own-property"] = "Yes, I own my property and live in it"
+    form["own_property"] = "Yes, I own my property and live in it"
     page = form.submit().follow()
 
     answer = models.Answer.objects.filter(session_id=session_id, page_name="own-property").get()
-    assert answer.data["own-property"] == "Yes, I own my property and live in it"
+    assert answer.data["own_property"] == "Yes, I own my property and live in it"
