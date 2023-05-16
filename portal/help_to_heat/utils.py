@@ -119,10 +119,10 @@ def get_arguments(func, *args, **kwargs):
     return arguments
 
 
-def _register_event(event_name, arguments):
+def _register_event(EventModel, event_name, arguments):
     event_names.add(event_name)
     arguments = {key: value for (key, value) in arguments.items() if key != "self"}
-    event = models.Event(name=event_name, data=arguments)
+    event = EventModel(name=event_name, data=arguments)
     event.save()
 
 
@@ -133,14 +133,14 @@ def resolve_schema(schema):
     return schema
 
 
-def register_event(event_name):
+def register_event(EventModel, event_name):
     def _decorator(func):
         func.event_name = event_name
 
         @functools.wraps(func)
         def _inner(*args, **kwargs):
             arguments = get_arguments(func, *args, **kwargs)
-            _register_event(event_name, arguments)
+            _register_event(EventModel, event_name, arguments)
             return func(*args, **kwargs)
 
         return _inner
