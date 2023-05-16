@@ -40,7 +40,7 @@ class CountryView(utils.MethodDispatcher):
         return render(request, template_name="frontdoor/country.html", context=context)
 
     def post(self, request, session_id, page_name):
-        result = schemas.CountrySchema(unknown=marshmallow.EXCLUDE).load(request.POST)
+        result = schemas.SessionSchema(unknown=marshmallow.EXCLUDE).load(request.POST)
         models.Answer.objects.create(data=result, session_id=session_id, page_name=page_name)
         if result["country"] == "Northern Ireland":
             return redirect("frontdoor:page", session_id=session_id, page_name="northern-ireland")
@@ -56,7 +56,7 @@ class OwnPropertyView(utils.MethodDispatcher):
         return render(request, template_name="frontdoor/own-property.html", context=context)
 
     def post(self, request, session_id, page_name):
-        result = schemas.OwnPropertySchema(unknown=marshmallow.EXCLUDE).load(request.POST)
+        result = schemas.SessionSchema(unknown=marshmallow.EXCLUDE).load(request.POST)
         models.Answer.objects.create(data=result, session_id=session_id, page_name=page_name)
         next_page_name = page_order[page_order.index("country") + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)

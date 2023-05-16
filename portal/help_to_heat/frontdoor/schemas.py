@@ -9,11 +9,6 @@ own_property_options = (
 )
 
 
-class CountrySchema(Schema):
+class SessionSchema(Schema):
     country = fields.String(validate=validate.OneOf(country_options))
-
-
-class OwnPropertySchema(Schema):
-    own_property = fields.String(
-        data_key="own-property", attribute="own-property", validate=validate.OneOf(own_property_options)
-    )
+    own_property = fields.String(validate=validate.OneOf(own_property_options))
