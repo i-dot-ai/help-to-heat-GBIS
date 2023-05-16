@@ -5,7 +5,7 @@ from . import models, schemas
 
 
 class SaveAnswerSchema(marshmallow.Schema):
-    data = marshmallow.fields.Raw()
+    data = marshmallow.fields.Nested(schemas.SessionSchema)
     session_id = marshmallow.fields.UUID()
     page_name = marshmallow.fields.String()
 
