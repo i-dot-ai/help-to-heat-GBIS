@@ -70,3 +70,9 @@ def test_flow():
     form = page.get_form()
     form["council_tax_band"] = "B"
     page = form.submit().follow()
+
+    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+
+    form = page.get_form()
+    form["benefits"] = "Yes"
+    page = form.submit().follow()

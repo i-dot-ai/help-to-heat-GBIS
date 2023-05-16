@@ -15,6 +15,7 @@ page_order = (
     "own-property",
     "address",
     "council-tax-band",
+    "benefits",
     "end",
 )
 
@@ -82,6 +83,12 @@ class AddressView(PageView):
 class CouncilTaxBandView(PageView):
     def get_context(self, *args, **kwargs):
         return {"council_tax_band_options": schemas.council_tax_band_options}
+
+
+@register_page("benefits")
+class BenefitsView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"benefits_options": schemas.yes_no_options}
 
 
 def page_view(request, session_id, page_name):

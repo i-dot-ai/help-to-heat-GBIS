@@ -8,6 +8,7 @@ own_property_options = (
     "I am a property owner but lease my property to one or more tenants",
 )
 council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
+yes_no_options = ("Yes", "No")
 
 
 class SessionSchema(Schema):
@@ -16,3 +17,4 @@ class SessionSchema(Schema):
     address_line_1 = fields.String()
     postcode = fields.String()
     council_tax_band = fields.String(validate=validate.OneOf(council_tax_band_options))
+    benefits = fields.String(validate=validate.OneOf(yes_no_options))
