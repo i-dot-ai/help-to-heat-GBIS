@@ -13,3 +13,11 @@ def test_answers():
 
     result = interface.api.session.get_answer(session_id=session_id, page_name=page_name)
     assert result == expected, (result, expected)
+
+
+def test_answer_missing():
+    session_id = uuid.uuid4()
+    page_name = "flibble"
+    expected = {}
+    result = interface.api.session.get_answer(session_id=session_id, page_name=page_name)
+    assert result == expected, (result, expected)

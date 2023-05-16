@@ -24,8 +24,11 @@ class Session(Entity):
 
     @with_schema(load=GetAnswerSchema, dump=schemas.SessionSchema)
     def get_answer(self, session_id, page_name):
-        answer = models.Answer.objects.get(session_id=session_id, page_name=page_name)
-        return answer.data
+        try:
+            answer = models.Answer.objects.get(session_id=session_id, page_name=page_name)
+            return answer.data
+        except models.Answer.DoesNotExist:
+            return {}
 
 
 api = Interface(session=Session())
