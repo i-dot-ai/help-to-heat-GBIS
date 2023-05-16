@@ -2,7 +2,7 @@ import unittest
 import uuid
 
 from django.conf import settings
-from help_to_heat.frontdoor import models
+from help_to_heat.frontdoor import interface
 
 from . import utils
 
@@ -27,8 +27,8 @@ def test_flow_northern_ireland():
 
     assert page.has_text("Not available in Northern Ireland")
 
-    answer = models.Answer.objects.filter(session_id=session_id, page_name="country").get()
-    assert answer.data["country"] == "Northern Ireland"
+    data = interface.api.session.get_answer(session_id, page_name="country")
+    assert data["country"] == "Northern Ireland"
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
@@ -55,8 +55,8 @@ def test_flow():
     form["own_property"] = "Yes, I own my property and live in it"
     page = form.submit().follow()
 
-    answer = models.Answer.objects.filter(session_id=session_id, page_name="own-property").get()
-    assert answer.data["own_property"] == "Yes, I own my property and live in it"
+    data = interface.api.session.get_answer(session_id, page_name="own-property")
+    assert data["own_property"] == "Yes, I own my property and live in it"
 
     assert page.has_one("h1:contains('What is the address of your property?')")
 
@@ -65,11 +65,18 @@ def test_flow():
     form["postcode"] = "PO99 9PO"
     page = form.submit().follow()
 
+    data = interface.api.session.get_answer(session_id, page_name="address")
+    assert data["address_line_1"] == "999 Letsby Avenue"
+    assert data["postcode"] == "PO99 9PO"
+
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
 
     form = page.get_form()
     form["council_tax_band"] = "B"
     page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="council-tax-band")
+    assert data["council_tax_band"] == "B"
 
     assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
 
@@ -77,11 +84,17 @@ def test_flow():
     form["benefits"] = "Yes"
     page = form.submit().follow()
 
+    data = interface.api.session.get_answer(session_id, page_name="benefits")
+    assert data["benefits"] == "Yes"
+
     assert page.has_one("h1:contains('What is your annual household income?')")
 
     form = page.get_form()
     form["household_income"] = "Less than £31,000 a year"
     page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="household-income")
+    assert data["household_income"] == "Less than £31,000 a year"
 
     assert page.has_one("h1:contains('What kind of property do you have?')")
 

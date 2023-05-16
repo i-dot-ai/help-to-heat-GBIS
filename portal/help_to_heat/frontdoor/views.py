@@ -8,17 +8,6 @@ from . import interface, schemas
 
 page_map = {}
 
-pages = (
-    "country",
-    "own-property",
-    "address",
-    "council-tax-band",
-    "benefits",
-    "household-income",
-    "property-type",
-    "end",
-)
-
 
 def register_page(name):
     def _inner(func):
@@ -38,16 +27,16 @@ def homepage_view(request):
 
 
 def get_prev_next_page_name(page_name):
-    assert page_name in pages
-    page_index = pages.index(page_name)
+    assert page_name in schemas.pages
+    page_index = schemas.pages.index(page_name)
     if page_index == 0:
         prev_page_name = None
     else:
-        prev_page_name = pages[page_index - 1]
-    if page_index + 1 == len(pages):
+        prev_page_name = schemas.pages[page_index - 1]
+    if page_index + 1 == len(schemas.pages):
         next_page_name = None
     else:
-        next_page_name = pages[page_index + 1]
+        next_page_name = schemas.pages[page_index + 1]
     return prev_page_name, next_page_name
 
 
@@ -78,7 +67,7 @@ class PageView(utils.MethodDispatcher):
         return {}
 
     def handle_post(self, request, session_id, page_name, data):
-        next_page_name = pages[pages.index(page_name) + 1]
+        next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
@@ -91,7 +80,7 @@ class CountryView(PageView):
         if data["country"] == "Northern Ireland":
             return redirect("frontdoor:page", session_id=session_id, page_name="northern-ireland")
         else:
-            next_page_name = pages[pages.index(page_name) + 1]
+            next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
             return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 

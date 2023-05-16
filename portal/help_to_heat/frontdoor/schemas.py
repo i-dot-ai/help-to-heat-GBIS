@@ -1,5 +1,18 @@
 from marshmallow import Schema, fields, validate
 
+pages = (
+    "country",
+    "own-property",
+    "address",
+    "council-tax-band",
+    "benefits",
+    "household-income",
+    "property-type",
+    "number-of-bedrooms",
+    "end",
+)
+
+
 country_options = ("England", "Scotland", "Wales", "Northern Ireland")
 own_property_options = (
     "Yes, I own my property and live in it",
