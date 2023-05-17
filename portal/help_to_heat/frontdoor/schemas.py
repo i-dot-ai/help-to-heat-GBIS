@@ -14,6 +14,7 @@ pages = (
     "loft",
     "loft-access",
     "schemes",
+    "supplier",
     "end",
 )
 
@@ -44,11 +45,22 @@ wall_insulation_options = (
     "I don't know",
 )
 loft_access_options = ("Yes, there is access to my loft", "No, there is no access to my loft")
-
-schemes_map = {
-    "Yes": ("Great British Insulation scheme", "Energy Company Obligation 4"),
-    "No": ("Great British Insulation scheme",),
-}
+supplier_options = (
+    "British Gas",
+    "Bulb",
+    "E Energy",
+    "Ecotricity",
+    "EDF",
+    "EON",
+    "ESB",
+    "Foxglove",
+    "Octopus",
+    "OVO",
+    "Scottish Power",
+    "Shell",
+    "Utilita",
+    "Utility Warehouse",
+)
 
 
 class SessionSchema(Schema):
@@ -65,3 +77,10 @@ class SessionSchema(Schema):
     wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))
     loft = fields.String(validate=validate.OneOf(yes_no_options))
     loft_access = fields.String(validate=validate.OneOf(loft_access_options))
+    supplier = fields.String(validate=validate.OneOf(supplier_options))
+
+
+schemes_map = {
+    "Yes": ("Great British Insulation scheme", "Energy Company Obligation 4"),
+    "No": ("Great British Insulation scheme",),
+}

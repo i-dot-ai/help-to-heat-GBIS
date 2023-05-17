@@ -157,6 +157,12 @@ class SchemesView(PageView):
         return {"eligible_schemes": eligible_schemes}
 
 
+@register_page("supplier")
+class SupplierView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"supplier_options": schemas.supplier_options}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:

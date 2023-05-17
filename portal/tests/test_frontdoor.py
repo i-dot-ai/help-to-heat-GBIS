@@ -98,6 +98,9 @@ def test_happy_flow():
     form = page.get_form()
     page = form.submit().follow()
 
+    assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
+    page = _check_page(page, "supplier", "supplier", "Octopus")
+
 
 def _make_check_page(session_id):
     def _check_page(page, page_name, key, answer):
