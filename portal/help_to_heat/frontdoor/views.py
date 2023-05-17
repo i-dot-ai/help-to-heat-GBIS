@@ -149,6 +149,14 @@ class LoftAccessView(PageView):
         return {"loft_access_options": schemas.loft_access_options}
 
 
+@register_page("schemes")
+class SchemesView(PageView):
+    def get_context(self, request, session_id, *args, **kwargs):
+        benefits_data = interface.api.session.get_answer(session_id, "benefits")
+        eligible_schemes = schemas.schemes_map[benefits_data["benefits"]]
+        return {"eligible_schemes": eligible_schemes}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:

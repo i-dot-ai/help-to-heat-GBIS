@@ -92,6 +92,12 @@ def test_flow():
     assert page.has_one("h1:contains('Is there access to your loft?')")
     page = _check_page(page, "loft-access", "loft_access", "Yes, there is access to my loft")
 
+    assert page.has_one("h1:contains('Information based on your answers')")
+    assert page.has_text("Great British Insulation scheme")
+    assert page.has_text("Energy Company Obligation 4")
+    form = page.get_form()
+    page = form.submit().follow()
+
 
 def _make_check_page(session_id):
     def _check_page(page, page_name, key, answer):

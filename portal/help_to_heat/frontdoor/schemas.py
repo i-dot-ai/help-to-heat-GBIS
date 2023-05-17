@@ -13,6 +13,7 @@ pages = (
     "wall-insulation",
     "loft",
     "loft-access",
+    "schemes",
     "end",
 )
 
@@ -43,6 +44,11 @@ wall_insulation_options = (
     "I don't know",
 )
 loft_access_options = ("Yes, there is access to my loft", "No, there is no access to my loft")
+
+schemes_map = {
+    "Yes": ("Great British Insulation scheme", "Energy Company Obligation 4"),
+    "No": ("Great British Insulation scheme",),
+}
 
 
 class SessionSchema(Schema):
