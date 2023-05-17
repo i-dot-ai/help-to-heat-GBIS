@@ -14,6 +14,7 @@ govuk_email_backend=(
     staging
     testing
     suppliers
+    sandbox
 )
 
 live_notify_api=(
