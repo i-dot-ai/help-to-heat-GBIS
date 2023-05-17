@@ -1,4 +1,4 @@
-name: Set ETF App ENVs
+name: Set help-to-heat App ENVs
 
 env:
   DOCKER_BUILDKIT: 1
@@ -58,7 +58,7 @@ jobs:
         run: ./cf login -a api.london.cloud.service.gov.uk -u "${{ secrets.CF_USER }}" -p "${{ secrets.CF_PASSWORD }}" -o co-i-ai -s "$CF_SPACE"
 
 
-      - name: Run etf ENVs Script
+      - name: Run help-to-heat ENVs Script
         working-directory: ./cfscripts
         env:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
@@ -70,7 +70,7 @@ jobs:
           NOTIFY_PLAIN_EMAIL_TEMPLATE_ID: ${{ secrets.NOTIFY_PLAIN_EMAIL_TEMPLATE_ID }}
         run: |
             echo "THE CF_SPACE IS: ${CF_SPACE}"
-            ./etf-envs.sh
+            ./help-to-heat-envs.sh
 
       - uses: actions/checkout@v2
       - name: Slack Notification
