@@ -45,18 +45,14 @@ def test_flow():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
+    _check_page = _make_check_page(session_id)
+
     form = page.get_form()
     form["country"] = "England"
     page = form.submit().follow()
 
     assert page.has_text("Do you own your property?")
-
-    form = page.get_form()
-    form["own_property"] = "Yes, I own my property and live in it"
-    page = form.submit().follow()
-
-    data = interface.api.session.get_answer(session_id, page_name="own-property")
-    assert data["own_property"] == "Yes, I own my property and live in it"
+    page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
     assert page.has_one("h1:contains('What is the address of your property?')")
 
@@ -70,70 +66,41 @@ def test_flow():
     assert data["postcode"] == "PO99 9PO"
 
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
-
-    form = page.get_form()
-    form["council_tax_band"] = "B"
-    page = form.submit().follow()
-
-    data = interface.api.session.get_answer(session_id, page_name="council-tax-band")
-    assert data["council_tax_band"] == "B"
+    page = _check_page(page, "council-tax-band", "council_tax_band", "B")
 
     assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
-
-    form = page.get_form()
-    form["benefits"] = "Yes"
-    page = form.submit().follow()
-
-    data = interface.api.session.get_answer(session_id, page_name="benefits")
-    assert data["benefits"] == "Yes"
+    page = _check_page(page, "benefits", "benefits", "Yes")
 
     assert page.has_one("h1:contains('What is your annual household income?')")
-
-    form = page.get_form()
-    form["household_income"] = "Less than £31,000 a year"
-    page = form.submit().follow()
-
-    data = interface.api.session.get_answer(session_id, page_name="household-income")
-    assert data["household_income"] == "Less than £31,000 a year"
+    page = _check_page(page, "household-income", "household_income", "Less than £31,000 a year")
 
     assert page.has_one("h1:contains('What kind of property do you have?')")
-
-    form = page.get_form()
-    form["property_type"] = "House"
-    page = form.submit().follow()
-
-    data = interface.api.session.get_answer(session_id, page_name="property-type")
-    assert data["property_type"] == "House"
+    page = _check_page(page, "property-type", "property_type", "House")
 
     assert page.has_one("h1:contains('Number of bedrooms')")
+    page = _check_page(page, "number-of-bedrooms", "number_of_bedrooms", "Two bedrooms")
 
-    form = page.get_form()
-    form["number_of_bedrooms"] = "Two bedrooms"
-    page = form.submit().follow()
+    assert page.has_one("h1:contains('What kind of walls does your property have?')")
+    page = _check_page(page, "wall-type", "wall_type", "Cavity walls")
 
-    data = interface.api.session.get_answer(session_id, page_name="number-of-bedrooms")
-    assert data["number_of_bedrooms"] == "Two bedrooms"
+    assert page.has_one("h1:contains('Are your walls insulated?')")
+    page = _check_page(page, "wall-insulation", "wall_insulation", "No they are not insulated")
 
-    form = page.get_form()
-    form["wall_type"] = "Cavity walls"
-    page = form.submit().follow()
+    assert page.has_one("h1:contains('Does this property have a loft?')")
+    page = _check_page(page, "loft", "loft", "No")
 
-    data = interface.api.session.get_answer(session_id, page_name="wall-type")
-    assert data["wall_type"] == "Cavity walls"
 
-    form = page.get_form()
-    form["wall_insulation"] = "No they are not insulated"
-    page = form.submit().follow()
+def _make_check_page(session_id):
+    def _check_page(page, page_name, key, answer):
+        form = page.get_form()
+        form[key] = answer
+        page = form.submit().follow()
 
-    data = interface.api.session.get_answer(session_id, page_name="wall-insulation")
-    assert data["wall_insulation"] == "No they are not insulated"
+        data = interface.api.session.get_answer(session_id, page_name=page_name)
+        assert data[key] == answer
+        return page
 
-    form = page.get_form()
-    form["loft"] = "No"
-    page = form.submit().follow()
-
-    data = interface.api.session.get_answer(session_id, page_name="loft")
-    assert data["loft"] == "No"
+    return _check_page
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
