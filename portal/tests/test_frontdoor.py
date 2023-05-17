@@ -32,7 +32,7 @@ def test_flow_northern_ireland():
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
-def test_flow():
+def test_happy_flow():
     client = utils.get_client()
     page = client.get("/")
 
