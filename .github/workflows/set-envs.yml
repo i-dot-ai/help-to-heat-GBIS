@@ -10,6 +10,7 @@ on:
       - develop
       - staging
       - testing
+      - suppliers
 
 jobs:
   add_environment_vars:
@@ -33,6 +34,7 @@ jobs:
               "develop": {"CF_SPACE": "develop"},
               "staging": {"CF_SPACE": "staging"},
               "testing": {"CF_SPACE": "testing"},
+              "suppliers": {"CF_SPACE": "suppliers"},
               "feature/deploy-from-main": {"CF_SPACE": "flibble"}
             }
 

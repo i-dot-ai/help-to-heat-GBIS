@@ -13,6 +13,7 @@ govuk_email_backend=(
     develop
     staging
     testing
+    suppliers
 )
 
 live_notify_api=(
@@ -54,7 +55,7 @@ do
     if grep -q "^help-to-heat" <<< "$value"; then
         echo "Adding envs to: ${value}..........."
 
-        if [ "$value" == "help-to-heat-portal" ]; then
+        if [ "$value" == "help-to-heat-portal" ] || [ "$value" == "help-to-heat-frontdoor" ]; then
             $(./cf set-env ${value} DJANGO_SECRET_KEY ${PROD_DJANGO_SECRET_KEY} &> /dev/null)
 
             if [ $gov_notify ]; then
@@ -75,7 +76,7 @@ do
             fi
         fi
 
-        if grep -q "^help-to-heat-" <<< "$value" && ! grep -q "^help-to-heat-portal-" <<< "$value"; then
+        if grep -q "^help-to-heat-" <<< "$value" && ! grep -q "^help-to-heat-portal-" <<< "$value" && ! grep -q "^help-to-heat-frontdoor-" <<< "$value"; then
             $(./cf set-env ${value} UPRN_API_KEY ${UPRN_API_KEY} &> /dev/null)
         fi
     fi
