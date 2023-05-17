@@ -11,6 +11,7 @@ pages = (
     "number-of-bedrooms",
     "wall-type",
     "wall-insulation",
+    "loft",
     "end",
 )
 
@@ -54,3 +55,4 @@ class SessionSchema(Schema):
     number_of_bedrooms = fields.String(validate=validate.OneOf(number_of_bedrooms_options))
     wall_type = fields.String(validate=validate.OneOf(wall_type_options))
     wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))
+    loft = fields.String(validate=validate.OneOf(yes_no_options))

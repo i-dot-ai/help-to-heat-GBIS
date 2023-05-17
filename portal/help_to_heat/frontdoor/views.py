@@ -137,6 +137,12 @@ class WallInsulationView(PageView):
         return {"wall_insulation_options": schemas.wall_insulation_options}
 
 
+@register_page("loft")
+class LoftView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"loft_options": schemas.yes_no_options}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:
