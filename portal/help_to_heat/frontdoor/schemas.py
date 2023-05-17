@@ -10,6 +10,7 @@ pages = (
     "property-type",
     "number-of-bedrooms",
     "wall-type",
+    "wall-insulation",
     "end",
 )
 
@@ -33,6 +34,12 @@ wall_type_options = (
     "I don't see my option listed",
     "I don't know",
 )
+wall_insulation_options = (
+    "Yes they are all insulated",
+    "Some are insulated, some are not",
+    "No they are not insulated",
+    "I don't know",
+)
 
 
 class SessionSchema(Schema):
@@ -46,3 +53,4 @@ class SessionSchema(Schema):
     property_type = fields.String(validate=validate.OneOf(property_type_options))
     number_of_bedrooms = fields.String(validate=validate.OneOf(number_of_bedrooms_options))
     wall_type = fields.String(validate=validate.OneOf(wall_type_options))
+    wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))

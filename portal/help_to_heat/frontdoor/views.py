@@ -131,6 +131,12 @@ class WallTypeView(PageView):
         return {"wall_type_options": schemas.wall_type_options}
 
 
+@register_page("wall-insulation")
+class WallInsulationView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"wall_insulation_options": schemas.wall_insulation_options}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:

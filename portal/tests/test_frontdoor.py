@@ -121,6 +121,13 @@ def test_flow():
     data = interface.api.session.get_answer(session_id, page_name="wall-type")
     assert data["wall_type"] == "Cavity walls"
 
+    form = page.get_form()
+    form["wall_insulation"] = "No they are not insulated"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="wall-insulation")
+    assert data["wall_insulation"] == "No they are not insulated"
+
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_back_button():
