@@ -16,7 +16,7 @@ pages = (
     "schemes",
     "supplier",
     "contact-details",
-    "end",
+    "success",
 )
 
 
