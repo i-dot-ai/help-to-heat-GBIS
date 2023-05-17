@@ -19,6 +19,7 @@ govuk_email_backend=(
 
 live_notify_api=(
     staging
+    sandbox
 )
 
 
@@ -56,8 +57,8 @@ do
     if grep -q "^help-to-heat" <<< "$value"; then
         echo "Adding envs to: ${value}..........."
 
-        if [ "$value" == "help-to-heat-portal" ] || [ "$value" == "help-to-heat-frontdoor" ]; then
-            $(./cf set-env ${value} DJANGO_SECRET_KEY ${PROD_DJANGO_SECRET_KEY} &> /dev/null)
+        if grep -q "^help-to-heat-portal" <<< "$value" || grep -q "^help-to-heat-frontdoor" <<< "$value"; then
+            $(./cf set-env ${value} DJANGO_SECRET_KEY ${DJANGO_SECRET_KEY} &> /dev/null)
 
             if [ $gov_notify ]; then
                 if [ $live_api_key ]; then
