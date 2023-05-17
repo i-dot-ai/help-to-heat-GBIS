@@ -55,7 +55,7 @@ class PageView(utils.MethodDispatcher):
     def get(self, request, session_id, page_name):
         prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
         data = interface.api.session.get_answer(session_id, page_name)
-        extra_context = self.get_context(request, session_id, page_name)
+        extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
         context = {"data": data, "prev_url": prev_page_url, "next_url": next_page_url, **extra_context}
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
@@ -63,7 +63,7 @@ class PageView(utils.MethodDispatcher):
         data = interface.api.session.save_answer(session_id, page_name, request.POST)
         return self.handle_post(request, session_id, page_name, data)
 
-    def get_context(self, *args, **kwargs):
+    def get_context(self, request, session_id, page_name, data):
         return {}
 
     def handle_post(self, request, session_id, page_name, data):
