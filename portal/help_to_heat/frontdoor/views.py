@@ -143,6 +143,12 @@ class LoftView(PageView):
         return {"loft_options": schemas.yes_no_options}
 
 
+@register_page("loft-access")
+class LoftAccessView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"loft_access_options": schemas.loft_access_options}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:

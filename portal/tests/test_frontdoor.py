@@ -89,6 +89,9 @@ def test_flow():
     assert page.has_one("h1:contains('Does this property have a loft?')")
     page = _check_page(page, "loft", "loft", "No")
 
+    assert page.has_one("h1:contains('Is there access to your loft?')")
+    page = _check_page(page, "loft-access", "loft_access", "Yes, there is access to my loft")
+
 
 def _make_check_page(session_id):
     def _check_page(page, page_name, key, answer):

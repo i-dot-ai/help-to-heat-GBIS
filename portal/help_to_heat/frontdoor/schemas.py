@@ -12,6 +12,7 @@ pages = (
     "wall-type",
     "wall-insulation",
     "loft",
+    "loft-access",
     "end",
 )
 
@@ -41,6 +42,7 @@ wall_insulation_options = (
     "No they are not insulated",
     "I don't know",
 )
+loft_access_options = ("Yes, there is access to my loft", "No, there is no access to my loft")
 
 
 class SessionSchema(Schema):
@@ -56,3 +58,4 @@ class SessionSchema(Schema):
     wall_type = fields.String(validate=validate.OneOf(wall_type_options))
     wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))
     loft = fields.String(validate=validate.OneOf(yes_no_options))
+    loft_access = fields.String(validate=validate.OneOf(loft_access_options))
