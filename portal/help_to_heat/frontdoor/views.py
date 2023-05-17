@@ -163,6 +163,11 @@ class SupplierView(PageView):
         return {"supplier_options": schemas.supplier_options}
 
 
+@register_page("contact-details")
+class ContactDetailsView(PageView):
+    pass
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:

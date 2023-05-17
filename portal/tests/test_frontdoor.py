@@ -101,6 +101,23 @@ def test_happy_flow():
     assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
     page = _check_page(page, "supplier", "supplier", "Octopus")
 
+    assert page.has_one("h1:contains('Add your personal and contact details')")
+    form = page.get_form()
+    form["first_name"] = "Freddy"
+    form["last_name"] = "Flibble"
+    form["contact_number"] = "1234567890"
+    form["email"] = "freddy.flibble@example.com"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="contact-details")
+    expected = {
+        "first_name": "Freddy",
+        "last_name": "Flibble",
+        "contact_number": "1234567890",
+        "email": "freddy.flibble@example.com",
+    }
+    assert data == expected, (data, expected)
+
 
 def _make_check_page(session_id):
     def _check_page(page, page_name, key, answer):

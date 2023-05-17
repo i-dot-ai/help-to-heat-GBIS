@@ -15,6 +15,7 @@ pages = (
     "loft-access",
     "schemes",
     "supplier",
+    "contact-details",
     "end",
 )
 
@@ -78,6 +79,10 @@ class SessionSchema(Schema):
     loft = fields.String(validate=validate.OneOf(yes_no_options))
     loft_access = fields.String(validate=validate.OneOf(loft_access_options))
     supplier = fields.String(validate=validate.OneOf(supplier_options))
+    first_name = fields.String()
+    last_name = fields.String()
+    contact_number = fields.String()
+    email = fields.String()
 
 
 schemes_map = {
