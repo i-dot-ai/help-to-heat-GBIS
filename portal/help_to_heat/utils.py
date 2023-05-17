@@ -119,7 +119,7 @@ def get_arguments(func, *args, **kwargs):
     return arguments
 
 
-def _register_event(EventModel, event_name, arguments):
+def _register_event(EventModel, event_name, arguments):  # noqa N803
     event_names.add(event_name)
     arguments = {key: value for (key, value) in arguments.items() if key != "self"}
     event = EventModel(name=event_name, data=arguments)
@@ -133,7 +133,7 @@ def resolve_schema(schema):
     return schema
 
 
-def register_event(EventModel, event_name):
+def register_event(EventModel, event_name):  # noqa N803
     def _decorator(func):
         func.event_name = event_name
 
