@@ -125,6 +125,12 @@ class NumberOfBedroomsView(PageView):
         return {"number_of_bedrooms_options": schemas.number_of_bedrooms_options}
 
 
+@register_page("wall-type")
+class WallTypeView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"wall_type_options": schemas.wall_type_options}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:

@@ -9,6 +9,7 @@ pages = (
     "household-income",
     "property-type",
     "number-of-bedrooms",
+    "wall-type",
     "end",
 )
 
@@ -25,6 +26,13 @@ yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
 property_type_options = ("House", "Bungalow", "Apartment, flat or masionette")
 number_of_bedrooms_options = ("Studio", "One bedroom", "Two bedrooms", "Three or more bedrooms")
+wall_type_options = (
+    "Solid walls",
+    "Cavity walls",
+    "Mix of solid and cavity walls",
+    "I don't see my option listed",
+    "I don't know",
+)
 
 
 class SessionSchema(Schema):
@@ -37,3 +45,4 @@ class SessionSchema(Schema):
     household_income = fields.String(validate=validate.OneOf(household_income_options))
     property_type = fields.String(validate=validate.OneOf(property_type_options))
     number_of_bedrooms = fields.String(validate=validate.OneOf(number_of_bedrooms_options))
+    wall_type = fields.String(validate=validate.OneOf(wall_type_options))
