@@ -1,6 +1,26 @@
 from marshmallow import Schema, fields, validate
 
-pages = (
+page_map = {
+    "country": "Which country is your property located in?",
+    "own-property": "Do you own your property?",
+    "address": "What is the address of your property?",
+    "council-tax-band": "What is the council tax band of your property?",
+    "benefits": "Is anyone in your household receiving any benefits?",
+    "household-income": "What is your annual household income?",
+    "property-type": "What kind of property do you have?",
+    "number-of-bedrooms": "Number of bedrooms",
+    "wall-type": "What kind of walls does your property have?",
+    "wall-insulation": "Are your walls insulated?",
+    "loft": "Does this property have a loft?",
+    "loft-access": "Is there access to your loft?",
+    "summary": "",
+    "schemes": "",
+    "supplier": "",
+    "contact-details": "",
+    "success": "",
+}
+
+household_pages = (
     "country",
     "own-property",
     "address",
@@ -13,12 +33,10 @@ pages = (
     "wall-insulation",
     "loft",
     "loft-access",
-    "schemes",
-    "supplier",
-    "contact-details",
-    "success",
 )
 
+
+pages = tuple(page_map.keys())
 
 country_options = ("England", "Scotland", "Wales", "Northern Ireland")
 own_property_options = (
