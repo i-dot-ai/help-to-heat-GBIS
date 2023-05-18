@@ -169,12 +169,12 @@ def test_back_button():
 
     assert page.has_one("h1:contains('What is the address of your property?')")
 
-    page = page.click(contains=("Back"))
+    page = page.click(contains="Back")
 
     form = page.get_form()
     assert form["own_property"] == "Yes, I own my property and live in it"
 
-    page = page.click(contains=("Back"))
+    page = page.click(contains="Back")
 
     form = page.get_form()
     assert form["country"] == "England"
