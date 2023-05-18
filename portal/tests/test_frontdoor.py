@@ -81,6 +81,10 @@ def _answer_house_questions(page, session_id, benefits_answer):
     assert page.has_one("h1:contains('Is there access to your loft?')")
     page = _check_page(page, "loft-access", "loft_access", "Yes, there is access to my loft")
 
+    assert page.has_one("h1:contains('Check your answers')")
+    form = page.get_form()
+    page = form.submit().follow()
+
     return page
 
 
@@ -202,3 +206,33 @@ def test_no_benefits_flow():
     assert not page.has_text("Energy Company Obligation 4")
     form = page.get_form()
     page = form.submit().follow()
+
+
+@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+def test_summary():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Get home energy improvements')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    # Answer main flow
+    page = _answer_house_questions(page, session_id, benefits_answer="Yes")
+
+    page = page.click(contains="Back")
+
+    page = page.click(contains="Change Do you own your property?")
+
+    form = page.get_form()
+    form["own_property"] = "I am a property owner but lease my property to one or more tenants"
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('Check your answers')")
+
+    assert page.has_text("I am a property owner but lease my property to one or more tenants")

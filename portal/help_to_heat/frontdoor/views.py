@@ -52,22 +52,29 @@ def get_prev_next_urls(session_id, page_name):
 
 
 class PageView(utils.MethodDispatcher):
-    def get(self, request, session_id, page_name):
-        prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
+    def get(self, request, session_id, page_name, is_change_page=False):
+        if is_change_page:
+            prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name="summary"))
+            next_page_url = None
+        else:
+            prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
         data = interface.api.session.get_answer(session_id, page_name)
         extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
         context = {"data": data, "prev_url": prev_page_url, "next_url": next_page_url, **extra_context}
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
-    def post(self, request, session_id, page_name):
+    def post(self, request, session_id, page_name, is_change_page=False):
         data = interface.api.session.save_answer(session_id, page_name, request.POST)
-        return self.handle_post(request, session_id, page_name, data)
+        return self.handle_post(request, session_id, page_name, data, is_change_page)
 
     def get_context(self, request, session_id, page_name, data):
         return {}
 
-    def handle_post(self, request, session_id, page_name, data):
-        next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        if is_change_page:
+            next_page_name = "summary"
+        else:
+            next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
@@ -76,12 +83,11 @@ class CountryView(PageView):
     def get_context(self, *args, **kwargs):
         return {"country_options": schemas.country_options}
 
-    def handle_post(self, request, session_id, page_name, data):
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
         if data["country"] == "Northern Ireland":
             return redirect("frontdoor:page", session_id=session_id, page_name="northern-ireland")
         else:
-            next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
-            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+            return super().handle_post(request, session_id, page_name, data, is_change_page)
 
 
 @register_page("own-property")
@@ -168,9 +174,28 @@ class ContactDetailsView(PageView):
     pass
 
 
+@register_page("summary")
+class SummaryView(PageView):
+    def get_context(self, request, session_id, *args, **kwargs):
+        summary_lines = (
+            {
+                "question": schemas.page_map[page],
+                "answer": "".join(value for value in interface.api.session.get_answer(session_id, page).values()),
+                "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
+            }
+            for page in schemas.household_pages
+        )
+        return {"summary_lines": summary_lines}
+
+
 def page_view(request, session_id, page_name):
     context = {}
     if page_name in page_map:
         return page_map[page_name](request, session_id, page_name)
 
     return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
+
+
+def change_page_view(request, session_id, page_name):
+    assert page_name in page_map
+    return page_map[page_name](request, session_id, page_name, is_change_page=True)
