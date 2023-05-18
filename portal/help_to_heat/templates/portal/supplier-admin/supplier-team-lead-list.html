@@ -1,13 +1,13 @@
 {% extends "portal/base_generic_gov.html" %}
 
 {% block content %}
-<a href="{{url('homepage')}}" class="govuk-back-link">Back</a>
+<a href="{{url('portal:homepage')}}" class="govuk-back-link">Back</a>
 <h1 class="govuk-heading-l">Manage [{{supplier.name}}]'s team leads and details</h1>
 <div class="govuk-button-group">
-  <a href="{{url('edit-supplier', supplier.id)}}" class="govuk-button govuk-button--secondary">Edit</a>
-  <a href="{{url('change-supplier-disabled-status', supplier.id)}}" class="govuk-button govuk-button--secondary">{{supplier.is_disabled and "Enable" or "Disable"}}</a>
+  <a href="{{url('portal:edit-supplier', supplier.id)}}" class="govuk-button govuk-button--secondary">Edit</a>
+  <a href="{{url('portal:change-supplier-disabled-status', supplier.id)}}" class="govuk-button govuk-button--secondary">{{supplier.is_disabled and "Enable" or "Disable"}}</a>
 </div>
-<a class="govuk-button" href="{{url('supplier-team-leads-add', supplier.id)}}">Add a new team lead</a>
+<a class="govuk-button" href="{{url('portal:supplier-team-leads-add', supplier.id)}}">Add a new team lead</a>
 
 <table class="govuk-table">
   <caption class="govuk-table__caption govuk-table__caption--m">List of team leads</caption>
@@ -37,7 +37,7 @@
       </td>
       <td class="govuk-table__cell govuk-table__cell--numeric">
         <div class="govuk-button-group govuk-!-display-block">
-          <a href="{{url('supplier-team-leads-edit', supplier.id, user.id)}}" class="govuk-link">Edit<span class="govuk-visually-hidden"> team lead details</span></a>
+          <a href="{{url('portal:supplier-team-leads-edit', supplier.id, user.id)}}" class="govuk-link">Edit<span class="govuk-visually-hidden"> team lead details</span></a>
         </div>
       </td>
     </tr>

@@ -8,7 +8,7 @@
 
   <section class="wrapper">
 
-    <form class="logout" method="POST" action="{% url 'account_logout' %}">
+    <form class="logout" method="POST" action="{% url 'portal:account_logout' %}">
       {% csrf_token %}
 
       <fieldset class="govuk-fieldset">

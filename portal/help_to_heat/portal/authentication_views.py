@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -8,10 +7,11 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
-from help_to_heat.portal.utils import MethodDispatcher
+from help_to_heat.utils import MethodDispatcher
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ class CustomLoginView(MethodDispatcher):
                             "user_id": user_id,
                         }
                         query_string = urlencode(context)
-                        url = reverse("account_login") + "?" + query_string
+                        url = reverse("portal:account_login") + "?" + query_string
                         return redirect(url)
                     result = email_handler.verify_token(user_id, token, "invite-user")
                     if not result:
@@ -54,11 +54,11 @@ class CustomLoginView(MethodDispatcher):
                             "user_id": user_id,
                         }
                         query_string = urlencode(context)
-                        url = reverse("account_login") + "?" + query_string
+                        url = reverse("portal:account_login") + "?" + query_string
                         return redirect(url)
-                    return redirect("account_login_set_password", user.id)
+                    return redirect("portal:account_login_set_password", user.id)
                 login(request, user)
-                return redirect("homepage")
+                return redirect("portal:homepage")
             else:
                 messages.error(request, "The email address or password you entered is incorrect. Please try again.")
                 return render(request, "account/login.html", {})
@@ -83,10 +83,10 @@ class SetPassword(MethodDispatcher):
             return render(request, "account/login_set_password.html", {"user_id": user_id})
         user = models.User.objects.get(pk=user_id)
         user.set_password(pwd1)
-        user.invite_accepted_at = datetime.now()
+        user.invite_accepted_at = timezone.now()
         user.save()
         messages.info(request, "Password successfully set, please login to the system.")
-        return redirect("account_login")
+        return redirect("portal:account_login")
 
 
 @require_http_methods(["GET", "POST"])
@@ -99,9 +99,9 @@ class PasswordReset(MethodDispatcher):
         try:
             user = models.User.objects.get(email=email)
         except models.User.DoesNotExist:
-            return redirect("password-reset-done")
+            return redirect("portal:password-reset-done")
         email_handler.send_password_reset_email(user)
-        return redirect("password-reset-done")
+        return redirect("portal:password-reset-done")
 
 
 def password_reset_done(request):
@@ -180,4 +180,4 @@ class PasswordChange(MethodDispatcher):
         token_matching_reset_request.save()
         user.set_password(pwd1)
         user.save()
-        return redirect("password-reset-from-key-done")
+        return redirect("portal:password-reset-from-key-done")

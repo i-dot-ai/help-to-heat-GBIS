@@ -3,11 +3,19 @@ from django.conf import settings
 from django.contrib import messages
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.text import slugify
 
 
 def url(path, *args, **kwargs):
     assert not (args and kwargs)
     return reverse(path, args=args, kwargs=kwargs)
+
+
+def is_checked(data, name, value):
+    if str(data.get(name)) == str(value):
+        return "checked"
+    else:
+        return ""
 
 
 def environment(**options):
@@ -32,6 +40,8 @@ def environment(**options):
             "get_messages": messages.get_messages,
             "DEBUG": settings.DEBUG,
             "space_name": settings.VCAP_APPLICATION.get("space_name", "unknown"),
+            "slugify": slugify,
+            "is_checked": is_checked,
         }
     )
     return env

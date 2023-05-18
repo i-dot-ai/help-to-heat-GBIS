@@ -9,7 +9,7 @@ def add_supplier_view(request):
         supplier_name = request.POST.get("supplier_name")
         new_supplier = models.Supplier(name=supplier_name, is_disabled=False)
         new_supplier.save()
-        return redirect("homepage")
+        return redirect("portal:homepage")
 
 
 def edit_supplier_view(request, supplier_id):
@@ -20,7 +20,7 @@ def edit_supplier_view(request, supplier_id):
         supplier = models.Supplier.objects.get(pk=supplier_id)
         supplier.name = request.POST.get("supplier_name")
         supplier.save()
-        return redirect("homepage")
+        return redirect("portal:homepage")
 
 
 def change_supplier_disabled_status_view(request, supplier_id):
@@ -31,7 +31,7 @@ def change_supplier_disabled_status_view(request, supplier_id):
         supplier = models.Supplier.objects.get(pk=supplier_id)
         supplier.is_disabled = not supplier.is_disabled
         supplier.save()
-        return redirect("homepage")
+        return redirect("portal:homepage")
 
 
 def supplier_team_leads_view(request, supplier_id):
@@ -58,7 +58,7 @@ def supplier_team_leads_add_view(request, supplier_id):
         user.supplier = supplier
         user.save()
         email_handler.send_invite_email(user)
-        return redirect("supplier-team-leads", supplier.id)
+        return redirect("portal:supplier-team-leads", supplier.id)
 
 
 def supplier_team_leads_edit_view(request, supplier_id, user_id):
@@ -75,7 +75,7 @@ def supplier_team_leads_edit_view(request, supplier_id, user_id):
 
         user.full_name = leader_name
         user.save()
-        return redirect("supplier-team-leads", supplier.id)
+        return redirect("portal:supplier-team-leads", supplier.id)
 
 
 def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id):
@@ -89,7 +89,7 @@ def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id
         user = models.User.objects.get(pk=user_id)
         user.is_active = not user.is_active
         user.save()
-        return redirect("supplier-team-leads", supplier_id)
+        return redirect("portal:supplier-team-leads", supplier_id)
 
 
 def team_member_add_role_view(request, supplier_id):
@@ -97,7 +97,7 @@ def team_member_add_role_view(request, supplier_id):
         return render(request, "portal/team-leader/add-user-role-select.html", {"supplier_id": supplier_id})
     else:
         user_role = request.POST.get("team-role")
-        return redirect("add-user-details-select", user_role=user_role, supplier_id=supplier_id)
+        return redirect("portal:add-user-details-select", user_role=user_role, supplier_id=supplier_id)
 
 
 def team_member_add_details_view(request, supplier_id, user_role):
@@ -119,7 +119,7 @@ def team_member_add_details_view(request, supplier_id, user_role):
         user.supplier = supplier
         user.save()
         email_handler.send_invite_email(user)
-        return redirect("homepage")
+        return redirect("portal:homepage")
 
 
 def team_member_details_view(request, supplier_id, user_id):
@@ -139,7 +139,7 @@ def team_member_change_status_view(request, supplier_id, user_id):
         user = models.User.objects.get(pk=user_id)
         user.is_active = not user.is_active
         user.save()
-        return redirect("user-details", supplier_id, user_id)
+        return redirect("portal:user-details", supplier_id, user_id)
 
 
 def team_member_edit_view(request, supplier_id, user_id):
@@ -158,4 +158,4 @@ def team_member_edit_view(request, supplier_id, user_id):
             user.is_team_member = True
             user.is_team_leader = False
         user.save()
-        return redirect("user-details", supplier_id, user_id)
+        return redirect("portal:user-details", supplier_id, user_id)

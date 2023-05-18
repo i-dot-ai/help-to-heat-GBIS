@@ -1,5 +1,4 @@
-import datetime
-
+from django.utils import timezone
 from help_to_heat.portal import models
 
 from . import utils
@@ -19,7 +18,7 @@ def login_as_service_manager(client, email, password):
     if models.User.objects.filter(email=email).exists():
         user = models.User.objects.get(email=email).delete()
     user = models.User.objects.create_user(email, password)
-    user.invite_accepted_at = datetime.datetime.now()
+    user.invite_accepted_at = timezone.now()
     user.is_supplier_admin = True
     user.save()
     page = login(client, email, password)

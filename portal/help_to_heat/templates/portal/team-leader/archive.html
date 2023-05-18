@@ -12,7 +12,7 @@
   <tbody class="govuk-table__body">
   {% for archive in data.archives %}
     <tr class="govuk-table__row">
-      <td class="govuk-table__cell"><a href="{{url('download-csv-by-id', archive.id)}}" class="govuk-link">{{archive.file_name}}</a></td>
+      <td class="govuk-table__cell"><a href="{{url('portal:download-csv-by-id', archive.id)}}" class="govuk-link">{{archive.file_name}}</a></td>
       <td class="govuk-table__cell">
         <span>{{archive.created_at.strftime('%H:%M')}}</span><br>
         <span>{{archive.created_at.strftime('%d/%m/%Y')}}</span>

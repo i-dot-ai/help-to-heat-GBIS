@@ -44,6 +44,7 @@ VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 
 INSTALLED_APPS = [
     "help_to_heat.portal",
+    "help_to_heat.frontdoor",
     "rest_framework",
     "allauth",
     "allauth.account",
@@ -155,8 +156,8 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
-LOGIN_REDIRECT_URL = "homepage"
-LOGIN_URL = "account_login"
+LOGIN_REDIRECT_URL = "portal:homepage"
+LOGIN_URL = "portal:account_login"
 
 EMAIL_BACKEND_TYPE = env.str("EMAIL_BACKEND_TYPE")
 

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Help to Heat Portal</title>
+  <title>Help to Heat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="blue">
 
@@ -68,7 +68,6 @@
 
 
   <link rel="stylesheet" href="/static/govuk-frontend/govuk-frontend-4.3.1.min.css">
-  <link rel="stylesheet" href="/static/main.css">
   <link rel="mask-icon" href="/static/govuk-frontend/assets/images/govuk-mask-icon.svg" color="blue">
 
 </head>
@@ -77,6 +76,7 @@
   <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 
   <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
 
   <header class="govuk-header " role="banner" data-module="govuk-header">
     <div class="govuk-header__container govuk-width-container">
@@ -99,35 +99,9 @@
           </a>
         </p>
       </div>
-      <div class="govuk-header__content">
-     {% if DEBUG %}
-        <a href="#" class="govuk-header__link govuk-header__service-name">
-          <strong class="govuk-warning-text">
-            {{space_name|upper}} - This is not a live service
-          </strong>
-        </a>
-      {% endif %}
-      <nav aria-label="Menu" class="govuk-header__navigation ">
-        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
-        <ul id="navigation" class="govuk-header__navigation-list">
-          <li class="govuk-header__navigation-item">
-            <a class="govuk-header__link" href="{{url('portal:homepage')}}">
-              Home
-            </a>
-          </li>
-          <li class="govuk-header__navigation-item">
-            <a class="govuk-header__link" href="{{url('portal:account_logout')}}">
-              Logout
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
     </div>
 
   </header>
-
   <div class="govuk-width-container app-width-container">
 
     <div class="govuk-phase-banner">
@@ -142,17 +116,6 @@
     </div>
 
     <main class="govuk-main-wrapper " id="main-content" role="main">
-
-      {% set messages = get_messages(request) %}
-      {% if messages %}
-      <div>
-        <ul class="govuk-list">
-          {% for message in messages %}
-          <li>{{message}}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endif %}
 
       {% block content %}
       {% endblock %}

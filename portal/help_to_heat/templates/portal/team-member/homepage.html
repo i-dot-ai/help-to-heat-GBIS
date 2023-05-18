@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends "portal/base_generic_gov.html" %}
+{% from "govuk_frontend_jinja/components/tabs/macro.html" import govukTabs %}
 
-</body>
-</html>
+{% macro customer_leads() -%}
+  {% include "portal/team-leader/new-customer-leads.html" %}
+{%- endmacro%}
+
+{% macro archives() -%}
+  {% include "portal/team-leader/archive.html" %}
+{%- endmacro%}
+
+{% block content %}
+
+  {{ govukTabs({
+    'items': [
+      {
+        'label': "New customer leads",
+        'id': "customer-leads-tab",
+        'panel': {
+          'html': customer_leads()
+        }
+      },
+      {
+        'label': "Archives",
+        'id': "archive-tab",
+        'panel': {
+          'html': archives()
+        }
+      },
+    ]
+    }) }}
+
+{% endblock %}

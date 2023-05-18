@@ -1,8 +1,8 @@
 import csv
-from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import models
 
@@ -11,7 +11,7 @@ from help_to_heat.portal import models
 @login_required
 def download_csv_view(request):
     referrals = models.Referral.objects.filter(referral_download=None, supplier=request.user.supplier)
-    downloaded_at = datetime.now()
+    downloaded_at = timezone.now()
     file_name = downloaded_at.strftime("%d-%m-%Y %H_%M")
     new_referral_download = models.ReferralDownload.objects.create(
         created_at=downloaded_at, file_name=file_name, last_downloaded_by=request.user

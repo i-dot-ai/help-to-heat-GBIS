@@ -1,6 +1,6 @@
 <h1 class="govuk-heading-l">Add, view and manage energy suppliers</h1>
 <p>Add, view and manage energy suppliers who can access and download customer leads.</p>
-<a class="govuk-button" href="{{url('add-supplier')}}">Add a new energy supplier</a>
+<a class="govuk-button" href="{{url('portal:add-supplier')}}">Add a new energy supplier</a>
 
 <table class="govuk-table">
 
@@ -33,7 +33,7 @@
       <td class="govuk-table__cell govuk-table__cell--numeric">{{supplier.user_set.filter(is_team_leader=True).count()}}</td>
       <td class="govuk-table__cell govuk-table__cell--numeric">
         <div class="govuk-button-group govuk-!-display-block">
-          <a href="{{url('supplier-team-leads', supplier.id)}}" class="govuk-link">View<span class="govuk-visually-hidden"> energy supplier details</span></a>
+          <a href="{{url('portal:supplier-team-leads', supplier.id)}}" class="govuk-link">View<span class="govuk-visually-hidden"> energy supplier details</span></a>
         </div>
       </td>
     </tr>
