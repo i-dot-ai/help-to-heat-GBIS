@@ -6,13 +6,13 @@ from . import models, schemas
 
 class SaveAnswerSchema(marshmallow.Schema):
     session_id = marshmallow.fields.UUID()
-    page_name = marshmallow.fields.String()
+    page_name = marshmallow.fields.String(validate=marshmallow.validate.OneOf(schemas.pages))
     data = marshmallow.fields.Nested(schemas.SessionSchema(unknown=marshmallow.EXCLUDE))
 
 
 class GetAnswerSchema(marshmallow.Schema):
     session_id = marshmallow.fields.UUID()
-    page_name = marshmallow.fields.String()
+    page_name = marshmallow.fields.String(validate=marshmallow.validate.OneOf(schemas.pages))
 
 
 class Session(Entity):

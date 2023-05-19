@@ -1,0 +1,30 @@
+{% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros %}
+
+{% block content %}
+  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+        {{csrf_input}}
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">
+                Does this property have a loft?
+              </h1>
+            </legend>
+
+            {{macros.radios('loft', 'loft', loft_options, data)}}
+
+          </fieldset>
+        </div>
+
+        <button class="govuk-button" data-module="govuk-button">
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

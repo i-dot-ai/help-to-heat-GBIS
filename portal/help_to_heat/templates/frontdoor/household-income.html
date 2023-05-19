@@ -1,0 +1,34 @@
+{% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros %}
+
+{% block content %}
+<a href="{{prev_url}}" class="govuk-back-link">Back</a>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form method="post" novalidate>
+      {{csrf_input}}
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading">
+              What is your annual household income?
+            </h1>
+          </legend>
+
+          <p class="govuk-body">
+            Your annual household income is the total income before paying tax for all adults living in your home.
+          </p>
+
+          {{macros.radios('household-income', 'household_income', household_income_options, data)}}
+
+        </fieldset>
+      </div>
+
+      <button class="govuk-button" data-module="govuk-button">
+        Continue
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
