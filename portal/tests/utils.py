@@ -14,7 +14,7 @@ TEST_SERVER_URL = "http://help-to-heat-testserver/"
 
 
 def make_code(length=6):
-    return "".join(random.choices(string.ascii_uppercase, k=length))
+    return "".join(random.choices(string.ascii_lowercase, k=length))
 
 
 def with_client(func):
