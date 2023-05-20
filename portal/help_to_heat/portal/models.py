@@ -1,5 +1,4 @@
 import string
-import uuid
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
