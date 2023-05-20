@@ -8,7 +8,9 @@ import furl
 import httpx
 import testino
 from django.conf import settings
+from django.utils import timezone
 from help_to_heat import wsgi
+from help_to_heat.portal import models
 
 TEST_SERVER_URL = "http://help-to-heat-testserver/"
 
@@ -71,3 +73,41 @@ def get_latest_email_password(email):
         if line.startswith("Your temporary password is") or line.startswith("Your one time password code is"):
             token = next(lines).strip()
             return token
+
+
+def login_as_service_manager(client, email=None, password=None):
+    return login_as_role(client, "service_manager", email=email, password=password)
+
+
+def login_as_team_leader(client, email=None, password=None):
+    return login_as_role(client, "team_leader", email=email, password=password)
+
+
+def login_as_role(client, role, email=None, password=None):
+    assert role in ("team_leader", "service_manager")
+    if not email:
+        email = f"{role.replace('_', '-')}+{make_code()}@example.com"
+    if not password:
+        password = "Fl1bbl3Fl1bbl3"
+    user = models.User.objects.create_user(email, password)
+    user.full_name = f"Test {role.replace('_', ' ').capitalize()}"
+    user.invite_accepted_at = timezone.now()
+    if role == "team_leader":
+        user.is_team_leader = True
+        user.supplier_id = models.Supplier.objects.get(name="Octopus").id
+    elif role == "service_manager":
+        user.is_supplier_admin = True
+    user.save()
+    page = login(client, email, password)
+    assert page.has_text("Logout")
+    return page
+
+
+def login(client, email, password):
+    page = client.get(make_url("/accounts/login/"))
+    form = page.get_form()
+    form["login"] = email
+    form["password"] = password
+    page = form.submit()
+    page = page.follow()
+    return page

@@ -12,34 +12,10 @@ def test_registration():
     assert page.status_code == 302
 
 
-def login(client, email, password):
-    page = client.get(utils.make_url("/accounts/login/"))
-    form = page.get_form()
-    form["login"] = email
-    form["password"] = password
-    page = form.submit()
-    page = page.follow()
-    return page
-
-
-def login_as_team_leader(client, email, password):
-    if models.User.objects.filter(email=email).exists():
-        models.User.objects.get(email=email).delete()
-    user = models.User.objects.create_user(email, password)
-    user.full_name = "Test Team Lead"
-    user.invite_accepted_at = timezone.now()
-    user.is_team_leader = True
-    user.supplier_id = models.Supplier.objects.get(name="Octopus").id
-    user.save()
-    page = login(client, email, password)
-    assert page.has_text("Logout")
-    return page
-
-
 @nose.with_setup(utils.wipe_emails)
 def invite_user(name, email, password, role):
     client = utils.get_client()
-    page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
+    page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
 
     form = page.get_form()
@@ -82,7 +58,7 @@ def test_team_leader():
     new_password = "N3wP455w0rd"
     team_lead_name = f"Larry the Leader {utils.make_code()}"
     role = "team-leader"
-    page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
+    page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
 
     page = invite_user(team_lead_name, email, new_password, role)
@@ -112,7 +88,7 @@ def test_team_member():
     new_password = "N3wP455w0rd"
     team_lead_name = f"Milly the member {utils.make_code()}"
     role = "team-member"
-    page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
+    page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
 
     page = invite_user(team_lead_name, email, new_password, role)
@@ -130,17 +106,17 @@ def test_no_supplier_set():
     user.save()
 
     client = utils.get_client()
-    login(client, email, password)
+    utils.login(client, email, password)
     page = client.get(utils.make_url("/"))
     assert page.status_code == 403
 
 
 @nose.with_setup(utils.wipe_emails)
 def test_password_reset():
-    email = "team-leader@example.com"
+    email = f"team-leader-password-reset+{utils.make_code()}@example.com"
     new_password = "Bl4mbl3Bl4mbl3"
     client = utils.get_client()
-    page = login_as_team_leader(client, email=email, password="Fl1bbl3Fl1bbl3")
+    page = utils.login_as_team_leader(client, email=email)
     page = client.get(utils.make_url("/accounts/login/"))
     page = page.click(contains="Request password reset")
     form = page.get_form()
