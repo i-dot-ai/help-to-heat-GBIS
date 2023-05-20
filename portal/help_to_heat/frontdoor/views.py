@@ -171,7 +171,9 @@ class SupplierView(PageView):
 
 @register_page("contact-details")
 class ContactDetailsView(PageView):
-    pass
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        interface.api.session.create_referral(session_id)
+        return super().handle_post(request, session_id, page_name, data, is_change_page)
 
 
 @register_page("summary")

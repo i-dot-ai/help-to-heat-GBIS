@@ -3,6 +3,7 @@ import uuid
 
 from django.conf import settings
 from help_to_heat.frontdoor import interface
+from help_to_heat.portal import models
 
 from . import utils
 
@@ -124,6 +125,8 @@ def test_happy_flow():
     form["email"] = "freddy.flibble@example.com"
     page = form.submit().follow()
 
+    assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
+
     data = interface.api.session.get_answer(session_id, page_name="contact-details")
     expected = {
         "first_name": "Freddy",
@@ -132,6 +135,12 @@ def test_happy_flow():
         "email": "freddy.flibble@example.com",
     }
     assert data == expected, (data, expected)
+
+    referral = models.Referral.objects.get(session_id=session_id)
+    assert referral.supplier.name == "Octopus"
+    assert referral.data["first_name"] == "Freddy"
+    assert referral.data["benefits"] == "Yes"
+    referral.delete()
 
 
 def _make_check_page(session_id):
