@@ -32,6 +32,30 @@ def test_flow_northern_ireland():
     assert data["country"] == "Northern Ireland"
 
 
+@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+def test_flow_scotland():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Get home energy improvements')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    form = page.get_form()
+    form["country"] = "Scotland"
+    page = form.submit().follow()
+
+    assert page.has_text("As your property is in Scotland, you must use a different service")
+
+    data = interface.api.session.get_answer(session_id, page_name="country")
+    assert data["country"] == "Scotland"
+
+
 def _answer_house_questions(page, session_id, benefits_answer):
     """Answer main flow with set answers"""
 
