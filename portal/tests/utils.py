@@ -37,15 +37,16 @@ def get_client():
     return testino.WSGIAgent(wsgi.application, base_url=TEST_SERVER_URL)
 
 
-def get_latest_email_text():
+def get_latest_email_text(email):
     email_dir = pathlib.Path(settings.EMAIL_FILE_PATH)
     latest_email_path = max(email_dir.iterdir(), key=os.path.getmtime)
     content = latest_email_path.read_text()
+    assert f"To: {email}" in content.splitlines(), (f"To: {email}", content.splitlines())
     return content
 
 
-def get_latest_email_url():
-    text = get_latest_email_text()
+def get_latest_email_url(email):
+    text = get_latest_email_text(email)
     lines = text.splitlines()
     url_lines = tuple(word for line in lines for word in line.split() if word.startswith(settings.BASE_URL))
     assert len(url_lines) == 1
@@ -55,8 +56,8 @@ def get_latest_email_url():
     return email_url
 
 
-def get_latest_email_password():
-    text = get_latest_email_text()
+def get_latest_email_password(email):
+    text = get_latest_email_text(email)
     lines = iter(text.splitlines())
     for line in lines:
         if line.startswith("Your temporary password is") or line.startswith("Your one time password code is"):

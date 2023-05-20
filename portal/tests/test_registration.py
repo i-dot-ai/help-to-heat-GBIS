@@ -51,8 +51,8 @@ def invite_user(name, email, password, role):
 
     assert page.has_text(name)
 
-    invite_url = utils.get_latest_email_url()
-    password = utils.get_latest_email_password()
+    invite_url = utils.get_latest_email_url(email)
+    password = utils.get_latest_email_password(email)
 
     client = utils.get_client()
     page = client.get(invite_url)
@@ -144,8 +144,8 @@ def test_password_reset():
     form["email"] = email
     page = form.submit().follow()
 
-    invite_url = utils.get_latest_email_url()
-    otp = utils.get_latest_email_password()
+    invite_url = utils.get_latest_email_url(email)
+    otp = utils.get_latest_email_password(email)
     page = client.get(invite_url)
     form = page.get_form()
     form["verification-code"] = otp
