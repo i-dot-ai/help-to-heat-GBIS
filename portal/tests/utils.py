@@ -37,6 +37,14 @@ def get_client():
     return testino.WSGIAgent(wsgi.application, base_url=TEST_SERVER_URL)
 
 
+def wipe_emails():
+    email_dir = pathlib.Path(settings.EMAIL_FILE_PATH)
+    if email_dir.exists():
+        for f in email_dir.iterdir():
+            if f.is_file():
+                f.unlink()
+
+
 def get_latest_email_text(email):
     email_dir = pathlib.Path(settings.EMAIL_FILE_PATH)
     latest_email_path = max(email_dir.iterdir(), key=os.path.getmtime)

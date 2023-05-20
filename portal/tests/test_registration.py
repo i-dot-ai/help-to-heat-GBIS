@@ -1,3 +1,4 @@
+import nose
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from help_to_heat.portal import models
@@ -35,6 +36,7 @@ def login_as_team_leader(client, email, password):
     return page
 
 
+@nose.with_setup(utils.wipe_emails)
 def invite_user(name, email, password, role):
     client = utils.get_client()
     page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
@@ -133,6 +135,7 @@ def test_no_supplier_set():
     assert page.status_code == 403
 
 
+@nose.with_setup(utils.wipe_emails)
 def test_password_reset():
     email = "team-leader@example.com"
     new_password = "Bl4mbl3Bl4mbl3"
