@@ -9,8 +9,7 @@ from nose.tools import assert_raises
 from . import utils
 
 
-@utils.with_client
-def test_epc_duplicates(client):
+def test_epc_duplicates():
     uprn = "".join(random.choices(string.digits, k=5))
     data = {
         "uprn": uprn,
@@ -22,3 +21,15 @@ def test_epc_duplicates(client):
     with assert_raises(django.db.utils.IntegrityError):
         epc2 = models.EpcRating(**data)
         epc2.save()
+
+
+@utils.with_client
+def test_create_referral(client):
+    result = client.post("/api/referral/", json={"data": {"energySupplier": "bulb"}})
+    assert result.status_code == 201, (result, result.text)
+    result = client.post("/api/referral/", json={"data": {"energySupplier": "bulb"}})
+    assert result.status_code == 201
+    result = client.post("/api/referral/", json={"data": {"energySupplier": "british-gas"}})
+    assert result.status_code == 201
+    result = client.post("/api/referral/", json={"data": {"energySupplier": "british-gas"}})
+    assert result.status_code == 201
