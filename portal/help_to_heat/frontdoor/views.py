@@ -155,6 +155,20 @@ class LoftAccessView(PageView):
         return {"loft_access_options": schemas.loft_access_options}
 
 
+@register_page("summary")
+class SummaryView(PageView):
+    def get_context(self, request, session_id, *args, **kwargs):
+        summary_lines = (
+            {
+                "question": schemas.page_map[page],
+                "answer": "".join(value for value in interface.api.session.get_answer(session_id, page).values()),
+                "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
+            }
+            for page in schemas.household_pages
+        )
+        return {"summary_lines": summary_lines}
+
+
 @register_page("schemes")
 class SchemesView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
@@ -174,20 +188,6 @@ class ContactDetailsView(PageView):
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         interface.api.session.create_referral(session_id)
         return super().handle_post(request, session_id, page_name, data, is_change_page)
-
-
-@register_page("summary")
-class SummaryView(PageView):
-    def get_context(self, request, session_id, *args, **kwargs):
-        summary_lines = (
-            {
-                "question": schemas.page_map[page],
-                "answer": "".join(value for value in interface.api.session.get_answer(session_id, page).values()),
-                "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
-            }
-            for page in schemas.household_pages
-        )
-        return {"summary_lines": summary_lines}
 
 
 def page_view(request, session_id, page_name):
