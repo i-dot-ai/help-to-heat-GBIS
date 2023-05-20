@@ -76,9 +76,9 @@ def invite_user(name, email, password, role):
 
 def test_team_leader():
     client = utils.get_client()
-    email = f"larry-the-leader+{utils.make_code}@example.com"
+    email = f"larry-the-leader+{utils.make_code()}@example.com"
     new_password = "N3wP455w0rd"
-    team_lead_name = f"Larry the Leader {utils.make_code}"
+    team_lead_name = f"Larry the Leader {utils.make_code()}"
     role = "team-leader"
     page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
     page = page.click(contains="Add a new team member or leader")
@@ -106,9 +106,9 @@ def test_team_leader():
 
 def test_team_member():
     client = utils.get_client()
-    email = f"milly-the-member+{utils.make_code}@example.com"
+    email = f"milly-the-member+{utils.make_code()}@example.com"
     new_password = "N3wP455w0rd"
-    team_lead_name = f"Milly the member {utils.make_code}"
+    team_lead_name = f"Milly the member {utils.make_code()}"
     role = "team-member"
     page = login_as_team_leader(client, email="team-leader@example.com", password="Fl1bbl3Fl1bbl3")
     page = page.click(contains="Add a new team member or leader")
@@ -119,7 +119,7 @@ def test_team_member():
 
 
 def test_no_supplier_set():
-    email = f"nancy-no-supplier+{utils.make_code}@example.com"
+    email = f"nancy-no-supplier+{utils.make_code()}@example.com"
     password = "Fl1bbl3Fl1bbl3"
     user = models.User.objects.create_user(email, password)
     user.invite_accepted_at = timezone.now()
