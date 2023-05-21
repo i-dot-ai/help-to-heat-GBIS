@@ -56,6 +56,27 @@ def test_flow_scotland():
     assert data["country"] == "Scotland"
 
 
+@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+def test_flow_errors():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Get home energy improvements')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    form = page.get_form()
+    page = form.submit()
+
+    assert page.has_one("h2:contains('There is a problem')")
+    assert page.has_text("Please answer this question")
+
+
 def _answer_house_questions(page, session_id, benefits_answer):
     """Answer main flow with set answers"""
 
