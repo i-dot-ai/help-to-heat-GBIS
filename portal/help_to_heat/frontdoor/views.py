@@ -9,6 +9,24 @@ from . import interface, schemas
 page_map = {}
 
 
+page_field_map = {
+    "country": ("country",),
+    "own-property": ("own_property",),
+    "address": ("address_line_1", "postcode"),
+    "council-tax-band": ("council_tax_band",),
+    "benefits": ("benefits",),
+    "household-income": ("household_income",),
+    "property-type": ("property_type",),
+    "number-of-bedrooms": ("number_of_bedrooms",),
+    "wall-type": ("wall_type",),
+    "wall-insulation": ("wall_insulation",),
+    "loft": ("loft",),
+    "loft-access": ("loft_access",),
+    "supplier": ("supplier",),
+    "contact-details": ("first_name", "last_name", "contact_number", "email"),
+}
+
+
 def register_page(name):
     def _inner(func):
         page_map[name] = func
@@ -52,7 +70,9 @@ def get_prev_next_urls(session_id, page_name):
 
 
 class PageView(utils.MethodDispatcher):
-    def get(self, request, session_id, page_name, is_change_page=False):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False):
+        if not errors:
+            errors = {}
         if is_change_page:
             prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name="summary"))
             next_page_url = None
@@ -60,12 +80,23 @@ class PageView(utils.MethodDispatcher):
             prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
         data = interface.api.session.get_answer(session_id, page_name)
         extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
-        context = {"data": data, "prev_url": prev_page_url, "next_url": next_page_url, **extra_context}
+        context = {
+            "data": data,
+            "errors": errors,
+            "prev_url": prev_page_url,
+            "next_url": next_page_url,
+            **extra_context,
+        }
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
     def post(self, request, session_id, page_name, is_change_page=False):
-        data = interface.api.session.save_answer(session_id, page_name, request.POST)
-        return self.handle_post(request, session_id, page_name, data, is_change_page)
+        data = request.POST
+        errors = self.validate(request, session_id, page_name, data, is_change_page)
+        if errors:
+            return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
+        else:
+            data = interface.api.session.save_answer(session_id, page_name, request.POST)
+            return self.handle_post(request, session_id, page_name, data, is_change_page)
 
     def get_context(self, request, session_id, page_name, data):
         return {}
@@ -76,6 +107,12 @@ class PageView(utils.MethodDispatcher):
         else:
             next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+
+    def validate(self, request, session_id, page_name, data, is_change_page):
+        fields = page_field_map.get(page_name, ())
+        missing_fields = (field for field in fields if field not in data)
+        errors = {field: "Please answer this question" for field in missing_fields}
+        return errors
 
 
 @register_page("country")
