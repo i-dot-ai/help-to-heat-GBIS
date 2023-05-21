@@ -1,41 +1,30 @@
 {% extends "frontdoor/base.html" %}
-{% import "macros.html" as macros %}
+{% import "macros.html" as macros with context %}
 
 {% block content %}
-  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <form method="post" novalidate>
-        {{csrf_input}}
+  {% call macros.form_wrapper(prev_url) -%}
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            What is the council tax band of your property?
+          </h1>
+        </legend>
+
         <div class="govuk-form-group">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">
-                What is the council tax band of your property?
-              </h1>
-            </legend>
+          <label class="govuk-label" for="subject">
+            Select your council tax band from the list below
+          </label>
+          <div id="subject-hint" class="govuk-hint">
+            <a href="https://www.gov.uk/council-tax-bands" class="govuk-link">
+              If you're unsure, you can check your property's council tax band
+            </a>.
+          </div>
 
-            <div class="govuk-form-group">
-              <label class="govuk-label" for="subject">
-                Select your council tax band from the list below
-              </label>
-              <div id="subject-hint" class="govuk-hint">
-                <a href="https://www.gov.uk/council-tax-bands" class="govuk-link">
-                  If you're unsure, you can check your property's council tax band
-                </a>.
-              </div>
+          {{macros.radios('council-tax-band', 'council_tax_band', council_tax_band_options, data)}}
 
-              {{macros.radios('council-tax-band', 'council_tax_band', council_tax_band_options, data)}}
-
-            </div>
-          </fieldset>
         </div>
-
-        <button class="govuk-button" data-module="govuk-button">
-          Continue
-        </button>
-      </form>
+      </fieldset>
     </div>
-  </div>
-
+  {%- endcall %}
 {% endblock %}

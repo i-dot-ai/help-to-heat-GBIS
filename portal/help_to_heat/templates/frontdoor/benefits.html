@@ -1,46 +1,35 @@
 {% extends "frontdoor/base.html" %}
-{% import "macros.html" as macros %}
+{% import "macros.html" as macros with context %}
 
 {% block content %}
-  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <form method="post" novalidate>
-        {{csrf_input}}
-        <div class="govuk-form-group">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">
-                Is anyone in your household receiving any benefits?
-              </h1>
-            </legend>
+  {% call macros.form_wrapper(prev_url) -%}
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Is anyone in your household receiving any benefits?
+          </h1>
+        </legend>
 
-            <p class="govuk-body">Select yes if they are receiving any of the following:</p>
+        <p class="govuk-body">Select yes if they are receiving any of the following:</p>
 
-            <ul class="govuk-list govuk-list--bullet">
-              <li>Income based Jobseekers Allowance</li>
-              <li>Income related Employment and Support Allowance</li>
-              <li>Income Support</li>
-              <li>Pension Credit Guarantee Credit</li>
-              <li>Working Tax Credit</li>
-              <li>Child Tax Credit</li>
-              <li>Universal Credit</li>
-              <li>Housing Benefit</li>
-              <li>Pension Credit Savings Credit</li>
-              <li>Child Benefit</li>
-            </ul>
-            <p class="govuk-body">You may be asked to provide evidence of this at a later stage.</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Income based Jobseekers Allowance</li>
+          <li>Income related Employment and Support Allowance</li>
+          <li>Income Support</li>
+          <li>Pension Credit Guarantee Credit</li>
+          <li>Working Tax Credit</li>
+          <li>Child Tax Credit</li>
+          <li>Universal Credit</li>
+          <li>Housing Benefit</li>
+          <li>Pension Credit Savings Credit</li>
+          <li>Child Benefit</li>
+        </ul>
+        <p class="govuk-body">You may be asked to provide evidence of this at a later stage.</p>
 
-            {{macros.radios('benefits', 'benefits', benefits_options, data)}}
+        {{macros.radios('benefits', 'benefits', benefits_options, data)}}
 
-          </fieldset>
-        </div>
-
-        <button class="govuk-button" data-module="govuk-button">
-          Continue
-        </button>
-      </form>
+      </fieldset>
     </div>
-  </div>
-
+  {%- endcall %}
 {% endblock %}

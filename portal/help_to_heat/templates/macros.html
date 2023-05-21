@@ -1,3 +1,20 @@
+{% macro form_wrapper(prev_url) -%}
+  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+        {{csrf_input}}
+
+        {{caller()}}
+
+        <button class="govuk-button" data-module="govuk-button">
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+{%- endmacro%}
+
 {% macro radios(id, name, options, data) -%}
   <div class="govuk-radios" data-module="govuk-radios">
     {% for option in options %}
