@@ -1,29 +1,19 @@
 {% extends "frontdoor/base.html" %}
-{% import "macros.html" as macros %}
+{% import "macros.html" as macros with context %}
 
 {% block content %}
-  <a href="#" class="govuk-back-link">Back</a>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <form method="post" novalidate>
-        {{csrf_input}}
-        <div class="govuk-form-group">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">
-                Which country is your property located in?
-              </h1>
-            </legend>
+  {% call macros.form_wrapper(prev_url) -%}
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Which country is your property located in?
+          </h1>
+        </legend>
 
-            {{macros.radios('country', 'country', country_options, data)}}
+        {{macros.radios('country', 'country', country_options, data, errors)}}
 
-          </fieldset>
-        </div>
-        <button class="govuk-button" data-module="govuk-button">
-          Continue
-        </button>
-      </form>
+      </fieldset>
     </div>
-  </div>
-
+  {%- endcall %}
 {% endblock %}

@@ -8,13 +8,15 @@ import furl
 import httpx
 import testino
 from django.conf import settings
+from django.utils import timezone
 from help_to_heat import wsgi
+from help_to_heat.portal import models
 
 TEST_SERVER_URL = "http://help-to-heat-testserver/"
 
 
 def make_code(length=6):
-    return random.choices(string.ascii_uppercase, k=length)
+    return "".join(random.choices(string.ascii_lowercase, k=length))
 
 
 def with_client(func):
@@ -37,15 +39,24 @@ def get_client():
     return testino.WSGIAgent(wsgi.application, base_url=TEST_SERVER_URL)
 
 
-def get_latest_email_text():
+def wipe_emails():
+    email_dir = pathlib.Path(settings.EMAIL_FILE_PATH)
+    if email_dir.exists():
+        for f in email_dir.iterdir():
+            if f.is_file():
+                f.unlink()
+
+
+def get_latest_email_text(email):
     email_dir = pathlib.Path(settings.EMAIL_FILE_PATH)
     latest_email_path = max(email_dir.iterdir(), key=os.path.getmtime)
     content = latest_email_path.read_text()
+    assert f"To: {email}" in content.splitlines(), (f"To: {email}", content.splitlines())
     return content
 
 
-def get_latest_email_url():
-    text = get_latest_email_text()
+def get_latest_email_url(email):
+    text = get_latest_email_text(email)
     lines = text.splitlines()
     url_lines = tuple(word for line in lines for word in line.split() if word.startswith(settings.BASE_URL))
     assert len(url_lines) == 1
@@ -55,10 +66,48 @@ def get_latest_email_url():
     return email_url
 
 
-def get_latest_email_password():
-    text = get_latest_email_text()
+def get_latest_email_password(email):
+    text = get_latest_email_text(email)
     lines = iter(text.splitlines())
     for line in lines:
         if line.startswith("Your temporary password is") or line.startswith("Your one time password code is"):
             token = next(lines).strip()
             return token
+
+
+def login_as_service_manager(client, email=None, password=None):
+    return login_as_role(client, "service_manager", email=email, password=password)
+
+
+def login_as_team_leader(client, email=None, password=None):
+    return login_as_role(client, "team_leader", email=email, password=password)
+
+
+def login_as_role(client, role, email=None, password=None):
+    assert role in ("team_leader", "service_manager")
+    if not email:
+        email = f"{role.replace('_', '-')}+{make_code()}@example.com"
+    if not password:
+        password = "Fl1bbl3Fl1bbl3"
+    user = models.User.objects.create_user(email, password)
+    user.full_name = f"Test {role.replace('_', ' ').capitalize()}"
+    user.invite_accepted_at = timezone.now()
+    if role == "team_leader":
+        user.is_team_leader = True
+        user.supplier_id = models.Supplier.objects.get(name="Octopus").id
+    elif role == "service_manager":
+        user.is_supplier_admin = True
+    user.save()
+    page = login(client, email, password)
+    assert page.has_text("Logout")
+    return page
+
+
+def login(client, email, password):
+    page = client.get(make_url("/accounts/login/"))
+    form = page.get_form()
+    form["login"] = email
+    form["password"] = password
+    page = form.submit()
+    page = page.follow()
+    return page

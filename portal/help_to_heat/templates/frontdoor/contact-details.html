@@ -1,57 +1,46 @@
 {% extends "frontdoor/base.html" %}
-{% import "macros.html" as macros %}
+{% import "macros.html" as macros with context %}
 
 {% block content %}
-  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <form method="POST">
-        {{csrf_input}}
+  {% call macros.form_wrapper(prev_url) -%}
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Add your personal and contact details
+          </h1>
+        </legend>
+
         <div class="govuk-form-group">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">
-                Add your personal and contact details
-              </h1>
-            </legend>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label" for="first-name">
-                First name
-              </label>
-              <input class="govuk-input" id="first-name" name="first_name" type="text" autocomplete="first-name">
-            </div>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label" for="last-name">
-                Last name
-              </label>
-              <input class="govuk-input" id="last-name" name="last_name" type="text" autocomplete="last-name">
-            </div>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label" for="contact-number">
-                Contact number
-              </label>
-              <input class="govuk-input" id="contact-number" name="contact_number" type="tel"
-                autocomplete="contact-number">
-            </div>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label" for="email">
-                Email
-              </label>
-              <input class="govuk-input" id="email" name="email" type="email" autocomplete="email">
-            </div>
-
-          </fieldset>
+          <label class="govuk-label" for="first-name">
+            First name
+          </label>
+          <input class="govuk-input" id="first-name" name="first_name" type="text" autocomplete="first-name">
         </div>
 
-        <button class="govuk-button" data-module="govuk-button">
-          Continue
-        </button>
-      </form>
-    </div>
-  </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="last-name">
+            Last name
+          </label>
+          <input class="govuk-input" id="last-name" name="last_name" type="text" autocomplete="last-name">
+        </div>
 
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="contact-number">
+            Contact number
+          </label>
+          <input class="govuk-input" id="contact-number" name="contact_number" type="tel"
+            autocomplete="contact-number">
+        </div>
+
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="email">
+            Email
+          </label>
+          <input class="govuk-input" id="email" name="email" type="email" autocomplete="email">
+        </div>
+
+      </fieldset>
+    </div>
+  {%- endcall %}
 {% endblock %}

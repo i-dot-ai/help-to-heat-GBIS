@@ -1,5 +1,5 @@
 {% extends "frontdoor/base.html" %}
-{% import "macros.html" as macros %}
+{% import "macros.html" as macros with context %}
 
 {% block content %}
   <a href="{{prev_url}}" class="govuk-back-link">Back</a>
@@ -15,7 +15,7 @@
               </h1>
             </legend>
 
-            {{macros.radios('loft', 'loft', loft_options, data)}}
+            {{macros.radios('loft', 'loft', loft_options, data, errors)}}
 
           </fieldset>
         </div>

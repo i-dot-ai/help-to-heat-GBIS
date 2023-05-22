@@ -80,6 +80,7 @@ class ReferralDownload(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
 class Referral(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT, related_name="referrals")
+    session_id = models.UUIDField(editable=False, blank=True, null=True, unique=True)
     referral_download = models.ForeignKey(
         ReferralDownload,
         blank=True,

@@ -1,5 +1,28 @@
-{% macro radios(id, name, options, data) -%}
-  <div class="govuk-radios" data-module="govuk-radios">
+{% macro form_wrapper(prev_url) -%}
+  {% if errors %}
+    {{error_summary(errors)}}
+  {% endif %}
+  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+        {{csrf_input}}
+
+        {{caller()}}
+
+        <button class="govuk-button" data-module="govuk-button">
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+{%- endmacro%}
+
+{% macro radios(id, name, options, data, errors) -%}
+  <p id="nationality-error" class="govuk-error-message">
+    <span class="govuk-visually-hidden">Error:</span> {{errors[name]}}
+  </p>
+  <div id="question-{{name}}" class="govuk-radios" data-module="govuk-radios">
     {% for option in options %}
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="id-{{slugify(option)}}" name="{{name}}" type="radio" value="{{option}}" {{is_checked(data, name, option)}}>
@@ -8,5 +31,24 @@
         </label>
       </div>
     {% endfor %}
+  </div>
+{%- endmacro%}
+
+{% macro error_summary(errors) -%}
+  <div class="govuk-error-summary" data-module="govuk-error-summary">
+    <div role="alert">
+      <h2 class="govuk-error-summary__title">
+        There is a problem
+      </h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          {% for (key, message) in errors.items() %}
+            <li>
+              <a href="#question-{{key}}">{{message}}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
 {%- endmacro%}

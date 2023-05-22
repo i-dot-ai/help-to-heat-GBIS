@@ -6,6 +6,37 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import models
 
+legacy_referral_keys_map = {
+    "receivingBenefits": "benefits",
+    "property": "property_type",
+    "personalDetails.firstName": "first_name",
+    "personalDetails.lastName": "last_name",
+    "personalDetails.email": "email",
+    "housingStatus": "own_property",
+    "numberOfBedrooms": "number_of_bedrooms",
+    "councilTaxBand": "council_tax_band",
+    "loft": "loft",
+    "loftAccess": "loft_access",
+    "personalDetails.phoneNumber": "contact_number",
+    "address.buildingNumberOrName": "address_line_1",
+    "address.postcode": "postcode",
+    "location": "country",
+    "householdIncome": "household_income",
+    "walls": "wall_type",
+    "wallInsulation": "wall_insulation",
+    "energySupplier": "supplier",
+    "addressUPRN": "addressUPRN",
+    "counciltaxBandsSize": "counciltaxBandsSize",
+    "house": "house",
+    "loftInsulation": "loftInsulation",
+    "propertyEpcDetails.propertyEpcDate.day": "propertyEpcDetails.propertyEpcDate.day",
+    "propertyEpcDetails.propertyEpcDate.month": "propertyEpcDetails.propertyEpcDate.month",
+    "propertyEpcDetails.propertyEpcDate.year": "propertyEpcDetails.propertyEpcDate.year",
+    "propertyEpcDetails.propertyEpcRating": "propertyEpcDetails.propertyEpcRating",
+    "suggestedEPCFound": "suggestedEPCFound",
+    "suggestedEPCIsCorrect": "suggestedEPCIsCorrect",
+}
+
 
 @require_http_methods(["GET"])
 @login_required
@@ -35,12 +66,17 @@ def download_csv_by_id_view(request, download_id):
     return response
 
 
+def convert_row(row):
+    row = {legacy_referral_keys_map.get(k, k): v for (k, v) in row.items()}
+    return row
+
+
 def create_referral_csv(referrals, file_name):
     headers = {
         "Content-Type": "text/csv",
         "Content-Disposition": f"attachment; filename=referral-data-{file_name}.csv",
     }
-    rows = [referral.data for referral in referrals]
+    rows = [convert_row(referral.data) for referral in referrals]
     data_keys = []
     for row in rows:
         data_keys = data_keys | row.keys()
