@@ -36,7 +36,15 @@ household_pages = (
     "loft-access",
 )
 
-details_pages = ("contact-details",)
+details_pages = (
+    "supplier",
+    "contact-details",
+)
+
+change_page_lookup = {
+    **{page_name: "summary" for page_name in household_pages},
+    **{page_name: "confirm-and-submit" for page_name in details_pages},
+}
 
 pages = tuple(page_map.keys())
 

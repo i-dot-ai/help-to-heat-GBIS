@@ -74,7 +74,9 @@ class PageView(utils.MethodDispatcher):
         if not errors:
             errors = {}
         if is_change_page:
-            prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name="summary"))
+            assert page_name in schemas.change_page_lookup
+            prev_page_name = schemas.change_page_lookup[page_name]
+            prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name))
             next_page_url = None
         else:
             prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
@@ -103,7 +105,8 @@ class PageView(utils.MethodDispatcher):
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         if is_change_page:
-            next_page_name = "summary"
+            assert page_name in schemas.change_page_lookup
+            next_page_name = schemas.change_page_lookup[page_name]
         else:
             next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
@@ -236,7 +239,7 @@ class ConfirmSubmitView(PageView):
                 "answer": "".join(value for value in interface.api.session.get_answer(session_id, page).values()),
                 "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
             }
-            for page in (schemas.household_pages + schemas.details_pages)
+            for page in schemas.details_pages
         )
         return {"summary_lines": summary_lines}
 
