@@ -15,8 +15,8 @@ page_map = {
     "loft-access": "Is there access to your loft?",
     "summary": "",
     "schemes": "",
-    "supplier": "",
-    "contact-details": "",
+    "supplier": "Energy supplier",
+    "contact-details": "Contact details",
     "confirm-and-submit": "",
     "success": "",
 }
