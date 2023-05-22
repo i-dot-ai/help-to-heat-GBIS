@@ -1,4 +1,4 @@
-{% macro form_wrapper(prev_url) -%}
+{% macro form_wrapper(prev_url, button_label="Continue") -%}
   {% if errors %}
     {{error_summary(errors)}}
   {% endif %}
@@ -11,7 +11,7 @@
         {{caller()}}
 
         <button class="govuk-button" data-module="govuk-button">
-          Continue
+          {{button_label}}
         </button>
       </form>
     </div>
@@ -51,4 +51,24 @@
       </div>
     </div>
   </div>
+{%- endmacro%}
+
+{% macro details_summary(summary_lines) -%}
+  <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+    {% for summary_line in summary_lines %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          {{summary_line.question}}
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{summary_line.answer}}
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link" href="{{summary_line.change_url}}">
+            Change<span class="govuk-visually-hidden"> {{summary_line.question}}</span>
+          </a>
+        </dd>
+      </div>
+    {% endfor %}
+  </dl>
 {%- endmacro%}

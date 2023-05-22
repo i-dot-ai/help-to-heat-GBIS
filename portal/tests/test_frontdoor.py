@@ -170,6 +170,20 @@ def test_happy_flow():
     form["email"] = "freddy.flibble@example.com"
     page = form.submit().follow()
 
+    assert page.has_one("h1:contains('Confirm and submit')")
+
+    page = page.click(contains="Change Energy supplier")
+
+    form = page.get_form()
+    form["supplier"] = "British Gas"
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('Confirm and submit')")
+    assert page.has_text("British Gas")
+
+    form = page.get_form()
+    page = form.submit().follow()
+
     assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
 
     data = interface.api.session.get_answer(session_id, page_name="contact-details")
@@ -182,7 +196,7 @@ def test_happy_flow():
     assert data == expected, (data, expected)
 
     referral = models.Referral.objects.get(session_id=session_id)
-    assert referral.supplier.name == "Octopus"
+    assert referral.supplier.name == "British Gas"
     assert referral.data["first_name"] == "Freddy"
     assert referral.data["benefits"] == "Yes"
     referral.delete()
