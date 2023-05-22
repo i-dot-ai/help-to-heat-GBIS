@@ -170,6 +170,10 @@ def test_happy_flow():
     form["email"] = "freddy.flibble@example.com"
     page = form.submit().follow()
 
+    assert page.has_one("h1:contains('Confirm and submit')")
+    form = page.get_form()
+    page = form.submit().follow()
+
     assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
 
     data = interface.api.session.get_answer(session_id, page_name="contact-details")

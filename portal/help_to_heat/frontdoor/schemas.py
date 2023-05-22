@@ -17,6 +17,7 @@ page_map = {
     "schemes": "",
     "supplier": "",
     "contact-details": "",
+    "confirm-and-submit": "",
     "success": "",
 }
 
@@ -35,6 +36,7 @@ household_pages = (
     "loft-access",
 )
 
+details_pages = ("contact-details",)
 
 pages = tuple(page_map.keys())
 

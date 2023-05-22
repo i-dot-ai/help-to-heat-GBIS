@@ -71,6 +71,8 @@ def test_service_manager_add_supplier():
 
 
 def test_legacy_download():
+    models.Referral.objects.filter(referral_download=None).delete()
+
     legacy_data = {
         "loft": "no",
         "house": "semi-detached",

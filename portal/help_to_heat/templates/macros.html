@@ -1,4 +1,4 @@
-{% macro form_wrapper(prev_url) -%}
+{% macro form_wrapper(prev_url, button_label="Continue") -%}
   {% if errors %}
     {{error_summary(errors)}}
   {% endif %}
@@ -11,7 +11,7 @@
         {{caller()}}
 
         <button class="govuk-button" data-module="govuk-button">
-          Continue
+          {{button_label}}
         </button>
       </form>
     </div>
