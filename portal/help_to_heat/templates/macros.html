@@ -1,8 +1,10 @@
 {% macro form_wrapper(prev_url, button_label="Continue") -%}
+  {% if prev_url %}
+    <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  {% endif %}
   {% if errors %}
     {{error_summary(errors)}}
   {% endif %}
-  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form method="post" novalidate>
@@ -18,21 +20,36 @@
   </div>
 {%- endmacro%}
 
-{% macro radios(id, name, options, data, errors) -%}
+{% macro radios(name, options, data, errors) -%}
   {% if errors.get(name) %}
-    <p id="nationality-error" class="govuk-error-message">
+    <p id="question-{{name}}-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{errors.get(name)}}
     </p>
   {% endif %}
   <div id="question-{{name}}" class="govuk-radios" data-module="govuk-radios">
     {% for option in options %}
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="id-{{slugify(option)}}" name="{{name}}" type="radio" value="{{option}}" {{is_checked(data, name, option)}}>
-        <label class="govuk-label govuk-radios__label" for="id-{{slugify(option)}}">
+        <input class="govuk-radios__input" id="option-{{slugify(option)}}" name="{{name}}" type="radio" value="{{option}}" {{is_checked(data, name, option)}}>
+        <label class="govuk-label govuk-radios__label" for="option-{{slugify(option)}}">
           {{option}}
         </label>
       </div>
     {% endfor %}
+  </div>
+{%- endmacro%}
+
+{% macro input(name, label, data, errors) -%}
+  {% if errors.get(name) %}
+    <p id="question-{{name}}-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span> {{errors.get(name)}}
+    </p>
+  {% endif %}
+
+  <div class="govuk-form-group {{errors.get(name) and 'govuk-form-group--error' or ''}}">
+    <label class="govuk-label" for="question-{{name}}">
+      {{label}}
+    </label>
+    <input class="govuk-input" id="question-{{name}}" name="{{name}}" type="text" autocomplete="{{name}}" value="{{data.get(name, '')}}">
   </div>
 {%- endmacro%}
 

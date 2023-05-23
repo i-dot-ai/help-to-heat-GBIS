@@ -3,7 +3,6 @@
 
 {% block content %}
   {% call macros.form_wrapper(prev_url) -%}
-    <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
           <h1 class="govuk-fieldset__heading">
@@ -11,36 +10,11 @@
           </h1>
         </legend>
 
-        <div class="govuk-form-group">
-          <label class="govuk-label" for="first-name">
-            First name
-          </label>
-          <input class="govuk-input" id="first-name" name="first_name" type="text" autocomplete="first-name">
-        </div>
-
-        <div class="govuk-form-group">
-          <label class="govuk-label" for="last-name">
-            Last name
-          </label>
-          <input class="govuk-input" id="last-name" name="last_name" type="text" autocomplete="last-name">
-        </div>
-
-        <div class="govuk-form-group">
-          <label class="govuk-label" for="contact-number">
-            Contact number
-          </label>
-          <input class="govuk-input" id="contact-number" name="contact_number" type="tel"
-            autocomplete="contact-number">
-        </div>
-
-        <div class="govuk-form-group">
-          <label class="govuk-label" for="email">
-            Email
-          </label>
-          <input class="govuk-input" id="email" name="email" type="email" autocomplete="email">
-        </div>
+        {{macros.input('first_name', 'First name', data, errors)}}
+        {{macros.input('last_name', 'Last name', data, errors)}}
+        {{macros.input('contact_number', 'Contact number', data, errors)}}
+        {{macros.input('email', 'Email', data, errors)}}
 
       </fieldset>
-    </div>
   {%- endcall %}
 {% endblock %}

@@ -31,6 +31,9 @@ def test_flow_northern_ireland():
     data = interface.api.session.get_answer(session_id, page_name="country")
     assert data["country"] == "Northern Ireland"
 
+    page = page.click(contains="Back")
+    assert page.has_one("h1:contains('Which country is your property located in?')")
+
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_flow_scotland():
@@ -54,6 +57,9 @@ def test_flow_scotland():
 
     data = interface.api.session.get_answer(session_id, page_name="country")
     assert data["country"] == "Scotland"
+
+    page = page.click(contains="Back")
+    assert page.has_one("h1:contains('Which country is your property located in?')")
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
@@ -164,6 +170,11 @@ def test_happy_flow():
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
     form = page.get_form()
+
+    page = form.submit()
+    assert page.has_text("Please answer this question")
+    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Please answer this question')")
+
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
     form["contact_number"] = "1234567890"
@@ -182,9 +193,15 @@ def test_happy_flow():
     assert page.has_text("British Gas")
 
     form = page.get_form()
+    page = form.submit()
+
+    assert page.has_text("Please answer this question")
+    form = page.get_form()
+    form["permission"] = True
+
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
+    assert page.has_one("h1:contains('Your details have been submitted to British Gas')")
 
     data = interface.api.session.get_answer(session_id, page_name="contact-details")
     expected = {
@@ -228,6 +245,9 @@ def test_back_button():
 
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
+
+    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert not page.has_one("a:contains('Back')")
 
     form = page.get_form()
     form["country"] = "England"

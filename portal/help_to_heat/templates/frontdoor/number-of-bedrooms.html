@@ -2,18 +2,18 @@
 {% import "macros.html" as macros with context %}
 
 {% block content %}
-  {% call macros.form_wrapper(prev_url) -%}
-    <div class="govuk-form-group">
-      <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-          <h1 class="govuk-fieldset__heading">
-            Number of bedrooms
-          </h1>
-        </legend>
+{% call macros.form_wrapper(prev_url) -%}
+<div class="govuk-form-group govuk-form-group--error">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">
+        Number of bedrooms
+      </h1>
+    </legend>
 
-        {{macros.radios('number-of-bedrooms', 'number_of_bedrooms', number_of_bedrooms_options, data, errors)}}
+    {{macros.radios('number_of_bedrooms', number_of_bedrooms_options, data, errors)}}
 
-      </fieldset>
-    </div>
-  {%- endcall %}
+  </fieldset>
+</div>
+{%- endcall %}
 {% endblock %}

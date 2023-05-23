@@ -24,6 +24,7 @@ page_field_map = {
     "loft-access": ("loft_access",),
     "supplier": ("supplier",),
     "contact-details": ("first_name", "last_name", "contact_number", "email"),
+    "confirm-and-submit": ("permission",),
 }
 
 
@@ -112,8 +113,9 @@ class PageView(utils.MethodDispatcher):
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
     def validate(self, request, session_id, page_name, data, is_change_page):
+        data = data.dict()
         fields = page_field_map.get(page_name, ())
-        missing_fields = (field for field in fields if field not in data)
+        missing_fields = tuple(field for field in fields if not data.get(field))
         errors = {field: "Please answer this question" for field in missing_fields}
         return errors
 
@@ -236,7 +238,7 @@ class ConfirmSubmitView(PageView):
         summary_lines = (
             {
                 "question": schemas.page_map[page],
-                "answer": "".join(value for value in interface.api.session.get_answer(session_id, page).values()),
+                "answer": ", ".join(value for value in interface.api.session.get_answer(session_id, page).values()),
                 "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
             }
             for page in schemas.details_pages
@@ -248,11 +250,18 @@ class ConfirmSubmitView(PageView):
         return super().handle_post(request, session_id, page_name, data, is_change_page)
 
 
+@register_page("success")
+class SuccessView(PageView):
+    def get_context(self, session_id, *args, **kwargs):
+        supplier_data = interface.api.session.get_answer(session_id, "supplier")
+        return {"supplier": supplier_data["supplier"]}
+
+
 def page_view(request, session_id, page_name):
-    context = {}
     if page_name in page_map:
         return page_map[page_name](request, session_id, page_name)
 
+    context = {"session_id": session_id, "page_name": page_name}
     return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
 
