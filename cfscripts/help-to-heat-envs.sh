@@ -19,7 +19,7 @@ govuk_email_backend=(
 
 live_notify_api=(
     staging
-    sandbox
+    suppliers
 )
 
 
