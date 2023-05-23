@@ -14,7 +14,6 @@ govuk_email_backend=(
     staging
     testing
     suppliers
-    sandbox
 )
 
 live_notify_api=(
@@ -22,6 +21,10 @@ live_notify_api=(
     suppliers
 )
 
+show_frontdoors=(
+    develop
+    suppliers
+)
 
 ###############################################################################################
 if [[ " ${sentry_envs[*]} " =~ " ${CF_SPACE} " ]]; then
@@ -35,6 +38,12 @@ echo "GOV NOTIFY= ${gov_notify}"
 
 if [[ " ${live_notify_api[*]} " =~ " ${CF_SPACE} " ]]; then
     live_api_key=true
+fi
+
+if [[ " ${show_frontdoors[*]} " =~ " ${CF_SPACE} " ]]; then
+    show_frontdoor="True"
+else
+    show_frontdoor="False"
 fi
 
 while read -r line; do
@@ -80,6 +89,10 @@ do
 
         if grep -q "^help-to-heat-" <<< "$value" && ! grep -q "^help-to-heat-portal-" <<< "$value" && ! grep -q "^help-to-heat-frontdoor-" <<< "$value"; then
             $(./cf set-env ${value} UPRN_API_KEY ${UPRN_API_KEY} &> /dev/null)
+        fi
+
+        if grep -q "^help-to-heat-frontdoor" <<< "$value" && ! grep -q "^help-to-heat-portal-" <<< "$value"; then
+            $(./cf set-env ${value} SHOW_FRONTDOOR $show_frontdoor &> /dev/null)
         fi
     fi
 done
