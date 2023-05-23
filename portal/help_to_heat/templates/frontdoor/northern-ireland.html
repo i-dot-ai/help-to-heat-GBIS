@@ -1,7 +1,7 @@
 {% extends "frontdoor/base.html" %}
 
 {% block content %}
-<a href="#" class="govuk-back-link">Back</a>
+<a href="{{url('frontdoor:page', session_id=session_id, page_name='country')}}" class="govuk-back-link">Back</a>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-l">The scheme does not apply to homes in Northern Ireland</h1>
