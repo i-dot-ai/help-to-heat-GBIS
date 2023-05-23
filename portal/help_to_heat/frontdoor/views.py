@@ -254,7 +254,7 @@ def page_view(request, session_id, page_name):
     if page_name in page_map:
         return page_map[page_name](request, session_id, page_name)
 
-    context = {'session_id': session_id, 'page_name': page_name}
+    context = {"session_id": session_id, "page_name": page_name}
     return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
 

@@ -197,7 +197,7 @@ def test_happy_flow():
 
     assert page.has_text("Please answer this question")
     form = page.get_form()
-    form['permission'] = True
+    form["permission"] = True
 
     page = form.submit().follow()
 
