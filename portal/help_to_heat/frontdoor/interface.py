@@ -1,4 +1,6 @@
 import marshmallow
+import osdatahub
+from django.conf import settings
 from help_to_heat import portal
 from help_to_heat.utils import Entity, Interface, register_event, with_schema
 
@@ -28,6 +30,15 @@ class ReferralSchema(marshmallow.Schema):
     id = marshmallow.fields.UUID()
     session_id = marshmallow.fields.UUID()
     data = marshmallow.fields.Nested(schemas.SessionSchema(unknown=marshmallow.EXCLUDE))
+
+
+class GetAddressSchema(marshmallow.Schema):
+    text = marshmallow.fields.String()
+
+
+class AddressSchema(marshmallow.Schema):
+    uprn = marshmallow.fields.String()
+    address = marshmallow.fields.String()
 
 
 class Session(Entity):
@@ -66,4 +77,16 @@ class Session(Entity):
         return referral_data
 
 
-api = Interface(session=Session())
+class Address(Entity):
+    @with_schema(load=GetAddressSchema, dump=AddressSchema(many=True))
+    def get_addresses(self, text):
+        api = osdatahub.PlacesAPI(settings.OS_API_KEY)
+        api_results = api.find(text)
+        results = tuple(
+            {"uprn": r["properties"]["UPRN"], "address": r["properties"]["ADDRESS"]}
+            for r in api_results['features']
+        )
+        return results
+
+
+api = Interface(session=Session(), address=Address())
