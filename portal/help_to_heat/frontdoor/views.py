@@ -24,6 +24,7 @@ page_field_map = {
     "loft-access": ("loft_access",),
     "supplier": ("supplier",),
     "contact-details": ("first_name", "last_name", "contact_number", "email"),
+    "confirm-and-submit": ("permission",),
 }
 
 
