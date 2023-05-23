@@ -9,6 +9,12 @@
     </div>
 
     <div class="govuk-form-group">
+      {% if errors.get('permission') %}
+        <p id="permission-error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{errors.get('permission')}}
+        </p>
+      {% endif %}
+
       <fieldset class="govuk-fieldset" aria-describedby="permission-hint">
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
