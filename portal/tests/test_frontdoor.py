@@ -173,7 +173,7 @@ def test_happy_flow():
 
     page = form.submit()
     assert page.has_text("Please answer this question")
-    assert page.has_one("p#first-name-error.govuk-error-message:contains('Please answer this question')")
+    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Please answer this question')")
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
