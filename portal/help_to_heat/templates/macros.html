@@ -45,7 +45,7 @@
     </p>
   {% endif %}
 
-  <div id="question-{{name}}" class="govuk-form-group">
+  <div id="question-{{name}}" class="govuk-form-group {{errors.get(name) and 'govuk-form-group--error' or ''}}">
     <label class="govuk-label" for="{{id}}">
       {{label}}
     </label>
