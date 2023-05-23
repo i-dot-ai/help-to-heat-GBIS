@@ -38,6 +38,21 @@
   </div>
 {%- endmacro%}
 
+{% macro input(id, name, label, data, errors) -%}
+  {% if errors.get(name) %}
+    <p id="{{id}}-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span> {{errors.get(name)}}
+    </p>
+  {% endif %}
+
+  <div id="question-{{name}}" class="govuk-form-group">
+    <label class="govuk-label" for="{{id}}">
+      {{label}}
+    </label>
+    <input class="govuk-input" id="{{id}}" name="{{name}}" type="text" autocomplete="{{id}}" value="{{data.get(name, '')}}">
+  </div>
+{%- endmacro%}
+
 {% macro error_summary(errors) -%}
   <div class="govuk-error-summary" data-module="govuk-error-summary">
     <div role="alert">
