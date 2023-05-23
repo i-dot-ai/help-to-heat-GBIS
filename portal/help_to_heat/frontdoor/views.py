@@ -238,7 +238,7 @@ class ConfirmSubmitView(PageView):
         summary_lines = (
             {
                 "question": schemas.page_map[page],
-                "answer": "".join(value for value in interface.api.session.get_answer(session_id, page).values()),
+                "answer": ", ".join(value for value in interface.api.session.get_answer(session_id, page).values()),
                 "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
             }
             for page in schemas.details_pages
