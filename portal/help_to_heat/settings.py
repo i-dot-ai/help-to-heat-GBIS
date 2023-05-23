@@ -178,3 +178,5 @@ SHOW_FRONTDOOR = env.bool("SHOW_FRONTDOOR", default=False)
 
 if SHOW_FRONTDOOR:
     LOGOUT_REDIRECT_URL = "account_login"
+
+OS_API_KEY = env.str("OS_API_KEY")
