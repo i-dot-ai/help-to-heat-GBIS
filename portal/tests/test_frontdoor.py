@@ -201,7 +201,7 @@ def test_happy_flow():
 
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
+    assert page.has_one("h1:contains('Your details have been submitted to British Gas')")
 
     data = interface.api.session.get_answer(session_id, page_name="contact-details")
     expected = {

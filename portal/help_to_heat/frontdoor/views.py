@@ -250,6 +250,13 @@ class ConfirmSubmitView(PageView):
         return super().handle_post(request, session_id, page_name, data, is_change_page)
 
 
+@register_page("success")
+class SuccessView(PageView):
+    def get_context(self, session_id, *args, **kwargs):
+        supplier_data = interface.api.session.get_answer(session_id, "supplier")
+        return {"supplier": supplier_data["supplier"]}
+
+
 def page_view(request, session_id, page_name):
     if page_name in page_map:
         return page_map[page_name](request, session_id, page_name)
