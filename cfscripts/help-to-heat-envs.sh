@@ -81,6 +81,10 @@ do
         if grep -q "^help-to-heat-" <<< "$value" && ! grep -q "^help-to-heat-portal-" <<< "$value" && ! grep -q "^help-to-heat-frontdoor-" <<< "$value"; then
             $(./cf set-env ${value} UPRN_API_KEY ${UPRN_API_KEY} &> /dev/null)
         fi
+
+        if grep -q "^help-to-heat-frontdoor-" <<< "$value" && ! grep -q "^help-to-heat-portal-" <<< "$value" && ! grep -q "^help-to-heat-" <<< "$value"; then
+            $(./cf set-env ${value} SHOW_FRONTDOOR True &> /dev/null)
+        fi
     fi
 done
 
