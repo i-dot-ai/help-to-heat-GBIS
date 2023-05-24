@@ -5,6 +5,7 @@ from django.urls import reverse
 from help_to_heat import utils
 
 from . import interface, schemas
+from help_to_heat.portal import models as portal_models
 
 page_map = {}
 
@@ -186,8 +187,17 @@ class AddressManualView(PageView):
 
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
-    def get_context(self, *args, **kwargs):
-        return {"council_tax_band_options": schemas.council_tax_band_options}
+    def get_context(self, request, session_id, *args, **kwargs):
+        address_line_1 = interface.api.session.get_answer(session_id, "address")["address_line_1"]
+        postcode = interface.api.session.get_answer(session_id, "address")["postcode"]
+        uprn = 190007  # Mocked uprn until address is in
+        epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
+        context = {"council_tax_band_options": schemas.council_tax_band_options}
+        if not epc_rating:
+            return context
+        else:
+            context["estimated_rating"] = epc_rating.rating
+            return context
 
 
 @register_page("benefits")
