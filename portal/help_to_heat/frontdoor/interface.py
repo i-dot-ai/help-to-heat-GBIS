@@ -79,7 +79,7 @@ class Session(Entity):
 
 class Address(Entity):
     @with_schema(load=GetAddressSchema, dump=AddressSchema(many=True))
-    def get_addresses(self, text):
+    def find_addresses(self, text):
         api = osdatahub.PlacesAPI(settings.OS_API_KEY)
         api_results = api.find(text)
         results = tuple(
