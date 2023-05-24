@@ -32,7 +32,7 @@ class ReferralSchema(marshmallow.Schema):
     data = marshmallow.fields.Nested(schemas.SessionSchema(unknown=marshmallow.EXCLUDE))
 
 
-class GetAddressSchema(marshmallow.Schema):
+class FindAddressesSchema(marshmallow.Schema):
     text = marshmallow.fields.String()
 
 
@@ -78,7 +78,7 @@ class Session(Entity):
 
 
 class Address(Entity):
-    @with_schema(load=GetAddressSchema, dump=AddressSchema(many=True))
+    @with_schema(load=FindAddressesSchema, dump=AddressSchema(many=True))
     def find_addresses(self, text):
         api = osdatahub.PlacesAPI(settings.OS_API_KEY)
         api_results = api.find(text)
