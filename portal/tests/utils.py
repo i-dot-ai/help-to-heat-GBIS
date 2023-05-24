@@ -6,13 +6,27 @@ import string
 
 import furl
 import httpx
+import requests_mock
 import testino
 from django.conf import settings
 from django.utils import timezone
 from help_to_heat import wsgi
 from help_to_heat.portal import models
 
+__here__ = pathlib.Path(__file__).parent
+
 TEST_SERVER_URL = "http://help-to-heat-testserver/"
+
+
+def mock_os_api(func):
+    json_file_path = __here__ / "sample_os_api_response.json"
+    data = json_file_path.read_text()
+
+    @functools.wraps(func)
+    def _inner(*args, **kwargs):
+        with requests_mock.Mocker() as m:
+            m.get("https://api.os.uk/search/places/v1/find", text=data)
+            return func()
 
 
 def make_code(length=6):

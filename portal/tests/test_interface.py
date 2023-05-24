@@ -1,10 +1,8 @@
-import pathlib
 import uuid
 
-import requests_mock
 from help_to_heat.frontdoor import interface
 
-__here__ = pathlib.Path(__file__).parent
+from . import utils
 
 
 def test_answers():
@@ -44,11 +42,7 @@ def test_duplicate_answer():
     assert result == expected, (result, expected)
 
 
+@utils.mock_os_api
 def test_get_address():
-    json_file_path = __here__ / "sample_os_api_response.json"
-    data = json_file_path.read_text()
-
-    with requests_mock.Mocker() as m:
-        m.get("https://api.os.uk/search/places/v1/find", text=data)
-        result = interface.api.address.get_addresses("foobar")
-        assert result[0]["uprn"] == "100023336956"
+    result = interface.api.address.get_addresses("foobar")
+    assert result[0]["uprn"] == "100023336956"
