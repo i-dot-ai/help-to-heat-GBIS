@@ -83,8 +83,7 @@ class Address(Entity):
         api = osdatahub.PlacesAPI(settings.OS_API_KEY)
         api_results = api.find(text)
         results = tuple(
-            {"uprn": r["properties"]["UPRN"], "address": r["properties"]["ADDRESS"]}
-            for r in api_results['features']
+            {"uprn": r["properties"]["UPRN"], "address": r["properties"]["ADDRESS"]} for r in api_results["features"]
         )
         return results
 

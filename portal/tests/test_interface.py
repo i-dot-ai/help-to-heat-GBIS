@@ -2,7 +2,6 @@ import pathlib
 import uuid
 
 import requests_mock
-
 from help_to_heat.frontdoor import interface
 
 __here__ = pathlib.Path(__file__).parent
@@ -52,4 +51,4 @@ def test_get_address():
     with requests_mock.Mocker() as m:
         m.get("https://api.os.uk/search/places/v1/find", text=data)
         result = interface.api.address.get_addresses("foobar")
-        assert result[0]['uprn'] == "100023336956"
+        assert result[0]["uprn"] == "100023336956"
