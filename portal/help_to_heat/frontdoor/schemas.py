@@ -21,6 +21,27 @@ page_map = {
     "success": "",
 }
 
+question_map = {
+    "country": "Which country is your property located in?",
+    "own_property": "Do you own your property?",
+    "address": "What is the address of your property?",
+    "council_tax_band": "What is the council tax band of your property?",
+    "benefits": "Is anyone in your household receiving any benefits?",
+    "household_income": "What is your annual household income?",
+    "property_type": "What kind of property do you have?",
+    "number_of_bedrooms": "Number of bedrooms",
+    "wall_type": "What kind of walls does your property have?",
+    "wall_insulation": "Are your walls insulated?",
+    "loft": "Does this property have a loft?",
+    "loft_access": "Is there access to your loft?",
+    "supplier": "Energy supplier",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "contact_number": "Contact number",
+    "email": "Email",
+}
+
+
 household_pages = (
     "country",
     "own-property",

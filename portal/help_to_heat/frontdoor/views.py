@@ -238,13 +238,14 @@ class ContactDetailsView(PageView):
 @register_page("confirm-and-submit")
 class ConfirmSubmitView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
-        summary_lines = (
+        summary_lines = tuple(
             {
-                "question": schemas.page_map[page],
-                "answer": ", ".join(value for value in interface.api.session.get_answer(session_id, page).values()),
-                "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
+                "question": schemas.question_map[key],
+                "answer": value,
+                "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page_name)),
             }
-            for page in schemas.details_pages
+            for page_name in schemas.details_pages
+            for key, value in interface.api.session.get_answer(session_id, page_name).items()
         )
         return {"summary_lines": summary_lines}
 
