@@ -19,7 +19,7 @@ TEST_SERVER_URL = "http://help-to-heat-testserver/"
 
 
 def mock_os_api(func):
-    json_file_path = __here__ / "sample_os_api_response.json"
+    json_file_path = __here__ / "sample_os_api_find_response.json"
     data = json_file_path.read_text()
 
     @functools.wraps(func)
