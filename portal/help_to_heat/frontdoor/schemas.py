@@ -112,6 +112,9 @@ class SessionSchema(Schema):
     contact_number = fields.String()
     email = fields.String()
 
+    class Meta:
+        ordered = True
+
 
 schemes_map = {
     "Yes": ("Great British Insulation scheme", "Energy Company Obligation 4"),
