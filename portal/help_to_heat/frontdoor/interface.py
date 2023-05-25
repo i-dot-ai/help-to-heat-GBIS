@@ -85,10 +85,8 @@ class Address(Entity):
     @with_schema(load=FindAddressesSchema, dump=AddressSchema(many=True))
     def find_addresses(self, text):
         api = osdatahub.PlacesAPI(settings.OS_API_KEY)
-        api_results = api.find(text)
-        results = tuple(
-            {"uprn": r["properties"]["UPRN"], "address": r["properties"]["ADDRESS"]} for r in api_results["features"]
-        )
+        api_results = api.find(text)["features"]
+        results = tuple({"uprn": r["properties"]["UPRN"], "address": r["properties"]["ADDRESS"]} for r in api_results)
         return results
 
     @with_schema(load=GetAddressSchema, dump=AddressSchema)
