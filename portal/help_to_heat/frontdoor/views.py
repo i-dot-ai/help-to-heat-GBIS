@@ -158,8 +158,8 @@ class AddressSelectView(PageView):
         data = interface.api.session.get_answer(session_id, "address")
         text = f"{data['address_line_1'], data['postcode']}"
         addresses = interface.api.address.find_addresses(text)
-        uprn_options = tuple({'value': a['uprn'], 'label': a['address']} for a in addresses)
-        return {"uprn": uprn_options}
+        uprn_options = tuple({"value": a["uprn"], "label": a["address"]} for a in addresses)
+        return {"uprn_options": uprn_options}
 
     def save_data(self, request, session_id, page_name, *args, **kwargs):
         uprn = request.POST["uprn"]
@@ -240,7 +240,9 @@ class SummaryView(PageView):
         summary_lines = (
             {
                 "question": schemas.page_map[page],
-                "answer": "".join(value for value in interface.api.session.get_answer(session_id, page).values()),
+                "answer": ", ".join(
+                    str(value) for value in interface.api.session.get_answer(session_id, page).values()
+                ),
                 "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
             }
             for page in schemas.household_pages
