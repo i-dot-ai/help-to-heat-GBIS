@@ -152,6 +152,23 @@ class AddressView(PageView):
     pass
 
 
+@register_page("address-select")
+class AddressSelectView(PageView):
+    def get_context(self, request, session_id, *args, **kwargs):
+        data = interface.api.session.get_answer(session_id, "address")
+        text = f"{data['address_line_1'], data['postcode']}"
+        addresses = interface.api.address.find_addresses(text)
+        uprn_options = tuple({'value': a['uprn'], 'label': a['address']} for a in addresses)
+        return {"uprn": uprn_options}
+
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
+        uprn = request.POST["uprn"]
+        address = interface.api.address.get_address(uprn)
+        data = {"address": address}
+        data = interface.api.session.save_answer(session_id, page_name, data)
+        return data
+
+
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
     def get_context(self, *args, **kwargs):
