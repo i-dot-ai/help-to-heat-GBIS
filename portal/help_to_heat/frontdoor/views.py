@@ -49,7 +49,7 @@ def get_prev_next_page_name(page_name):
     assert page_name in schemas.pages
     page_index = schemas.pages.index(page_name)
     if page_index == 0:
-        prev_page_name = None
+        prev_page_name = "homepage"
     else:
         prev_page_name = schemas.pages[page_index - 1]
     if page_index + 1 == len(schemas.pages):
@@ -61,9 +61,12 @@ def get_prev_next_page_name(page_name):
 
 def get_prev_next_urls(session_id, page_name):
     prev_page_name, next_page_name = get_prev_next_page_name(page_name)
-    prev_page_url = prev_page_name and reverse(
-        "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
-    )
+    if prev_page_name == "homepage":
+        prev_page_url = prev_page_name and reverse(f"frontdoor:{prev_page_name}")
+    else:
+        prev_page_url = prev_page_name and reverse(
+            "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
+        )
     next_page_url = next_page_name and reverse(
         "frontdoor:page", kwargs=dict(session_id=session_id, page_name=next_page_name)
     )

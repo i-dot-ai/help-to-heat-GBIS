@@ -247,7 +247,7 @@ def test_back_button():
     assert uuid.UUID(session_id)
 
     assert page.has_one("h1:contains('Which country is your property located in?')")
-    assert not page.has_one("a:contains('Back')")
+    assert page.has_one("a:contains('Back')")
 
     form = page.get_form()
     form["country"] = "England"
