@@ -86,6 +86,8 @@ class Address(Entity):
     def find_addresses(self, text):
         api = osdatahub.PlacesAPI(settings.OS_API_KEY)
         api_results = api.find(text, dataset="LPI")["features"]
+        if len(api_results) > 10:
+            api_results = api_results[:10]
         results = tuple({"uprn": r["properties"]["UPRN"], "address": r["properties"]["ADDRESS"]} for r in api_results)
         return results
 
