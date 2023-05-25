@@ -188,9 +188,7 @@ class AddressManualView(PageView):
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
-        address_line_1 = interface.api.session.get_answer(session_id, "address")["address_line_1"]
-        postcode = interface.api.session.get_answer(session_id, "address")["postcode"]
-        uprn = 190007  # Mocked uprn until address is in
+        uprn = interface.api.session.get_answer(session_id, "address")["uprn"]
         epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
         context = {"council_tax_band_options": schemas.council_tax_band_options}
         if not epc_rating:
