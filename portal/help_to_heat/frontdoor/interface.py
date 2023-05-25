@@ -37,7 +37,7 @@ class FindAddressesSchema(marshmallow.Schema):
 
 
 class GetAddressSchema(marshmallow.Schema):
-    text = marshmallow.fields.String()
+    uprn = marshmallow.fields.Integer()
 
 
 class AddressSchema(marshmallow.Schema):
