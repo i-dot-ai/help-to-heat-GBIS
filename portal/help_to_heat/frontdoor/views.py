@@ -96,13 +96,17 @@ class PageView(utils.MethodDispatcher):
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
 
     def post(self, request, session_id, page_name, is_change_page=False):
-        data = request.POST
+        data = request.POST.dict()
         errors = self.validate(request, session_id, page_name, data, is_change_page)
         if errors:
             return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
         else:
-            data = interface.api.session.save_answer(session_id, page_name, request.POST)
+            data = self.save_data(request, session_id, page_name)
             return self.handle_post(request, session_id, page_name, data, is_change_page)
+
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
+        data = interface.api.session.save_answer(session_id, page_name, request.POST.dict())
+        return data
 
     def get_context(self, request, session_id, page_name, data):
         return {}
@@ -116,7 +120,7 @@ class PageView(utils.MethodDispatcher):
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
     def validate(self, request, session_id, page_name, data, is_change_page):
-        data = data.dict()
+        data = data
         fields = page_field_map.get(page_name, ())
         missing_fields = tuple(field for field in fields if not data.get(field))
         errors = {field: "Please answer this question" for field in missing_fields}
