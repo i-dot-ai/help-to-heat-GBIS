@@ -4,6 +4,7 @@ page_map = {
     "country": "Which country is your property located in?",
     "own-property": "Do you own your property?",
     "address": "What is the address of your property?",
+    "address-select": "What is the address of your property?",
     "council-tax-band": "What is the council tax band of your property?",
     "benefits": "Is anyone in your household receiving any benefits?",
     "household-income": "What is your annual household income?",
@@ -179,6 +180,8 @@ class SessionSchema(Schema):
     own_property = fields.String(validate=validate.OneOf(own_property_options))
     address_line_1 = fields.String()
     postcode = fields.String()
+    uprn = fields.Integer()
+    address = fields.String()
     council_tax_band = fields.String(validate=validate.OneOf(council_tax_band_options))
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))
