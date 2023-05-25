@@ -106,6 +106,14 @@ def _answer_house_questions(page, session_id, benefits_answer):
     assert data["address_line_1"] == "999 Letsby Avenue"
     assert data["postcode"] == "PO99 9PO"
 
+    form = page.get_form()
+    form["uprn"] = "100023336956"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address-select")
+    assert data["uprn"] == 100023336956
+    assert data["address"] == "10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA"
+
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
     page = _check_page(page, "council-tax-band", "council_tax_band", "B")
 
@@ -144,6 +152,7 @@ def _answer_house_questions(page, session_id, benefits_answer):
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_happy_flow():
     client = utils.get_client()
     page = client.get("/")
@@ -276,6 +285,7 @@ def test_back_button():
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_no_benefits_flow():
     client = utils.get_client()
     page = client.get("/")
@@ -300,6 +310,7 @@ def test_no_benefits_flow():
 
 
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_summary():
     client = utils.get_client()
     page = client.get("/")
@@ -327,3 +338,5 @@ def test_summary():
     assert page.has_one("h1:contains('Check your answers')")
 
     assert page.has_text("I am a property owner but lease my property to one or more tenants")
+
+    assert page.has_text("10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA")

@@ -50,5 +50,5 @@ def test_find_addresses():
 
 @utils.mock_os_api
 def test_get_address():
-    result = interface.api.address.get_address("foobar")
+    result = interface.api.address.get_address(uprn="10")
     assert result["address"] == "10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA"
