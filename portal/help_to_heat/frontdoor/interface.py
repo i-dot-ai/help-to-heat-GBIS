@@ -36,6 +36,10 @@ class FindAddressesSchema(marshmallow.Schema):
     text = marshmallow.fields.String()
 
 
+class GetAddressSchema(marshmallow.Schema):
+    text = marshmallow.fields.String()
+
+
 class AddressSchema(marshmallow.Schema):
     uprn = marshmallow.fields.String()
     address = marshmallow.fields.String()
@@ -86,6 +90,14 @@ class Address(Entity):
             {"uprn": r["properties"]["UPRN"], "address": r["properties"]["ADDRESS"]} for r in api_results["features"]
         )
         return results
+
+    @with_schema(load=GetAddressSchema, dump=AddressSchema)
+    def get_address(self, uprn):
+        api = osdatahub.PlacesAPI(settings.OS_API_KEY)
+        api_results = api.uprn(int(uprn))["features"]
+        address = api_results[0]["properties"]["ADDRESS"]
+        result = {"uprn": uprn, "address": address}
+        return result
 
 
 api = Interface(session=Session(), address=Address())
