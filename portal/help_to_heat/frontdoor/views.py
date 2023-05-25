@@ -172,6 +172,17 @@ class PropertyTypeView(PageView):
         return {"property_type_options": schemas.property_type_options}
 
 
+@register_page("property-subtype")
+class PropertySubtypeView(PageView):
+    def get_context(self, request, session_id, *args, **kwargs):
+        data = interface.api.session.get_answer(session_id, "property-type")
+        property_type = data["property_type"]
+        return {
+            "property_type": property_type,
+            "property_subtype_options": schemas.property_subtype_options_map[property_type],
+        }
+
+
 @register_page("number-of-bedrooms")
 class NumberOfBedroomsView(PageView):
     def get_context(self, *args, **kwargs):

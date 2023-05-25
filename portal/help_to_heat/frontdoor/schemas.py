@@ -8,6 +8,7 @@ page_map = {
     "benefits": "Is anyone in your household receiving any benefits?",
     "household-income": "What is your annual household income?",
     "property-type": "What kind of property do you have?",
+    "property-subtype": "What kind of property do you have?",
     "number-of-bedrooms": "Number of bedrooms",
     "wall-type": "What kind of walls does your property have?",
     "wall-insulation": "Are your walls insulated?",
@@ -50,6 +51,7 @@ household_pages = (
     "benefits",
     "household-income",
     "property-type",
+    "property-subtype",
     "number-of-bedrooms",
     "wall-type",
     "wall-insulation",
@@ -80,6 +82,65 @@ council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
 property_type_options = ("House", "Bungalow", "Apartment, flat or masionette")
+property_subtype_options_map = {
+    "Flat": (
+        {
+            "value": "Top floor",
+            "label": "Top floor",
+            "hint": "Sits directly below the roof with no other flat above it",
+        },
+        {
+            "value": "Middle floor",
+            "label": "Middle floor",
+            "hint": "Has another flat above, and another below",
+        },
+        {
+            "value": "Ground floor",
+            "label": "Ground floor",
+            "hint": "The lowest flat in the building with no flat beneath - typically at street level but may be a basement",  # noqa E501
+        },
+    ),
+    "Bungalow": (
+        {
+            "value": "Detached",
+            "label": "Detached",
+            "hint": "Does not share any of its walls with another house or building",
+        },
+        {
+            "value": "Semi-detached",
+            "label": "Semi-detached",
+            "hint": "Is attached to one other house or building",
+        },
+        {
+            "value": "Terraced",
+            "label": "Terraced",
+            "hint": "Sits in the middle with a house or building on each side",
+        },
+        {
+            "value": "End Terrace",
+            "label": "End terrace",
+            "hint": "Sits at the end of a row of similar houses with one house attached to it",
+        },
+    ),
+    "House": (
+        {
+            "value": "Detached",
+            "label": "Detached",
+            "hint": "Does not share any of its walls with another house or building",
+        },
+        {
+            "value": "Semi-detached",
+            "label": "Semi-detached",
+            "hint": "Is attached to one other house or building",
+        },
+        {
+            "value": "Terraced",
+            "label": "Terraced",
+            "hint": "Sits in the middle with a house or building on each side",
+        },
+    ),
+}
+
 number_of_bedrooms_options = ("Studio", "One bedroom", "Two bedrooms", "Three or more bedrooms")
 wall_type_options = (
     "Solid walls",
@@ -122,6 +183,11 @@ class SessionSchema(Schema):
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))
     property_type = fields.String(validate=validate.OneOf(property_type_options))
+    property_subtype = fields.String(
+        validate=validate.OneOf(
+            tuple(item["value"] for value in property_subtype_options_map.values() for item in value)
+        )
+    )
     number_of_bedrooms = fields.String(validate=validate.OneOf(number_of_bedrooms_options))
     wall_type = fields.String(validate=validate.OneOf(wall_type_options))
     wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))
