@@ -163,8 +163,7 @@ class AddressSelectView(PageView):
 
     def save_data(self, request, session_id, page_name, *args, **kwargs):
         uprn = request.POST["uprn"]
-        address = interface.api.address.get_address(uprn)
-        data = {"address": address}
+        data = interface.api.address.get_address(uprn)
         data = interface.api.session.save_answer(session_id, page_name, data)
         return data
 
