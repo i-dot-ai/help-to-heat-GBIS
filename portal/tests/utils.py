@@ -1,4 +1,5 @@
 import functools
+import json
 import os
 import pathlib
 import random
@@ -18,15 +19,33 @@ __here__ = pathlib.Path(__file__).parent
 TEST_SERVER_URL = "http://help-to-heat-testserver/"
 
 
+class StubAPI:
+    def __init__(self, key):
+        self.key = key
+
+    def find(self, text, dataset=None):
+        content = (__here__ / "sample_osdatahub_find_response.json").read_text()
+        data = json.loads(content)
+        return data
+
+    def uprn(self, uprn, dataset=None):
+        content = (__here__ / "sample_osdatahub_uprn_response.json").read_text()
+        data = json.loads(content)
+        return data
+
+
 def mock_os_api(func):
-    json_file_path = __here__ / "sample_os_api_find_response.json"
-    data = json_file_path.read_text()
+    find_data = (__here__ / "sample_os_api_find_response.json").read_text()
+    uprn_data = (__here__ / "sample_os_api_uprn_response.json").read_text()
 
     @functools.wraps(func)
     def _inner(*args, **kwargs):
         with requests_mock.Mocker() as m:
-            m.get("https://api.os.uk/search/places/v1/find", text=data)
+            m.register_uri("GET", "https://api.os.uk/search/places/v1/find", text=find_data)
+            m.register_uri("GET", "https://api.os.uk/search/places/v1/uprn", text=uprn_data)
             return func()
+
+    return _inner
 
 
 def make_code(length=6):
