@@ -48,6 +48,7 @@ household_pages = (
     "country",
     "own-property",
     "address",
+    "address-select",
     "council-tax-band",
     "benefits",
     "household-income",
