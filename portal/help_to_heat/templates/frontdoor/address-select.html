@@ -11,7 +11,11 @@
           </h1>
         </legend>
 
-        {{macros.radios('uprn', uprn_options, data, errors)}}
+        {% if uprn_options %}
+          {{macros.radios('uprn', uprn_options, data, errors)}}
+        {% else %}
+          <p>No addresses found</p>
+        {% endif %}
 
       </fieldset>
     </div>
