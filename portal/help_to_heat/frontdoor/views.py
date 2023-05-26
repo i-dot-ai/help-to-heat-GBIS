@@ -265,7 +265,6 @@ class BenefitsView(PageView):
         return super().get(request, session_id, page_name, errors, is_change_page, override_prev_page_url)
 
     def get_context(self, request, session_id, *args, **kwargs):
-        # TODO: Figure out setting back button based on "council-tax-band:accept_suggested_epc" var in page data
         context = interface.api.session.get_session(session_id)
         return {"benefits_options": schemas.yes_no_options, "context": context}
 
