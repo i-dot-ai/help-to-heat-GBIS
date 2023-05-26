@@ -62,7 +62,7 @@ def get_prev_next_page_name(page_name):
 def get_prev_next_urls(session_id, page_name):
     prev_page_name, next_page_name = get_prev_next_page_name(page_name)
     if prev_page_name == "homepage":
-        prev_page_url = prev_page_name and reverse(f"frontdoor:{prev_page_name}")
+        prev_page_url = reverse("frontdoor:homepage")
     else:
         prev_page_url = prev_page_name and reverse(
             "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
