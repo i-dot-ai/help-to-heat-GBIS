@@ -15,7 +15,7 @@ page_compulsory_field_map = {
     "own-property": ("own_property",),
     "address": ("address_line_1", "postcode"),
     "address-manual": ("address_line_1", "town_or_city", "postcode"),
-    "epc-found": ("epc",),
+    "epc-found": ("accept_suggested_epc",),
     "council-tax-band": ("council_tax_band",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
@@ -68,6 +68,14 @@ def get_prev_next_page_name(page_name):
 
 def get_prev_next_urls(session_id, page_name):
     prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+    if page_name == "benefits":
+        accepted_ecp_suggestion = interface.api.session.get_answer(session_id, "epc-found")["accept_suggested_epc"]
+        if accepted_ecp_suggestion:
+            prev_page_name = "epc-found"
+        else:
+            prev_page_name = "council-tax-band"
+    if page_name == "council-tax-band":
+        prev_page_name = "address"
     if prev_page_name == "homepage":
         prev_page_url = reverse("frontdoor:homepage")
     else:
@@ -82,8 +90,12 @@ def get_prev_next_urls(session_id, page_name):
 
 class PageView(utils.MethodDispatcher):
     def get(self, request, session_id, page_name, errors=None, is_change_page=False):
+        #, override_prev_page_url=None):
         if not errors:
             errors = {}
+        # if override_prev_page_url is not None:
+        #     _, next_page_url = get_prev_next_urls(session_id, page_name)
+        #     prev_page_url = override_prev_page_url
         if is_change_page:
             assert page_name in schemas.change_page_lookup
             prev_page_name = schemas.change_page_lookup[page_name]
@@ -194,20 +206,20 @@ class EpcFoundView(PageView):
         return context
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
-        choice = request.POST["epc"]
+        choice = request.POST["accept_suggested_epc"]
+        print(choice)
         if choice == "Yes":
             uprn = interface.api.session.get_answer(session_id, "address-select").get("uprn")
             epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
             _ = interface.api.session.save_answer(
-                session_id, page_name, {"council_tax_band": epc_rating.rating, "accepted_suggested_epc": True}
+                session_id, page_name, {"accept_suggested_epc": True}
             )
             _ = interface.api.session.save_answer(
-                session_id, "council-tax-band", {"council_tax_band": epc_rating.rating, "accepted_suggested_epc": True}
+                session_id, "council-tax-band", {"council_tax_band": epc_rating.rating}
             )
             return redirect("frontdoor:page", session_id=session_id, page_name="benefits")
         else:
-            _ = interface.api.session.save_answer(session_id, page_name, {"accepted_suggested_epc": False})
-            _ = interface.api.session.save_answer(session_id, "council-tax-band", {"accepted_suggested_epc": False})
+            _ = interface.api.session.save_answer(session_id, page_name, {"accept_suggested_epc": False})
             return redirect("frontdoor:page", session_id=session_id, page_name="council-tax-band")
 
 
@@ -238,7 +250,7 @@ class CouncilTaxBandView(PageView):
 @register_page("benefits")
 class BenefitsView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
-        # TODO: Figure out setting back button based on "council-tax-band:accepted_suggested_epc" var in page data
+        # TODO: Figure out setting back button based on "council-tax-band:accept_suggested_epc" var in page data
         context = interface.api.session.get_session(session_id)
         return {"benefits_options": schemas.yes_no_options, "context": context}
 

@@ -196,6 +196,7 @@ class SessionSchema(Schema):
     uprn = fields.Integer()
     address = fields.String()
     council_tax_band = fields.String(validate=validate.OneOf(council_tax_band_options))
+    accept_suggested_epc = fields.Boolean(default=False)
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))
     property_type = fields.String(validate=validate.OneOf(property_type_options))
