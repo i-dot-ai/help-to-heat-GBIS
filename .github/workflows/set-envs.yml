@@ -67,10 +67,11 @@ jobs:
           LIVE_NOTIFY_API_KEY: ${{ secrets.LIVE_NOTIFY_API_KEY }}
           TEAM_NOTIFY_API_KEY: ${{ secrets.TEAM_NOTIFY_API_KEY }}
           UPRN_API_KEY: ${{ secrets.UPRN_API_KEY }}
+          OS_API_KEY: ${{ secrets.OS_API_KEY }}
           NOTIFY_PLAIN_EMAIL_TEMPLATE_ID: ${{ secrets.NOTIFY_PLAIN_EMAIL_TEMPLATE_ID }}
         run: |
             echo "THE CF_SPACE IS: ${CF_SPACE}"
-            ./help-to-heat-envs.sh
+            ./govpaas-env-setter.sh
 
       - uses: actions/checkout@v2
       - name: Slack Notification
