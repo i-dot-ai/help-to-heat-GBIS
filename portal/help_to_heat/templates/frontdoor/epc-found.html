@@ -2,9 +2,7 @@
 {% import "macros.html" as macros with context %}
 
 {% block content %}
-<a href="#" class="govuk-back-link">Back</a>
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
+{% call macros.form_wrapper(prev_url) -%}
     <span class="govuk-caption-l">Find your EPC</span>
     <h1 class="govuk-heading-l">We found an Energy Performance Certificate that might be yours</h1>
 
@@ -29,9 +27,6 @@
         <p class="govuk-body">{{epc_rating.rating}}</p>
       </div>
     </div>
-
-    <form method="POST">
-      {{csrf_input}}
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -41,12 +36,6 @@
           </legend>
           {{macros.radios('epc', epc_found_options, data, errors)}}
         </fieldset>
-      </div>
-
-      <button class="govuk-button" data-module="govuk-button">
-        Continue
-      </button>
-    </form>
   </div>
-</div>
+{% endcall %}
 {% endblock %}
