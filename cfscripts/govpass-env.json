@@ -1,0 +1,53 @@
+{
+    "sandbox": {
+        "help-to-heat-frontdoor": [
+            "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE",
+            "GOVUK_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "SHOW_FRONTDOOR",
+            "OS_API_KEY"
+        ],
+        "help-to-heat-portal": [
+            "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE",
+            "GOVUK_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "OS_API_KEY"
+        ]
+    },
+    "develop": {
+        "help-to-heat-frontdoor": [
+            "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE",
+            "GOVUK_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "SHOW_FRONTDOOR",
+            "OS_API_KEY"
+        ],
+        "help-to-heat-portal": [
+            "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE",
+            "GOVUK_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "OS_API_KEY"
+        ]
+    },
+    "staging": {
+        "help-to-heat-frontdoor": [
+            "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE",
+            "GOVUK_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "SHOW_FRONTDOOR",
+            "OS_API_KEY"
+        ],
+        "help-to-heat-portal": [
+            "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE",
+            "GOVUK_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "OS_API_KEY"
+        ]
+    }
+}
