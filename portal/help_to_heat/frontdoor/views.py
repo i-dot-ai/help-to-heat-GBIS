@@ -13,6 +13,7 @@ page_field_map = {
     "country": ("country",),
     "own-property": ("own_property",),
     "address": ("address_line_1", "postcode"),
+    "address-manual": ("address_line_1", "town_or_city", "postcode"),
     "council-tax-band": ("council_tax_band",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
@@ -46,16 +47,20 @@ def homepage_view(request):
 
 
 def get_prev_next_page_name(page_name):
-    assert page_name in schemas.pages
-    page_index = schemas.pages.index(page_name)
-    if page_index == 0:
-        prev_page_name = "homepage"
+    if page_name in schemas.page_prev_next_map:
+        prev_page_name = schemas.page_prev_next_map[page_name]["prev"]
+        next_page_name = schemas.page_prev_next_map[page_name]["next"]
     else:
-        prev_page_name = schemas.pages[page_index - 1]
-    if page_index + 1 == len(schemas.pages):
-        next_page_name = None
-    else:
-        next_page_name = schemas.pages[page_index + 1]
+        assert page_name in schemas.pages
+        page_index = schemas.pages.index(page_name)
+        if page_index == 0:
+            prev_page_name = "homepage"
+        else:
+            prev_page_name = schemas.pages[page_index - 1]
+        if page_index + 1 == len(schemas.pages):
+            next_page_name = None
+        else:
+            next_page_name = schemas.pages[page_index + 1]
     return prev_page_name, next_page_name
 
 
@@ -88,6 +93,7 @@ class PageView(utils.MethodDispatcher):
         extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
         context = {
             "data": data,
+            "session_id": session_id,
             "errors": errors,
             "prev_url": prev_page_url,
             "next_url": next_page_url,
@@ -165,6 +171,17 @@ class AddressSelectView(PageView):
         data = interface.api.address.get_address(uprn)
         data = interface.api.session.save_answer(session_id, page_name, data)
         return data
+
+
+@register_page("address-manual")
+class AddressManualView(PageView):
+    def get_context(self, request, session_id, *args, **kwargs):
+        data = interface.api.session.get_answer(session_id, "address")
+        return {"data": data}
+
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+        return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
 @register_page("council-tax-band")

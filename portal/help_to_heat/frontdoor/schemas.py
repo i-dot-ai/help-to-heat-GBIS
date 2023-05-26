@@ -23,6 +23,12 @@ page_map = {
     "success": "",
 }
 
+extra_pages = ("address-manual",)
+
+page_prev_next_map = {
+    "address-manual": {"prev": "address", "next": "council-tax-band"},
+}
+
 question_map = {
     "country": "Which country is your property located in?",
     "own_property": "Do you own your property?",
@@ -71,7 +77,7 @@ change_page_lookup = {
     **{page_name: "confirm-and-submit" for page_name in details_pages},
 }
 
-pages = tuple(page_map.keys())
+pages = tuple(page_map.keys()) + extra_pages
 
 country_options = ("England", "Scotland", "Wales", "Northern Ireland")
 own_property_options = (

@@ -1,0 +1,21 @@
+{% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block content %}
+  {% call macros.form_wrapper(prev_url) -%}
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-heading-l">
+          What is the address of your property?
+        </h1>
+      </legend>
+
+      {{macros.input('address_line_1', 'Address line 1', data, errors)}}
+      {{macros.input('address_line_2', 'Address line 2 (optional)', data, errors)}}
+      {{macros.input('town_or_city', 'Town or city', data, errors)}}
+      {{macros.input('county', 'County (optional)', data, errors)}}
+      {{macros.input('postcode', 'Postcode', data, errors)}}
+
+    </fieldset>
+  {%- endcall %}
+{% endblock %}
