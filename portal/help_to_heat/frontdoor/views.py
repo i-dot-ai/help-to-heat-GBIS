@@ -15,6 +15,7 @@ page_compulsory_field_map = {
     "own-property": ("own_property",),
     "address": ("address_line_1", "postcode"),
     "address-manual": ("address_line_1", "town_or_city", "postcode"),
+    "epc-found": ("epc",),
     "council-tax-band": ("council_tax_band",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
@@ -167,11 +168,44 @@ class AddressSelectView(PageView):
         uprn_options = tuple({"value": a["uprn"], "label": a["address"]} for a in addresses)
         return {"uprn_options": uprn_options}
 
-    def save_data(self, request, session_id, page_name, *args, **kwargs):
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
         uprn = request.POST["uprn"]
-        data = interface.api.address.get_address(uprn)
-        data = interface.api.session.save_answer(session_id, page_name, data)
-        return data
+        epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn)
+        print(uprn)
+        if epc_rating.count() > 0:
+            data = interface.api.address.get_address(uprn)
+            _ = interface.api.session.save_answer(session_id, page_name, data)
+            return redirect("frontdoor:page", session_id=session_id, page_name="epc-found")
+        else:
+            return redirect("frontdoor:page", session_id=session_id, page_name="council-tax-band")
+        # return super().handle_post(request, session_id, page_name, data, is_change_page)
+
+    # def save_data(self, request, session_id, page_name, *args, **kwargs):
+    #     uprn = request.POST["uprn"]
+    #     data = interface.api.address.get_address(uprn)
+    #     data = interface.api.session.save_answer(session_id, page_name, data)
+    #     return data
+
+
+@register_page("epc-found")
+class EpcFoundView(PageView):
+    def get_context(self, request, session_id, page_name, data):
+        uprn = interface.api.session.get_answer(session_id, "address-select").get("uprn")
+        epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
+        address = interface.api.session.get_answer(session_id, "address-select").get("address")
+        context = {"epc_rating": epc_rating, "epc_found_options": schemas.epc_found_options, "address": address,}
+        return context
+
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        choice = request.POST["epc"]
+        if choice == "Yes":
+            uprn = interface.api.session.get_answer(session_id, "address-select").get("uprn")
+            epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
+            _ = interface.api.session.save_answer(session_id, page_name, {"council_tax_band": epc_rating.rating})
+            _ = interface.api.session.save_answer(session_id, "council-tax-band", {"council_tax_band": epc_rating.rating})
+            return redirect("frontdoor:page", session_id=session_id, page_name="benefits")
+        else:
+            return redirect("frontdoor:page", session_id=session_id, page_name="council-tax-band")
 
 
 @register_page("address-manual")
@@ -188,7 +222,7 @@ class AddressManualView(PageView):
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
-        uprn = interface.api.session.get_answer(session_id, "address")["uprn"]
+        uprn = interface.api.session.get_answer(session_id, "address-select")["uprn"]
         epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
         context = {"council_tax_band_options": schemas.council_tax_band_options}
         if not epc_rating:
@@ -200,8 +234,9 @@ class CouncilTaxBandView(PageView):
 
 @register_page("benefits")
 class BenefitsView(PageView):
-    def get_context(self, *args, **kwargs):
-        return {"benefits_options": schemas.yes_no_options}
+    def get_context(self, request, session_id, *args, **kwargs):
+        context = interface.api.session.get_session(session_id)
+        return {"benefits_options": schemas.yes_no_options, "context": context}
 
 
 @register_page("household-income")

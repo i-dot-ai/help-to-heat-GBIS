@@ -1,4 +1,5 @@
 {% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros with context %}
 
 {% block content %}
 <a href="#" class="govuk-back-link">Back</a>
@@ -20,15 +21,12 @@
       <div class="govuk-notification-banner__content">
 
         <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Registered address</p>
-        <p class="govuk-body govuk-!-margin-bottom-1">Flat 1 Harbour House</p>
-        <p class="govuk-body govuk-!-margin-bottom-1">10 Smith Road</p>
-        <p class="govuk-body">BS9 2UC</p>
-
-        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Property type</p>
-        <p class="govuk-body">Middle floor apartment, flat or maisonette</p>
+        {% for part in address.split(',') %}
+        <p class="govuk-body govuk-!-margin-bottom-1">{{ part.strip() }}</p>
+        {% endfor %}
 
         <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">EPC rating</p>
-        <p class="govuk-body">B</p>
+        <p class="govuk-body">{{epc_rating.rating}}</p>
       </div>
     </div>
 
@@ -41,26 +39,7 @@
               Is this your EPC?
             </h1>
           </legend>
-          <div class="govuk-radios" data-module="govuk-radios">
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="epc" name="epc" type="radio" value="yes">
-              <label class="govuk-label govuk-radios__label" for="epc">
-                Yes
-              </label>
-            </div>
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="epc-2" name="epc" type="radio" value="no">
-              <label class="govuk-label govuk-radios__label" for="epc-2">
-                No
-              </label>
-            </div>
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="epc-3" name="epc" type="radio" value="not-sure">
-              <label class="govuk-label govuk-radios__label" for="epc-3">
-                I don’t know
-              </label>
-            </div>
-          </div>
+          {{macros.radios('epc', epc_found_options, data, errors)}}
         </fieldset>
       </div>
 

@@ -5,6 +5,7 @@ page_map = {
     "own-property": "Do you own your property?",
     "address": "What is the address of your property?",
     "address-select": "What is the address of your property?",
+    "epc-found": "Is this your council tax band?",
     "council-tax-band": "What is the council tax band of your property?",
     "benefits": "Is anyone in your household receiving any benefits?",
     "household-income": "What is your annual household income?",
@@ -55,6 +56,7 @@ household_pages = (
     "own-property",
     "address",
     "address-select",
+    "epc-found",
     "council-tax-band",
     "benefits",
     "household-income",
@@ -86,6 +88,7 @@ own_property_options = (
     "No, I am a social housing tenant",
     "I am a property owner but lease my property to one or more tenants",
 )
+epc_found_options = ("Yes", "No", "I don't know")
 council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
