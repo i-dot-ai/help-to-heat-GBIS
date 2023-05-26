@@ -15,31 +15,52 @@
     "develop": {
         "help-to-heat-frontdoor": {
             "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
-            "EMAIL_BACKEND_TYPE": "CONSOLE",
+            "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "TEAM_NOTIFY_API_KEY",
             "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-            "SHOW_FRONTDOOR": "True"
+            "SHOW_FRONTDOOR": "True",
+            "OS_API_KEY": "OS_API_KEY"
         },
         "help-to-heat-portal": {
             "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
-            "EMAIL_BACKEND_TYPE": "CONSOLE",
+            "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "TEAM_NOTIFY_API_KEY",
-            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "OS_API_KEY": "OS_API_KEY"
         }
     },
     "staging": {
         "help-to-heat-frontdoor": {
             "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
-            "EMAIL_BACKEND_TYPE": "CONSOLE",
+            "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "LIVE_NOTIFY_API_KEY",
             "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-            "SHOW_FRONTDOOR": "True"
+            "SHOW_FRONTDOOR": "True",
+            "OS_API_KEY": "OS_API_KEY"
         },
         "help-to-heat-portal": {
             "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
-            "EMAIL_BACKEND_TYPE": "CONSOLE",
+            "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "LIVE_NOTIFY_API_KEY",
-            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "OS_API_KEY": "OS_API_KEY"
         }
-    }
+    },
+    "suppliers": {
+        "help-to-heat-frontdoor": {
+            "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
+            "GOVUK_NOTIFY_API_KEY": "LIVE_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "SHOW_FRONTDOOR": "True",
+            "OS_API_KEY": "OS_API_KEY"
+        },
+        "help-to-heat-portal": {
+            "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
+            "GOVUK_NOTIFY_API_KEY": "LIVE_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+            "OS_API_KEY": "OS_API_KEY"
+        }
+    }    
 }
