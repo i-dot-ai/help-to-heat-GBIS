@@ -82,6 +82,9 @@ def get_prev_next_urls(session_id, page_name):
         prev_page_url = prev_page_name and reverse(
             "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
         )
+    prev_page_url = prev_page_name and reverse(
+        "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
+    )
     next_page_url = next_page_name and reverse(
         "frontdoor:page", kwargs=dict(session_id=session_id, page_name=next_page_name)
     )
@@ -89,14 +92,13 @@ def get_prev_next_urls(session_id, page_name):
 
 
 class PageView(utils.MethodDispatcher):
-    def get(self, request, session_id, page_name, errors=None, is_change_page=False):
-        #, override_prev_page_url=None):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
         if not errors:
             errors = {}
-        # if override_prev_page_url is not None:
-        #     _, next_page_url = get_prev_next_urls(session_id, page_name)
-        #     prev_page_url = override_prev_page_url
-        if is_change_page:
+        if override_prev_page_url is not None:
+            _, next_page_url = get_prev_next_urls(session_id, page_name)
+            prev_page_url = override_prev_page_url
+        elif is_change_page:
             assert page_name in schemas.change_page_lookup
             prev_page_name = schemas.change_page_lookup[page_name]
             prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name))
@@ -148,6 +150,10 @@ class PageView(utils.MethodDispatcher):
 
 @register_page("country")
 class CountryView(PageView):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
+        override_prev_page_url = reverse("frontdoor:homepage")
+        return super().get(request, session_id, page_name, errors, is_change_page, override_prev_page_url)
+
     def get_context(self, *args, **kwargs):
         return {"country_options": schemas.country_options}
 
@@ -183,7 +189,6 @@ class AddressSelectView(PageView):
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         uprn = request.POST["uprn"]
         epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn)
-        print(uprn)
         if epc_rating.count() > 0:
             data = interface.api.address.get_address(uprn)
             _ = interface.api.session.save_answer(session_id, page_name, data)
@@ -207,7 +212,6 @@ class EpcFoundView(PageView):
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         choice = request.POST["accept_suggested_epc"]
-        print(choice)
         if choice == "Yes":
             uprn = interface.api.session.get_answer(session_id, "address-select").get("uprn")
             epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
@@ -236,6 +240,10 @@ class AddressManualView(PageView):
 
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
+        override_prev_page_url = reverse("frontdoor:page", args=[session_id, "address"])
+        return super().get(request, session_id, page_name, errors, is_change_page, override_prev_page_url)
+
     def get_context(self, request, session_id, *args, **kwargs):
         uprn = interface.api.session.get_answer(session_id, "address-select")["uprn"]
         epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
@@ -249,6 +257,15 @@ class CouncilTaxBandView(PageView):
 
 @register_page("benefits")
 class BenefitsView(PageView):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
+        accepted_ecp_suggestion = interface.api.session.get_answer(session_id, "epc-found")["accept_suggested_epc"]
+        if accepted_ecp_suggestion:
+            prev_page_name = "epc-found"
+        else:
+            prev_page_name = "council-tax-band"
+        override_prev_page_url = reverse("frontdoor:page", args=[session_id, prev_page_name])
+        return super().get(request, session_id, page_name, errors, is_change_page, override_prev_page_url)
+
     def get_context(self, request, session_id, *args, **kwargs):
         # TODO: Figure out setting back button based on "council-tax-band:accept_suggested_epc" var in page data
         context = interface.api.session.get_session(session_id)
