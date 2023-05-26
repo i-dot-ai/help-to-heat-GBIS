@@ -3,9 +3,9 @@ import uuid
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from help_to_heat import utils
+from help_to_heat.portal import models as portal_models
 
 from . import interface, schemas
-from help_to_heat.portal import models as portal_models
 
 page_map = {}
 
@@ -215,9 +215,7 @@ class EpcFoundView(PageView):
         if choice == "Yes":
             uprn = interface.api.session.get_answer(session_id, "address-select").get("uprn")
             epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
-            _ = interface.api.session.save_answer(
-                session_id, page_name, {"accept_suggested_epc": True}
-            )
+            _ = interface.api.session.save_answer(session_id, page_name, {"accept_suggested_epc": True})
             _ = interface.api.session.save_answer(
                 session_id, "council-tax-band", {"council_tax_band": epc_rating.rating}
             )
