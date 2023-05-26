@@ -21,18 +21,30 @@ TEST_SERVER_URL = "http://help-to-heat-testserver/"
 
 
 class StubAPI:
+    files = {
+        "find": "sample_osdatahub_find_response.json",
+        "uprn": "sample_osdatahub_uprn_response.json",
+    }
+
     def __init__(self, key):
         self.key = key
 
     def find(self, text, dataset=None):
-        content = (DATA_DIR / "sample_osdatahub_find_response.json").read_text()
+        content = (DATA_DIR / self.files["find"]).read_text()
         data = json.loads(content)
         return data
 
     def uprn(self, uprn, dataset=None):
-        content = (DATA_DIR / "sample_osdatahub_uprn_response.json").read_text()
+        content = (DATA_DIR / self.files["uprn"]).read_text()
         data = json.loads(content)
         return data
+
+
+class EmptyAPI(StubAPI):
+    files = {
+        "find": "empty_osdatahub_response.json",
+        "uprn": "empty_osdatahub_response.json",
+    }
 
 
 def mock_os_api(func):
