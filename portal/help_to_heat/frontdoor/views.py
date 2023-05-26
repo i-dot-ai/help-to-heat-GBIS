@@ -120,7 +120,6 @@ class PageView(utils.MethodDispatcher):
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
     def validate(self, request, session_id, page_name, data, is_change_page):
-        data = data
         fields = page_field_map.get(page_name, ())
         missing_fields = tuple(field for field in fields if not data.get(field))
         errors = {field: "Please answer this question" for field in missing_fields}
