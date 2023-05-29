@@ -5,8 +5,8 @@ page_map = {
     "own-property": "Do you own your property?",
     "address": "What is the address of your property?",
     "address-select": "What is the address of your property?",
-    "epc-found": "Is this your council tax band?",
     "council-tax-band": "What is the council tax band of your property?",
+    "epc-found": "Is this your EPC?",
     "benefits": "Is anyone in your household receiving any benefits?",
     "household-income": "What is your annual household income?",
     "property-type": "What kind of property do you have?",
@@ -56,8 +56,8 @@ household_pages = (
     "own-property",
     "address",
     "address-select",
-    "epc-found",
     "council-tax-band",
+    "epc-found",
     "benefits",
     "household-income",
     "property-type",
@@ -151,7 +151,6 @@ property_subtype_options_map = {
         },
     ),
 }
-
 number_of_bedrooms_options = ("Studio", "One bedroom", "Two bedrooms", "Three or more bedrooms")
 wall_type_options = (
     "Solid walls",
@@ -183,6 +182,7 @@ supplier_options = (
     "Utilita",
     "Utility Warehouse",
 )
+epc_rating_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 
 
 class SessionSchema(Schema):
@@ -196,7 +196,8 @@ class SessionSchema(Schema):
     uprn = fields.Integer()
     address = fields.String()
     council_tax_band = fields.String(validate=validate.OneOf(council_tax_band_options))
-    accept_suggested_epc = fields.Boolean(default=False)
+    accept_suggested_epc = fields.String(validate=validate.OneOf(epc_found_options))
+    epc_rating = fields.String(validate=validate.OneOf(epc_rating_options))
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))
     property_type = fields.String(validate=validate.OneOf(property_type_options))

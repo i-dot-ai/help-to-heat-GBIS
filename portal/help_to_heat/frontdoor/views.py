@@ -186,43 +186,11 @@ class AddressSelectView(PageView):
         uprn_options = tuple({"value": a["uprn"], "label": a["address"]} for a in addresses)
         return {"uprn_options": uprn_options}
 
-    def handle_post(self, request, session_id, page_name, data, is_change_page):
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
         uprn = request.POST["uprn"]
-        epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn)
-        if epc_rating.count() > 0:
-            data = interface.api.address.get_address(uprn)
-            _ = interface.api.session.save_answer(session_id, page_name, data)
-            return redirect("frontdoor:page", session_id=session_id, page_name="epc-found")
-        else:
-            return redirect("frontdoor:page", session_id=session_id, page_name="council-tax-band")
-
-
-@register_page("epc-found")
-class EpcFoundView(PageView):
-    def get_context(self, request, session_id, page_name, data):
-        uprn = interface.api.session.get_answer(session_id, "address-select").get("uprn")
-        epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
-        address = interface.api.session.get_answer(session_id, "address-select").get("address")
-        context = {
-            "epc_rating": epc_rating,
-            "epc_found_options": schemas.epc_found_options,
-            "address": address,
-        }
-        return context
-
-    def handle_post(self, request, session_id, page_name, data, is_change_page):
-        choice = request.POST["accept_suggested_epc"]
-        if choice == "Yes":
-            uprn = interface.api.session.get_answer(session_id, "address-select").get("uprn")
-            epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
-            _ = interface.api.session.save_answer(session_id, page_name, {"accept_suggested_epc": True})
-            _ = interface.api.session.save_answer(
-                session_id, "council-tax-band", {"council_tax_band": epc_rating.rating}
-            )
-            return redirect("frontdoor:page", session_id=session_id, page_name="benefits")
-        else:
-            _ = interface.api.session.save_answer(session_id, page_name, {"accept_suggested_epc": False})
-            return redirect("frontdoor:page", session_id=session_id, page_name="council-tax-band")
+        data = interface.api.address.get_address(uprn)
+        data = interface.api.session.save_answer(session_id, page_name, data)
+        return data
 
 
 @register_page("address-manual")
@@ -251,6 +219,29 @@ class CouncilTaxBandView(PageView):
         else:
             context["estimated_rating"] = epc_rating.rating
             return context
+
+
+@register_page("epc-found")
+class EpcFoundView(PageView):
+    def get_context(self, request, session_id, page_name, data):
+        session_data = interface.api.session.get_session(session_id)
+        uprn = session_data.get("uprn")
+        address = session_data.get("address")
+        epc_rating = interface.api.epc.get_epc(uprn)
+        context = {
+            "epc_rating": epc_rating["rating"],
+            "epc_found_options": schemas.epc_found_options,
+            "address": address,
+        }
+        return context
+
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        choice = data["accept_suggested_epc"]
+        if choice == "Yes":
+            prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+        else:
+            return redirect("frontdoor:page", session_id=session_id, page_name="epc-not-found")
 
 
 @register_page("benefits")

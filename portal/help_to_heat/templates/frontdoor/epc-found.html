@@ -34,6 +34,7 @@
               Is this your EPC?
             </h1>
           </legend>
+          <input type="hidden" name="epc_rating" value="{{epc_rating}}"/>
           {{macros.radios('accept_suggested_epc', epc_found_options, data, errors)}}
         </fieldset>
   </div>
