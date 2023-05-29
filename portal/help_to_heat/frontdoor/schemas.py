@@ -1,61 +1,11 @@
+import itertools
+
 from marshmallow import Schema, fields, validate
 
-page_map = {
-    "country": "Which country is your property located in?",
-    "own-property": "Do you own your property?",
-    "address": "What is the address of your property?",
-    "address-select": "What is the address of your property?",
-    "council-tax-band": "What is the council tax band of your property?",
-    "epc-found": "Is this your EPC?",
-    "benefits": "Is anyone in your household receiving any benefits?",
-    "household-income": "What is your annual household income?",
-    "property-type": "What kind of property do you have?",
-    "property-subtype": "What kind of property do you have?",
-    "number-of-bedrooms": "Number of bedrooms",
-    "wall-type": "What kind of walls does your property have?",
-    "wall-insulation": "Are your walls insulated?",
-    "loft": "Does this property have a loft?",
-    "loft-access": "Is there access to your loft?",
-    "summary": "",
-    "schemes": "",
-    "supplier": "Energy supplier",
-    "contact-details": "Contact details",
-    "confirm-and-submit": "",
-    "success": "",
-}
-
-extra_pages = ("address-manual",)
-
-page_prev_next_map = {
-    "address-manual": {"prev": "address", "next": "council-tax-band"},
-}
-
-question_map = {
-    "country": "Which country is your property located in?",
-    "own_property": "Do you own your property?",
-    "address": "What is the address of your property?",
-    "council_tax_band": "What is the council tax band of your property?",
-    "benefits": "Is anyone in your household receiving any benefits?",
-    "household_income": "What is your annual household income?",
-    "property_type": "What kind of property do you have?",
-    "number_of_bedrooms": "Number of bedrooms",
-    "wall_type": "What kind of walls does your property have?",
-    "wall_insulation": "Are your walls insulated?",
-    "loft": "Does this property have a loft?",
-    "loft_access": "Is there access to your loft?",
-    "supplier": "Energy supplier",
-    "first_name": "First name",
-    "last_name": "Last name",
-    "contact_number": "Contact number",
-    "email": "Email",
-}
-
-
-household_pages = (
+page_order = (
     "country",
     "own-property",
     "address",
-    "address-select",
     "council-tax-band",
     "epc-found",
     "benefits",
@@ -67,19 +17,82 @@ household_pages = (
     "wall-insulation",
     "loft",
     "loft-access",
-)
-
-details_pages = (
+    "summary",
+    "schemes",
     "supplier",
     "contact-details",
+    "confirm-and-submit",
+    "success",
 )
+
+extra_pages = (
+    "address-select",
+    "address-manual",
+)
+
+page_prev_next_map = {
+    "address-select": {"prev": "address", "next": "council-tax-band"},
+    "address-manual": {"prev": "address", "next": "council-tax-band"},
+}
+
+summary_map = {
+    "country": "Which country is your property located in?",
+    "own_property": "Do you own your property?",
+    "address": "What is the address of your property?",
+    "council_tax_band": "What is the council tax band of your property?",
+    "benefits": "Is anyone in your household receiving any benefits?",
+    "household_income": "What is your annual household income?",
+    "property_type": "What kind of property do you have?",
+    "property_subtype": "What kind of property do you have?",
+    "number_of_bedrooms": "Number of bedrooms",
+    "wall_type": "What kind of walls does your property have?",
+    "wall_insulation": "Are your walls insulated?",
+    "loft": "Does this property have a loft?",
+    "loft_access": "Is there access to your loft?",
+}
+
+confirm_sumbit_map = {
+    "supplier": "Energy supplier",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "contact_number": "Contact number",
+    "email": "Email",
+}
+
+household_pages = {
+    "country": ("country",),
+    "own-property": ("own_property",),
+    "address": ("address",),
+    "council-tax-band": ("council_tax_band",),
+    "epc-found": ("epc",),
+    "benefits": ("benefits",),
+    "household-income": ("household_income",),
+    "property-type": ("property_type",),
+    "property-subtype": ("property_subtype",),
+    "number-of-bedrooms": ("number_of_bedrooms",),
+    "wall-type": ("wall_type",),
+    "wall-insulation": ("wall_insulation",),
+    "loft": ("loft",),
+    "loft-access": ("loft_access",),
+}
+
+details_pages = {
+    "supplier": ("supplier",),
+    "contact-details": ("first_name", "last_name", "contact_number", "email"),
+}
 
 change_page_lookup = {
     **{page_name: "summary" for page_name in household_pages},
     **{page_name: "confirm-and-submit" for page_name in details_pages},
 }
 
-pages = tuple(page_map.keys()) + extra_pages
+question_page_lookup = {
+    question: page_name
+    for page_name, questions in itertools.chain(household_pages.items(), details_pages.items())
+    for question in questions
+}
+
+pages = page_order + extra_pages
 
 country_options = ("England", "Scotland", "Wales", "Northern Ireland")
 own_property_options = (
