@@ -3,7 +3,6 @@ import uuid
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from help_to_heat import utils
-from help_to_heat.portal import models as portal_models
 
 from . import interface, schemas
 
