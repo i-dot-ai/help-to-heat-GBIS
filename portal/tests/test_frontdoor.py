@@ -410,3 +410,5 @@ def test_no_address():
     assert data["address_line_2"] == "Smalltown"
     assert data["town_or_city"] == "Metropolis"
     assert data["county"] == "Big County"
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")
