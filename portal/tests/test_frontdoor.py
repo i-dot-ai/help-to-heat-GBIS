@@ -390,7 +390,14 @@ def test_no_address():
     assert form["address_line_1"] == "999 Letsby Avenue"
     assert form["postcode"] == "PO99 9PO"
 
+    form["address_line_2"] = "Smalltown"
     form["town_or_city"] = "Metropolis"
+    form["county"] = "Big County"
     page = form.submit().follow()
 
     data = interface.api.session.get_answer(session_id, page_name="address-manual")
+    assert data["address_line_1"] == "999 Letsby Avenue"
+    assert data["town_or_city"] == "Metropolis"
+    assert data["address_line_2"] == "Smalltown"
+    assert data["town_or_city"] == "Metropolis"
+    assert data["county"] == "Big County"
