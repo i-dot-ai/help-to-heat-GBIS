@@ -206,19 +206,8 @@ class AddressManualView(PageView):
 
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
-    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
-        override_prev_page_url = reverse("frontdoor:page", args=[session_id, "address"])
-        return super().get(request, session_id, page_name, errors, is_change_page, override_prev_page_url)
-
     def get_context(self, request, session_id, *args, **kwargs):
-        uprn = interface.api.session.get_answer(session_id, "address-select")["uprn"]
-        epc_rating = portal_models.EpcRating.objects.filter(uprn=uprn).first()
-        context = {"council_tax_band_options": schemas.council_tax_band_options}
-        if not epc_rating:
-            return context
-        else:
-            context["estimated_rating"] = epc_rating.rating
-            return context
+        return {"council_tax_band_options": schemas.council_tax_band_options}
 
 
 @register_page("epc-found")
