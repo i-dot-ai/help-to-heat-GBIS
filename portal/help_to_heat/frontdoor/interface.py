@@ -45,6 +45,16 @@ class AddressSchema(marshmallow.Schema):
     address = marshmallow.fields.String()
 
 
+class GetEPCSchema(marshmallow.Schema):
+    uprn = marshmallow.fields.Integer()
+
+
+class EPCSchema(marshmallow.Schema):
+    uprn = marshmallow.fields.Integer()
+    rating = marshmallow.fields.String(validate=marshmallow.validate.OneOf(schemas.epc_rating_options))
+    date = marshmallow.fields.Date()
+
+
 class Session(Entity):
     @with_schema(load=SaveAnswerSchema, dump=schemas.SessionSchema)
     @register_event(models.Event, "Answer saved")
@@ -100,4 +110,18 @@ class Address(Entity):
         return result
 
 
-api = Interface(session=Session(), address=Address())
+class EPC(Entity):
+    @with_schema(load=GetEPCSchema, dump=EPCSchema)
+    def get_epc(self, uprn):
+        try:
+            epc = portal.models.EpcRating.objects.get(uprn=uprn)
+        except portal.models.EpcRating.DoesNotExist:
+            epc = None
+        if epc:
+            data = {"uprn": epc.uprn, "rating": epc.rating, "date": epc.date}
+        else:
+            data = {}
+        return data
+
+
+api = Interface(session=Session(), address=Address(), epc=EPC())
