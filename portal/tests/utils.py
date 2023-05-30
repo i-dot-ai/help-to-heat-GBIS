@@ -112,15 +112,6 @@ def get_latest_email_url(email):
     return email_url
 
 
-def get_latest_email_password(email):
-    text = get_latest_email_text(email)
-    lines = iter(text.splitlines())
-    for line in lines:
-        if line.startswith("Your temporary password is") or line.startswith("Your one time password code is"):
-            token = next(lines).strip()
-            return token
-
-
 def login_as_service_manager(client, email=None, password=None):
     return login_as_role(client, "service_manager", email=email, password=password)
 
