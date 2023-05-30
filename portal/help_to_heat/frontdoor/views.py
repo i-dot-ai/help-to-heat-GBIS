@@ -16,7 +16,7 @@ page_compulsory_field_map = {
     "address-select": ("uprn",),
     "address-manual": ("address_line_1", "town_or_city", "postcode"),
     "council-tax-band": ("council_tax_band",),
-    "epc-found": ("accept_suggested_epc",),
+    "epc": ("accept_suggested_epc",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
     "property-type": ("property_type",),
@@ -200,8 +200,8 @@ class CouncilTaxBandView(PageView):
         return {"council_tax_band_options": schemas.council_tax_band_options}
 
 
-@register_page("epc-found")
-class EpcFoundView(PageView):
+@register_page("epc")
+class EpcView(PageView):
     def get_context(self, request, session_id, page_name, data):
         session_data = interface.api.session.get_session(session_id)
         uprn = session_data.get("uprn")

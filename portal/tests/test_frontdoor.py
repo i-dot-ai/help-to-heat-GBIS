@@ -124,7 +124,7 @@ def _answer_house_questions(page, session_id, benefits_answer):
     page = _check_page(page, "council-tax-band", "council_tax_band", "B")
 
     assert page.has_one("h1:contains('We found an Energy Performance Certificate that might be yours')")
-    page = _check_page(page, "epc-found", "accept_suggested_epc", "Yes")
+    page = _check_page(page, "epc", "accept_suggested_epc", "Yes")
 
     assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
     page = _check_page(page, "benefits", "benefits", benefits_answer)
@@ -467,6 +467,6 @@ def test_no_epc():
     form = page.get_form()
     page = form.submit().follow()
 
-    data = interface.api.session.get_answer(session_id, page_name="epc-found")
+    data = interface.api.session.get_answer(session_id, page_name="epc")
 
     assert "epc_rating" not in data
