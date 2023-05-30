@@ -15,8 +15,8 @@ page_compulsory_field_map = {
     "address": ("address_line_1", "postcode"),
     "address-select": ("uprn",),
     "address-manual": ("address_line_1", "town_or_city", "postcode"),
-    "epc-found": ("accept_suggested_epc",),
     "council-tax-band": ("council_tax_band",),
+    "epc-found": ("accept_suggested_epc",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
     "property-type": ("property_type",),
@@ -206,15 +206,23 @@ class EpcFoundView(PageView):
         session_data = interface.api.session.get_session(session_id)
         uprn = session_data.get("uprn")
         address = session_data.get("address")
-        epc_rating = interface.api.epc.get_epc(uprn)
+        if uprn:
+            epc = interface.api.epc.get_epc(uprn)
+        else:
+            epc = {}
         context = {
-            "epc_rating": epc_rating["rating"],
+            "epc_rating": epc.get("rating"),
             "epc_found_options": schemas.epc_found_options,
             "address": address,
         }
         return context
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
+        prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+        epc_rating = data.get("epc_rating")
+        if not epc_rating:
+            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+
         choice = data["accept_suggested_epc"]
         if choice == "Yes":
             prev_page_name, next_page_name = get_prev_next_page_name(page_name)

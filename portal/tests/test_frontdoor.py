@@ -417,3 +417,56 @@ def test_no_address():
     assert data["county"] == "Big County"
 
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
+
+
+@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.EmptyAPI)
+def test_no_epc():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Get home energy improvements')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    _check_page = _make_check_page(session_id)
+
+    form = page.get_form()
+    form["country"] = "England"
+    page = form.submit().follow()
+
+    assert page.has_text("Do you own your property?")
+    page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
+
+    assert page.has_one("h1:contains('What is the address of your property?')")
+
+    form = page.get_form()
+    form["address_line_1"] = "999 Letsby Avenue"
+    form["postcode"] = "PO99 9PO"
+    page = form.submit().follow()
+
+    assert page.has_text("No addresses found")
+    page = page.click(contains="I want to enter it manually")
+    form = page.get_form()
+    assert form["address_line_1"] == "999 Letsby Avenue"
+    assert form["postcode"] == "PO99 9PO"
+
+    form["town_or_city"] = "Metropolis"
+
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")
+    page = _check_page(page, "council-tax-band", "council_tax_band", "B")
+
+    assert page.has_one("h1:contains('We did not find a complete Energy Performance Certificate for your property')")
+    form = page.get_form()
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="epc-found")
+
+    assert "epc_rating" not in data

@@ -34,6 +34,7 @@ extra_pages = (
 page_prev_next_map = {
     "address-select": {"prev": "address", "next": "council-tax-band"},
     "address-manual": {"prev": "address", "next": "council-tax-band"},
+    "epc-not-found": {"prev": "address", "next": "benefits"},
 }
 
 summary_map = {
@@ -105,7 +106,7 @@ own_property_options = (
     "No, I am a social housing tenant",
     "I am a property owner but lease my property to one or more tenants",
 )
-epc_found_options = ("Yes", "No", "I don't know")
+epc_found_options = ("Yes", "No", "I don't know", "Not found")
 council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
