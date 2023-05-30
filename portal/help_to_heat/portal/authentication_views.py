@@ -153,7 +153,6 @@ class PasswordChange(MethodDispatcher):
             messages.error(request, self.password_reset_error_message)
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         user = models.User.objects.get(pk=user_id)
-        token_matching_reset_request = None
         try:
             validate_password(pwd1, user)
         except ValidationError as e:
@@ -161,8 +160,6 @@ class PasswordChange(MethodDispatcher):
                 logger.error(str(msg))
                 messages.error(request, str(msg))
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
-        token_matching_reset_request.is_completed = True
-        token_matching_reset_request.save()
         user.set_password(pwd1)
         user.save()
         return redirect("portal:password-reset-from-key-done")
