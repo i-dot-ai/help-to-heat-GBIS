@@ -11,6 +11,6 @@ python manage.py add_suppliers
 
 echo "Suppliers check completed"
 
-ech "Starting app"
+echo "Starting app"
 
 watchmedo auto-restart --directory=./  --pattern=""*.py"" --recursive -- waitress-serve --port=$PORT --threads=8 help_to_heat.wsgi:application
