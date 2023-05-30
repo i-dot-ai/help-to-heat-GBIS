@@ -20,23 +20,8 @@ FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = [
-    "help-to-heat-portal-develop.london.cloudapps.digital",
-    "help-to-heat-portal-sandbox.london.cloudapps.digital",
-    "help-to-heat-portal-staging.london.cloudapps.digital",
-    "help-to-heat-portal-suppliers.london.cloudapps.digital",
-    "help-to-heat-portal-develop.apps.internal",
-    "help-to-heat-portal-sandbox.apps.internal",
-    "help-to-heat-portal-staging.apps.internal",
-    "help-to-heat-portal-suppliers.apps.internal",
-    "help-to-heat-frontdoor-sandbox.london.cloudapps.digital",
-    "help-to-heat-frontdoor-develop.london.cloudapps.digital",
-    "help-to-heat-frontdoor-staging.london.cloudapps.digital",
-    "help-to-heat-frontdoor-suppliers.london.cloudapps.digital",
-    "localhost",
-    "127.0.0.1",
-    "help-to-heat-testserver",
-]
+# TODO: Replace with fixed hosts once we know the domain
+ALLOWED_HOSTS = ["*"]
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 
