@@ -145,7 +145,6 @@ class PasswordChange(MethodDispatcher):
         user_id, token, valid_request = self.get_token_request_args(request)
         pwd1 = request.POST.get("password1", None)
         pwd2 = request.POST.get("password2", None)
-        one_time_password = request.POST.get("verification-code", None)
         if pwd1 != pwd2:
             logger.error("Passwords don't match")
             messages.error(request, "Passwords must match.")
@@ -155,20 +154,7 @@ class PasswordChange(MethodDispatcher):
             messages.error(request, self.password_reset_error_message)
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         user = models.User.objects.get(pk=user_id)
-        reset_requests = models.PasswordResetRequest.objects.filter(user=user, is_completed=False, is_abandoned=False)
-        if not reset_requests:
-            logger.error("Not requests found")
-            messages.error(request, self.password_reset_error_message)
-            return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         token_matching_reset_request = None
-        for reset_request in reset_requests:
-            if check_password(one_time_password.lower(), reset_request.one_time_password):
-                token_matching_reset_request = reset_request
-                break
-        if not token_matching_reset_request:
-            logger.error("Not token_matching_reset_request")
-            messages.error(request, self.password_reset_error_message)
-            return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         try:
             validate_password(pwd1, user)
         except ValidationError as e:

@@ -124,10 +124,8 @@ def test_password_reset():
     page = form.submit().follow()
 
     invite_url = utils.get_latest_email_url(email)
-    otp = utils.get_latest_email_password(email)
     page = client.get(invite_url)
     form = page.get_form()
-    form["verification-code"] = otp
     form["password1"] = new_password
     form["password2"] = new_password
     page = form.submit().follow()
