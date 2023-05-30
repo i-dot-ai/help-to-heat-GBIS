@@ -54,7 +54,7 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "Help to heat: invitation to system",
         "template_name": "portal/email/invite-user.txt",
-        "url_name": "portal:account_login",
+        "url_name": "portal:accept-invite",
         "token_generator": INVITE_TOKEN_GENERATOR,
     },
 }

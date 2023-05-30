@@ -30,24 +30,17 @@ def invite_user(name, email, password, role):
     assert page.has_text(name)
 
     invite_url = utils.get_latest_email_url(email)
-    password = utils.get_latest_email_password(email)
 
     client = utils.get_client()
     page = client.get(invite_url)
 
     form = page.get_form()
-    form["login"] = email
-    form["password"] = password
+    form["email"] = email
     page = form.submit().follow()
 
     form = page.get_form()
     form["password1"] = password
     form["password2"] = password
-    page = form.submit().follow()
-
-    form = page.get_form()
-    form["login"] = email
-    form["password"] = password
     page = form.submit().follow()
     return page
 

@@ -64,6 +64,44 @@ class CustomLoginView(MethodDispatcher):
 
 
 @require_http_methods(["GET", "POST"])
+class AcceptInviteView(MethodDispatcher):
+    error_message = "Something has gone wrong.  Please contact your team leader."
+
+    def get(self, request):
+        return render(request, "account/accept_invite.html")
+
+    def error(self, request):
+        messages.error(request, self.error_message)
+        return render(request, "account/accept_invite.html")
+
+    def post(self, request):
+        email = request.POST.get("email", None)
+        user_id = request.GET.get("user_id", "")
+        token = request.GET.get("code", "")
+
+        if not email:
+            messages.error(request, "Please enter an email.")
+            return render(request, "account/accept_invite.html")
+
+        try:
+            user = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            return self.error(request)
+
+        if user.invite_accepted_at:
+            return self.error(request)
+
+        if not user_id or not token:
+            return self.error(request)
+
+        result = email_handler.verify_token(user_id, token, "invite-user")
+        if not result:
+            return self.error(request)
+
+        return redirect("portal:account_login_set_password", user.id)
+
+
+@require_http_methods(["GET", "POST"])
 class SetPassword(MethodDispatcher):
     def get(self, request, user_id):
         return render(request, "account/login_set_password.html", {"user_id": user_id})
