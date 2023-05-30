@@ -122,8 +122,9 @@ class SetPassword(MethodDispatcher):
         user.set_password(pwd1)
         user.invite_accepted_at = timezone.now()
         user.save()
-        messages.info(request, "Password successfully set, please login to the system.")
-        return redirect("portal:account_login")
+        messages.info(request, "Password successfully set.")
+        login(request, user)
+        return redirect("portal:homepage")
 
 
 @require_http_methods(["GET", "POST"])
