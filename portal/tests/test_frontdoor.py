@@ -19,7 +19,7 @@ def test_flow_northern_ireland():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
@@ -46,7 +46,7 @@ def test_flow_scotland():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
@@ -73,7 +73,7 @@ def test_flow_errors():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
@@ -167,7 +167,7 @@ def test_happy_flow():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
@@ -259,7 +259,7 @@ def test_back_button():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
@@ -300,7 +300,7 @@ def test_no_benefits_flow():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
@@ -325,7 +325,7 @@ def test_summary():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
@@ -358,7 +358,7 @@ def test_no_address():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
