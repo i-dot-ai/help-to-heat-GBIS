@@ -36,7 +36,7 @@ jobs:
 
     strategy:
       matrix:
-        app: [help-to-heat, help-to-heat-portal, help-to-heat-frontdoor]
+        app: [help-to-heat-frontdoor]
 
     steps:
 
