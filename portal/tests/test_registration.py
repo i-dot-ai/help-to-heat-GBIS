@@ -139,5 +139,4 @@ def test_login_without_invite():
     form["login"] = email
     form["password"] = password
     page = form.submit()
-    page = page.follow()
-    assert page.has_text("The email address or password you entered is incorrect. Please try again.")
+    assert page.has_text("Something has gone wrong.  Please contact your team leader.")

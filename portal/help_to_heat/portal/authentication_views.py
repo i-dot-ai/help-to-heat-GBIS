@@ -15,6 +15,12 @@ logger = logging.getLogger(__name__)
 
 @require_http_methods(["GET", "POST"])
 class CustomLoginView(MethodDispatcher):
+    error_message = "Something has gone wrong.  Please contact your team leader."
+
+    def error(self, request):
+        messages.error(request, self.error_message)
+        return render(request, "account/accept_invite.html")
+
     def get(self, request):
         return render(request, "account/login.html")
 
@@ -27,11 +33,12 @@ class CustomLoginView(MethodDispatcher):
         else:
             user = authenticate(request, email=email, password=password)
             if user is not None:
+                if not user.invite_accepted_at:
+                    return self.error(request)
                 login(request, user)
                 return redirect("portal:homepage")
             else:
-                messages.error(request, "The email address or password you entered is incorrect. Please contact your team leader.")
-                return render(request, "account/login.html", {})
+                return self.error(request)
 
 
 @require_http_methods(["GET", "POST"])
