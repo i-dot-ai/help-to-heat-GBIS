@@ -2,7 +2,6 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
