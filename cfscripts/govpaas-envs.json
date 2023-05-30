@@ -4,12 +4,12 @@
             "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
             "EMAIL_BACKEND_TYPE": "CONSOLE",
             "SHOW_FRONTDOOR": "True",
-            "OS_API_KEY": "xxxxxxx"
+            "OS_API_KEY": "fake-api-key"
         },
         "help-to-heat-portal": {
             "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
             "EMAIL_BACKEND_TYPE": "CONSOLE",
-            "OS_API_KEY": "xxxxxxx"
+            "OS_API_KEY": "fake-api-key"
         }
     },
     "develop": {
