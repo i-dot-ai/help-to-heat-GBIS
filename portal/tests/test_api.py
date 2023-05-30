@@ -33,3 +33,10 @@ def test_create_referral(client):
     assert result.status_code == 201
     result = client.post("/api/referral/", json={"data": {"energySupplier": "british-gas"}})
     assert result.status_code == 201
+
+
+@utils.with_client
+def test_healthcheck(client):
+    result = client.get("/api/healthcheck/")
+    assert result.json()["healthy"] is True
+    assert result.json()["datetime"]

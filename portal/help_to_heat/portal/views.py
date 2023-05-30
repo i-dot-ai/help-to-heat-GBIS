@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework import serializers
@@ -101,4 +102,11 @@ def lookup_epc_view(request, uprn):
         "rating": epc_rating.rating,
         "date": epc_rating.date,
     }
+    return JsonResponse(data, status=201)
+
+
+@require_http_methods(["GET"])
+def healthcheck_view(request):
+    _ = models.User.objects.exists()
+    data = {"healthy": True, "datetime": timezone.now()}
     return JsonResponse(data, status=201)
