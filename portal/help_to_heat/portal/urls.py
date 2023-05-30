@@ -88,4 +88,5 @@ portal_patterns = [
 api_patterns = [
     path("referral/", views.create_referral, name="create-referral"),
     path("epc-rating/<int:uprn>/", views.lookup_epc_view, name="lookup-epc"),
+    path("healthcheck/", views.healthcheck_view, name="healthcheck"),
 ]
