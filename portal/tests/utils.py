@@ -15,28 +15,41 @@ from help_to_heat import wsgi
 from help_to_heat.portal import models
 
 __here__ = pathlib.Path(__file__).parent
+DATA_DIR = __here__ / "data"
 
 TEST_SERVER_URL = "http://help-to-heat-testserver/"
 
 
 class StubAPI:
+    files = {
+        "find": "sample_osdatahub_find_response.json",
+        "uprn": "sample_osdatahub_uprn_response.json",
+    }
+
     def __init__(self, key):
         self.key = key
 
     def find(self, text, dataset=None):
-        content = (__here__ / "sample_osdatahub_find_response.json").read_text()
+        content = (DATA_DIR / self.files["find"]).read_text()
         data = json.loads(content)
         return data
 
     def uprn(self, uprn, dataset=None):
-        content = (__here__ / "sample_osdatahub_uprn_response.json").read_text()
+        content = (DATA_DIR / self.files["uprn"]).read_text()
         data = json.loads(content)
         return data
 
 
+class EmptyAPI(StubAPI):
+    files = {
+        "find": "empty_osdatahub_response.json",
+        "uprn": "empty_osdatahub_response.json",
+    }
+
+
 def mock_os_api(func):
-    find_data = (__here__ / "sample_os_api_find_response.json").read_text()
-    uprn_data = (__here__ / "sample_os_api_uprn_response.json").read_text()
+    find_data = (DATA_DIR / "sample_os_api_find_response.json").read_text()
+    uprn_data = (DATA_DIR / "sample_os_api_uprn_response.json").read_text()
 
     @functools.wraps(func)
     def _inner(*args, **kwargs):

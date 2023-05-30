@@ -340,3 +340,64 @@ def test_summary():
     assert page.has_text("I am a property owner but lease my property to one or more tenants")
 
     assert page.has_text("10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA")
+
+
+@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.EmptyAPI)
+def test_no_address():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Get home energy improvements')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("a:contains('Back')")
+
+    form = page.get_form()
+    form["country"] = "England"
+    page = form.submit().follow()
+
+    assert page.has_text("Do you own your property?")
+
+    form = page.get_form()
+    form["own_property"] = "Yes, I own my property and live in it"
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('What is the address of your property?')")
+    form = page.get_form()
+    form["address_line_1"] = "999 Letsby Avenue"
+    form["postcode"] = "PO99 9PO"
+    page = form.submit().follow()
+
+    assert page.has_text("No addresses found")
+    page = page.click(contains="I want to enter it manually")
+    form = page.get_form()
+    assert form["address_line_1"] == "999 Letsby Avenue"
+    assert form["postcode"] == "PO99 9PO"
+
+    page = form.submit()
+    assert page.has_one("h2:contains('There is a problem')")
+    assert page.has_text("Please answer this question")
+
+    form = page.get_form()
+    assert form["address_line_1"] == "999 Letsby Avenue"
+    assert form["postcode"] == "PO99 9PO"
+
+    form["address_line_2"] = "Smalltown"
+    form["town_or_city"] = "Metropolis"
+    form["county"] = "Big County"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address-manual")
+    assert data["address_line_1"] == "999 Letsby Avenue"
+    assert data["town_or_city"] == "Metropolis"
+    assert data["address_line_2"] == "Smalltown"
+    assert data["town_or_city"] == "Metropolis"
+    assert data["county"] == "Big County"

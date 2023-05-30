@@ -11,7 +11,15 @@
           </h1>
         </legend>
 
-        {{macros.radios('uprn', uprn_options, data, errors)}}
+        {% if uprn_options %}
+          {{macros.radios('uprn', uprn_options, data, errors)}}
+        {% else %}
+          <p>No addresses found</p>
+        {% endif %}
+
+        <p>
+          <a href="{{url('frontdoor:page', session_id=session_id, page_name='address-manual')}}" class="govuk-link">I can't find my address.  I want to enter it manually</a>
+        </p>
 
       </fieldset>
     </div>
