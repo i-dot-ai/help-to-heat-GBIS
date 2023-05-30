@@ -25,6 +25,7 @@ page_compulsory_field_map = {
     "wall-insulation": ("wall_insulation",),
     "loft": ("loft",),
     "loft-access": ("loft_access",),
+    "loft-insulation": ("loft_insulation",),
     "supplier": ("supplier",),
     "contact-details": ("first_name", "last_name", "contact_number", "email"),
     "confirm-and-submit": ("permission",),
@@ -280,6 +281,12 @@ class LoftView(PageView):
 class LoftAccessView(PageView):
     def get_context(self, *args, **kwargs):
         return {"loft_access_options": schemas.loft_access_options}
+
+
+@register_page("loft-insulation")
+class LoftInsulationView(PageView):
+    def get_context(self, *args, **kwargs):
+        return {"loft_insulation_options": schemas.loft_insulation_options}
 
 
 @register_page("summary")
