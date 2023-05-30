@@ -5,9 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.utils import timezone
-from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
 from help_to_heat.utils import MethodDispatcher
@@ -29,37 +27,10 @@ class CustomLoginView(MethodDispatcher):
         else:
             user = authenticate(request, email=email, password=password)
             if user is not None:
-                if user.invite_accepted_at is None:
-                    user_id = request.GET.get("user_id", "")
-                    token = request.GET.get("code", "")
-                    if not user_id or not token:
-                        messages.error(
-                            request, "The email address or password you entered is incorrect. Please try again."
-                        )
-                        context = {
-                            "code": token,
-                            "user_id": user_id,
-                        }
-                        query_string = urlencode(context)
-                        url = reverse("portal:account_login") + "?" + query_string
-                        return redirect(url)
-                    result = email_handler.verify_token(user_id, token, "invite-user")
-                    if not result:
-                        messages.error(
-                            request, "The email address or password you entered is incorrect. Please try again."
-                        )
-                        context = {
-                            "code": token,
-                            "user_id": user_id,
-                        }
-                        query_string = urlencode(context)
-                        url = reverse("portal:account_login") + "?" + query_string
-                        return redirect(url)
-                    return redirect("portal:account_login_set_password", user.id)
                 login(request, user)
                 return redirect("portal:homepage")
             else:
-                messages.error(request, "The email address or password you entered is incorrect. Please try again.")
+                messages.error(request, "The email address or password you entered is incorrect. Please contact your team leader.")
                 return render(request, "account/login.html", {})
 
 
