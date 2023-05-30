@@ -8,6 +8,11 @@ from help_to_heat.portal import models
 from . import utils
 
 
+def _add_epc(uprn, rating):
+    models.EpcRating.objects.update_or_create(uprn=uprn, defaults={"rating": rating})
+    assert interface.api.epc.get_epc(uprn)
+
+
 @unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_flow_northern_ireland():
     client = utils.get_client()
@@ -85,6 +90,7 @@ def test_flow_errors():
 
 def _answer_house_questions(page, session_id, benefits_answer):
     """Answer main flow with set answers"""
+    _add_epc(uprn="100023336956", rating="C")
 
     _check_page = _make_check_page(session_id)
 
@@ -116,6 +122,9 @@ def _answer_house_questions(page, session_id, benefits_answer):
 
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
     page = _check_page(page, "council-tax-band", "council_tax_band", "B")
+
+    assert page.has_one("h1:contains('We found an Energy Performance Certificate that might be yours')")
+    page = _check_page(page, "epc-found", "accept_suggested_epc", "Yes")
 
     assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
     page = _check_page(page, "benefits", "benefits", benefits_answer)
@@ -401,3 +410,5 @@ def test_no_address():
     assert data["address_line_2"] == "Smalltown"
     assert data["town_or_city"] == "Metropolis"
     assert data["county"] == "Big County"
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")

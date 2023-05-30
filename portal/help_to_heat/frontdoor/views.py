@@ -13,7 +13,9 @@ page_compulsory_field_map = {
     "country": ("country",),
     "own-property": ("own_property",),
     "address": ("address_line_1", "postcode"),
+    "address-select": ("uprn",),
     "address-manual": ("address_line_1", "town_or_city", "postcode"),
+    "epc-found": ("accept_suggested_epc",),
     "council-tax-band": ("council_tax_band",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
@@ -51,8 +53,8 @@ def get_prev_next_page_name(page_name):
         prev_page_name = schemas.page_prev_next_map[page_name]["prev"]
         next_page_name = schemas.page_prev_next_map[page_name]["next"]
     else:
-        assert page_name in schemas.pages
-        page_index = schemas.pages.index(page_name)
+        assert page_name in schemas.page_order, page_name
+        page_index = schemas.page_order.index(page_name)
         if page_index == 0:
             prev_page_name = "homepage"
         else:
@@ -72,6 +74,9 @@ def get_prev_next_urls(session_id, page_name):
         prev_page_url = prev_page_name and reverse(
             "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
         )
+    prev_page_url = prev_page_name and reverse(
+        "frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name)
+    )
     next_page_url = next_page_name and reverse(
         "frontdoor:page", kwargs=dict(session_id=session_id, page_name=next_page_name)
     )
@@ -79,10 +84,13 @@ def get_prev_next_urls(session_id, page_name):
 
 
 class PageView(utils.MethodDispatcher):
-    def get(self, request, session_id, page_name, errors=None, is_change_page=False):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
         if not errors:
             errors = {}
-        if is_change_page:
+        if override_prev_page_url is not None:
+            _, next_page_url = get_prev_next_urls(session_id, page_name)
+            prev_page_url = override_prev_page_url
+        elif is_change_page:
             assert page_name in schemas.change_page_lookup
             prev_page_name = schemas.change_page_lookup[page_name]
             prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name))
@@ -122,7 +130,7 @@ class PageView(utils.MethodDispatcher):
             assert page_name in schemas.change_page_lookup
             next_page_name = schemas.change_page_lookup[page_name]
         else:
-            next_page_name = schemas.pages[schemas.pages.index(page_name) + 1]
+            _, next_page_name = get_prev_next_page_name(page_name)
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
     def validate(self, request, session_id, page_name, data, is_change_page):
@@ -134,6 +142,10 @@ class PageView(utils.MethodDispatcher):
 
 @register_page("country")
 class CountryView(PageView):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
+        override_prev_page_url = reverse("frontdoor:homepage")
+        return super().get(request, session_id, page_name, errors, is_change_page, override_prev_page_url)
+
     def get_context(self, *args, **kwargs):
         return {"country_options": schemas.country_options}
 
@@ -154,7 +166,8 @@ class OwnPropertyView(PageView):
 
 @register_page("address")
 class AddressView(PageView):
-    pass
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        return redirect("frontdoor:page", session_id=session_id, page_name="address-select")
 
 
 @register_page("address-select")
@@ -179,21 +192,60 @@ class AddressManualView(PageView):
         data = interface.api.session.get_answer(session_id, "address")
         return {"data": data}
 
-    def handle_post(self, request, session_id, page_name, data, is_change_page):
-        prev_page_name, next_page_name = get_prev_next_page_name(page_name)
-        return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
+        data = request.POST.dict()
+        fields = tuple(
+            data.get(key) for key in ("address_line_1", "address_line_2", "town_or_city", "county", "postcode")
+        )
+        address = ", ".join(f for f in fields if f)
+        data = {**data, "address": address}
+        data = interface.api.session.save_answer(session_id, page_name, data)
+        return data
 
 
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
-    def get_context(self, *args, **kwargs):
+    def get_context(self, request, session_id, *args, **kwargs):
         return {"council_tax_band_options": schemas.council_tax_band_options}
+
+
+@register_page("epc-found")
+class EpcFoundView(PageView):
+    def get_context(self, request, session_id, page_name, data):
+        session_data = interface.api.session.get_session(session_id)
+        uprn = session_data.get("uprn")
+        address = session_data.get("address")
+        epc_rating = interface.api.epc.get_epc(uprn)
+        context = {
+            "epc_rating": epc_rating["rating"],
+            "epc_found_options": schemas.epc_found_options,
+            "address": address,
+        }
+        return context
+
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        choice = data["accept_suggested_epc"]
+        if choice == "Yes":
+            prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+        else:
+            return redirect("frontdoor:page", session_id=session_id, page_name="epc-not-found")
 
 
 @register_page("benefits")
 class BenefitsView(PageView):
-    def get_context(self, *args, **kwargs):
-        return {"benefits_options": schemas.yes_no_options}
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False, override_prev_page_url=None):
+        accepted_ecp_suggestion = interface.api.session.get_answer(session_id, "epc-found")["accept_suggested_epc"]
+        if accepted_ecp_suggestion:
+            prev_page_name = "epc-found"
+        else:
+            prev_page_name = "council-tax-band"
+        override_prev_page_url = reverse("frontdoor:page", args=[session_id, prev_page_name])
+        return super().get(request, session_id, page_name, errors, is_change_page, override_prev_page_url)
+
+    def get_context(self, request, session_id, *args, **kwargs):
+        context = interface.api.session.get_session(session_id)
+        return {"benefits_options": schemas.yes_no_options, "context": context}
 
 
 @register_page("household-income")
@@ -252,15 +304,16 @@ class LoftAccessView(PageView):
 @register_page("summary")
 class SummaryView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
-        summary_lines = (
+        session_data = interface.api.session.get_session(session_id)
+        summary_lines = tuple(
             {
-                "question": schemas.page_map[page],
-                "answer": ", ".join(
-                    str(value) for value in interface.api.session.get_answer(session_id, page).values()
-                ),
-                "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page)),
+                "question": schemas.summary_map[question],
+                "answer": session_data.get(question),
+                "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page_name)),
             }
-            for page in schemas.household_pages
+            for page_name, questions in schemas.household_pages.items()
+            for question in questions
+            if question in session_data
         )
         return {"summary_lines": summary_lines}
 
@@ -287,14 +340,15 @@ class ContactDetailsView(PageView):
 @register_page("confirm-and-submit")
 class ConfirmSubmitView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
+        session_data = interface.api.session.get_session(session_id)
         summary_lines = tuple(
             {
-                "question": schemas.question_map[key],
-                "answer": value,
+                "question": schemas.confirm_sumbit_map[question],
+                "answer": session_data.get(question),
                 "change_url": reverse("frontdoor:change-page", kwargs=dict(session_id=session_id, page_name=page_name)),
             }
-            for page_name in schemas.details_pages
-            for key, value in interface.api.session.get_answer(session_id, page_name).items()
+            for page_name, questions in schemas.details_pages.items()
+            for question in questions
         )
         return {"summary_lines": summary_lines}
 

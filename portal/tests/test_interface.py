@@ -1,6 +1,10 @@
+import datetime
+import random
+import string
 import uuid
 
 from help_to_heat.frontdoor import interface
+from help_to_heat.portal import models
 
 from . import utils
 
@@ -52,3 +56,20 @@ def test_find_addresses():
 def test_get_address():
     result = interface.api.address.get_address(uprn="10")
     assert result["address"] == "10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA"
+
+
+def test_get_epc():
+    uprn = str(int("".join(random.choices(string.digits, k=5))))
+    data = {
+        "uprn": uprn,
+        "rating": "A",
+        "date": datetime.date(2020, 12, 25),
+    }
+    models.EpcRating.objects.create(**data)
+
+    found_epc = interface.api.epc.get_epc(uprn)
+    assert found_epc["rating"] == data["rating"]
+
+    new_uprn = "".join(random.choices(string.digits, k=5))
+    missing_epc = interface.api.epc.get_epc(new_uprn)
+    assert missing_epc == {}
