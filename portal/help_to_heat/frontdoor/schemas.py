@@ -200,7 +200,11 @@ supplier_options = (
     "Utility Warehouse",
 )
 epc_rating_options = ("A", "B", "C", "D", "E", "F", "G", "H")
-loft_insulation_options = ("Yes, there is at least 200mm of insulation in my loft", "No, there is less than 200mm of insulation in my loft", "I don't know")
+loft_insulation_options = (
+    "Yes, there is at least 200mm of insulation in my loft",
+    "No, there is less than 200mm of insulation in my loft",
+    "I don't know",
+)
 
 
 class SessionSchema(Schema):
