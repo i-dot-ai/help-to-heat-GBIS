@@ -34,7 +34,7 @@ extra_pages = (
 page_prev_next_map = {
     "address-select": {"prev": "address", "next": "council-tax-band"},
     "address-manual": {"prev": "address", "next": "council-tax-band"},
-    "epc-not-found": {"prev": "address", "next": "benefits"},
+    "epc-disagree": {"prev": "address", "next": "benefits"},
 }
 
 summary_map = {

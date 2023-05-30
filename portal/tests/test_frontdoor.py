@@ -470,3 +470,5 @@ def test_no_epc():
     data = interface.api.session.get_answer(session_id, page_name="epc")
 
     assert data["epc_rating"] == "Not found"
+
+    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
