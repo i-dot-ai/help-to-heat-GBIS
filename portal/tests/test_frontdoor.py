@@ -469,4 +469,4 @@ def test_no_epc():
 
     data = interface.api.session.get_answer(session_id, page_name="epc")
 
-    assert "epc_rating" not in data
+    assert data["epc_rating"] == "Not found"
