@@ -143,7 +143,7 @@ def _answer_house_questions(page, session_id, benefits_answer):
     assert page.has_one("h1:contains('Are your walls insulated?')")
     page = _check_page(page, "wall-insulation", "wall_insulation", "No they are not insulated")
 
-    assert page.has_one("h1:contains('Do you have a loft that hasn't been converted into a room?')")
+    assert page.has_one("""h1:contains("Do you have a loft that hasn't been converted into a room?")""")
     page = _check_page(page, "loft", "loft", "Yes, I have a loft that hasn't been converted into a room")
 
     assert page.has_one("h1:contains('Is there access to your loft?')")
@@ -175,11 +175,7 @@ def test_happy_flow():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
-    print("before")
-
     _check_page = _make_check_page(session_id)
-
-    print("after")
 
     # Answer main flow
     page = _answer_house_questions(page, session_id, benefits_answer="Yes")
