@@ -13,7 +13,7 @@ def test_registration():
 
 
 @nose.with_setup(utils.wipe_emails)
-def invite_user(name, email, password, role):
+def invite_user(name, email, password, role, try_fake_email=False):
     client = utils.get_client()
     page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
@@ -33,6 +33,12 @@ def invite_user(name, email, password, role):
 
     client = utils.get_client()
     page = client.get(invite_url)
+
+    if try_fake_email:
+        form = page.get_form()
+        form["email"] = "fakey.fakington@example.com"
+        page = form.submit()
+        assert page.has_text("Something has gone wrong.  Please contact your team leader.")
 
     form = page.get_form()
     form["email"] = email
@@ -156,3 +162,17 @@ def test_logout():
     page = page.follow()
     assert page.has_text("You have signed out.")
     assert page.has_one("""h1:contains('Log in')""")
+
+
+def test_accept_fake_email():
+    client = utils.get_client()
+    email = f"milly-the-member+{utils.make_code()}@example.com"
+    new_password = "N3wP455w0rd"
+    team_lead_name = f"Milly the member {utils.make_code()}"
+    role = "team-member"
+    page = utils.login_as_team_leader(client)
+    page = page.click(contains="Add a new team member or leader")
+
+    page = invite_user(team_lead_name, email, new_password, role, try_fake_email=True)
+    assert page.status_code == 200
+    assert not page.has_one("""h1:contains('Manage team members')""")

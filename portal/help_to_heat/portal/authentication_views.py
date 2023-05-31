@@ -62,7 +62,7 @@ class AcceptInviteView(MethodDispatcher):
             return render(request, "account/accept_invite.html")
 
         try:
-            user = models.User.objects.get(id=user_id)
+            user = models.User.objects.get(id=user_id, email=email)
         except models.User.DoesNotExist:
             return self.error(request)
 
