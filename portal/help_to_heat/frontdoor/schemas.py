@@ -106,7 +106,7 @@ own_property_options = (
     "No, I am a social housing tenant",
     "I am a property owner but lease my property to one or more tenants",
 )
-epc_display_options = ("Yes", "No", "I don't know", "Not found")
+epc_display_options = ("Yes", "No", "I don't know")
 epc_validation_options = epc_display_options + ("Not found",)
 council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
