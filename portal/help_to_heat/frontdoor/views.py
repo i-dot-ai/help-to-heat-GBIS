@@ -146,8 +146,6 @@ class CountryView(PageView):
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         if data["country"] == "Northern Ireland":
             return redirect("frontdoor:page", session_id=session_id, page_name="northern-ireland")
-        elif data["country"] == "Scotland":
-            return redirect("frontdoor:page", session_id=session_id, page_name="scotland")
         else:
             return super().handle_post(request, session_id, page_name, data, is_change_page)
 
