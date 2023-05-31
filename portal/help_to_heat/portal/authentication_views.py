@@ -134,7 +134,7 @@ class MFASetup(MethodDispatcher):
         user = request.user
 
         otp = request.POST.get("otp", None)
-        secret = request.POST.get("secret", None)
+        secret = request.POST.get("totp_secret", None)
 
         if not otp:
             return self.error(request, message="Please enter the otp.")

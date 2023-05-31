@@ -92,7 +92,7 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
         return totp_secret
 
     def verify_otp(self, otp):
-        if otp == self.last_totp:
+        if otp == self.last_otp:
             return False
         secret = self.get_totp_secret()
         totp = pyotp.TOTP(secret)
