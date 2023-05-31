@@ -97,7 +97,7 @@ def _answer_house_questions(page, session_id, benefits_answer):
     assert page.has_text("Do you own the property?")
     page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
 
     form = page.get_form()
     form["address_line_1"] = "999 Letsby Avenue"
@@ -279,7 +279,7 @@ def test_back_button():
     form["own_property"] = "Yes, I own my property and live in it"
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
 
     page = page.click(contains="Back")
 
@@ -375,7 +375,7 @@ def test_no_address():
     form["own_property"] = "Yes, I own my property and live in it"
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
     form = page.get_form()
     form["address_line_1"] = "999 Letsby Avenue"
     form["postcode"] = "PO99 9PO"
@@ -433,7 +433,7 @@ def test_no_epc():
     assert page.has_text("Do you own the property?")
     page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
 
     form = page.get_form()
     form["address_line_1"] = "999 Letsby Avenue"
