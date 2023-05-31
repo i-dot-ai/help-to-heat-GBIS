@@ -200,6 +200,13 @@ class CouncilTaxBandView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
         return {"council_tax_band_options": schemas.council_tax_band_options}
 
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        session_data = interface.api.session.get_session(session_id)
+        if session_data.get("country") == "Scotland":
+            return redirect("frontdoor:page", session_id=session_id, page_name="benefits")
+        else:
+            return super().handle_post(request, session_id, page_name, data, is_change_page)
+
 
 @register_page("epc")
 class EpcView(PageView):

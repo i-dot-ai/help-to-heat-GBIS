@@ -38,6 +38,7 @@ def test_flow_northern_ireland():
     assert page.has_one("h1:contains('Where is the property located?')")
 
 
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_flow_scotland():
     client = utils.get_client()
     page = client.get("/")
@@ -51,17 +52,39 @@ def test_flow_scotland():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
+    _check_page = _make_check_page(session_id)
+
     form = page.get_form()
     form["country"] = "Scotland"
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Do you own your property?')")
+    assert page.has_one("h1:contains('Do you own the property?')")
+    page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
-    data = interface.api.session.get_answer(session_id, page_name="country")
-    assert data["country"] == "Scotland"
+    assert page.has_one("h1:contains('What is the property’s address?')")
 
-    page = page.click(contains="Back")
-    assert page.has_one("h1:contains('Where is the property located?')")
+    form = page.get_form()
+    form["address_line_1"] = "999 Letsby Avenue"
+    form["postcode"] = "PO99 9PO"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address")
+    assert data["address_line_1"] == "999 Letsby Avenue"
+    assert data["postcode"] == "PO99 9PO"
+
+    form = page.get_form()
+    form["uprn"] = "100023336956"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address-select")
+    assert data["uprn"] == 100023336956
+    assert data["address"] == "10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA"
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")
+    page = _check_page(page, "council-tax-band", "council_tax_band", "B")
+
+    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+    page = _check_page(page, "benefits", "benefits", "Yes")
 
 
 def test_flow_errors():
