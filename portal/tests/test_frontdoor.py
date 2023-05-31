@@ -153,6 +153,11 @@ def _answer_house_questions(page, session_id, benefits_answer):
     assert page.has_one("h1:contains('Is there access to your loft?')")
     page = _check_page(page, "loft-access", "loft_access", "Yes, there is access to my loft")
 
+    assert page.has_one("h1:contains('Is your loft fully insulated?')")
+    page = _check_page(
+        page, "loft-insulation", "loft_insulation", "No, there is less than 200mm of insulation in my loft"
+    )
+
     assert page.has_one("h1:contains('Check your answers')")
     form = page.get_form()
     page = form.submit().follow()

@@ -28,7 +28,7 @@ legacy_referral_keys_map = {
     "addressUPRN": "addressUPRN",
     "counciltaxBandsSize": "counciltaxBandsSize",
     "house": "house",
-    "loftInsulation": "loftInsulation",
+    "loftInsulation": "loft_insulation",
     "propertyEpcDetails.propertyEpcDate.day": "propertyEpcDetails.propertyEpcDate.day",
     "propertyEpcDetails.propertyEpcDate.month": "propertyEpcDetails.propertyEpcDate.month",
     "propertyEpcDetails.propertyEpcDate.year": "propertyEpcDetails.propertyEpcDate.year",

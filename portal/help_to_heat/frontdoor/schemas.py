@@ -17,6 +17,7 @@ page_order = (
     "wall-insulation",
     "loft",
     "loft-access",
+    "loft-insulation",
     "summary",
     "schemes",
     "supplier",
@@ -50,6 +51,7 @@ summary_map = {
     "wall_insulation": "Are your walls insulated?",
     "loft": "Does this property have a loft?",
     "loft_access": "Is there access to your loft?",
+    "loft_insulation": "Is there 200mm of insulation in your loft?",
 }
 
 confirm_sumbit_map = {
@@ -75,6 +77,7 @@ household_pages = {
     "wall-insulation": ("wall_insulation",),
     "loft": ("loft",),
     "loft-access": ("loft_access",),
+    "loft-insulation": ("loft_insulation",),
 }
 
 details_pages = {
@@ -197,6 +200,11 @@ supplier_options = (
     "Utility Warehouse",
 )
 epc_rating_options = ("A", "B", "C", "D", "E", "F", "G", "H")
+loft_insulation_options = (
+    "Yes, there is at least 200mm of insulation in my loft",
+    "No, there is less than 200mm of insulation in my loft",
+    "I don't know",
+)
 
 
 class SessionSchema(Schema):
@@ -225,6 +233,7 @@ class SessionSchema(Schema):
     wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))
     loft = fields.String(validate=validate.OneOf(yes_no_options))
     loft_access = fields.String(validate=validate.OneOf(loft_access_options))
+    loft_insulation = fields.String(validate=validate.OneOf(loft_insulation_options))
     supplier = fields.String(validate=validate.OneOf(supplier_options))
     first_name = fields.String()
     last_name = fields.String()
