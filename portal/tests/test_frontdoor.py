@@ -94,7 +94,7 @@ def _answer_house_questions(page, session_id, benefits_answer):
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
     page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
     assert page.has_one("h1:contains('What is the address of your property?')")
@@ -273,7 +273,7 @@ def test_back_button():
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
 
     form = page.get_form()
     form["own_property"] = "Yes, I own my property and live in it"
@@ -335,7 +335,7 @@ def test_summary():
 
     page = page.click(contains="Back")
 
-    page = page.click(contains="Change Do you own your property?")
+    page = page.click(contains="Change Do you own the property?")
 
     form = page.get_form()
     form["own_property"] = "I am a property owner but lease my property to one or more tenants"
@@ -369,7 +369,7 @@ def test_no_address():
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
 
     form = page.get_form()
     form["own_property"] = "Yes, I own my property and live in it"
@@ -430,7 +430,7 @@ def test_no_epc():
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
     page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
     assert page.has_one("h1:contains('What is the address of your property?')")

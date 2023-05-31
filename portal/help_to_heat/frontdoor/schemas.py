@@ -39,7 +39,7 @@ page_prev_next_map = {
 
 summary_map = {
     "country": "Country of property",
-    "own_property": "Do you own your property?",
+    "own_property": "Do you own the property?",
     "address": "Property address",
     "council_tax_band": "Council tax band",
     "epc": "Energy Performance Certificate",
