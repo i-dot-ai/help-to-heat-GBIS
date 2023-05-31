@@ -140,3 +140,19 @@ def test_login_without_invite():
     form["password"] = password
     page = form.submit()
     assert page.has_text("Something has gone wrong.  Please contact your team leader.")
+
+
+def test_logout():
+    email = f"team-leader-password-reset+{utils.make_code()}@example.com"
+    client = utils.get_client()
+    page = utils.login_as_team_leader(client, email=email)
+
+    assert page.has_one("""h1:contains('Manage team members')""")
+
+    page = page.click(contains="Logout")
+    assert page.has_one("""h1:contains('Are you sure you want to logout?')""")
+    form = page.get_form()
+    page = form.submit()
+    page = page.follow()
+    assert page.has_text("You have signed out.")
+    assert page.has_one("""h1:contains('Log in')""")

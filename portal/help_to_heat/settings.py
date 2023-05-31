@@ -142,6 +142,7 @@ SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = "portal:homepage"
 LOGIN_URL = "portal:account_login"
+LOGOUT_REDIRECT_URL = "portal:account_login"
 
 EMAIL_BACKEND_TYPE = env.str("EMAIL_BACKEND_TYPE")
 
@@ -159,8 +160,5 @@ else:
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
 
 SHOW_FRONTDOOR = env.bool("SHOW_FRONTDOOR", default=False)
-
-if SHOW_FRONTDOOR:
-    LOGOUT_REDIRECT_URL = "account_login"
 
 OS_API_KEY = env.str("OS_API_KEY")
