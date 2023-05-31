@@ -81,7 +81,7 @@
   <header class="govuk-header " role="banner" data-module="govuk-header">
     <div class="govuk-header__container govuk-width-container">
       <div class="govuk-header__logo">
-        <a href="#" class="govuk-header__link govuk-header__link--homepage">
+        <a href="{{url('frontdoor:homepage')}}" class="govuk-header__link govuk-header__link--homepage">
           <span class="govuk-header__logotype">
             <!--[if gt IE 8]><!-->
             <svg aria-hidden="true" focusable="false" class="govuk-header__logotype-crown"
@@ -166,6 +166,15 @@
 
   <script>
     window.GOVUKFrontend.initAll()
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B02SBZRS69"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){
+          dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-B02SBZRS69');
   </script>
 </body>
 
