@@ -227,4 +227,5 @@ def make_totp_secret(user_id, key, length=32):
     hashed_bytes = hashlib.sha256(raw_bytes)
     digest = hashed_bytes.digest()
     encoded_secret = base64.b32encode(digest)
-    return encoded_secret[:32]
+    summary = encoded_secret[:32].decode("ascii")
+    return summary

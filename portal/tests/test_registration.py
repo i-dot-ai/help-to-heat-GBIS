@@ -48,6 +48,14 @@ def invite_user(name, email, password, role, try_fake_email=False):
     form["password1"] = password
     form["password2"] = password
     page = form.submit().follow()
+
+    assert page.has_text("Please setup Two Factor Authentication (2FA)")
+
+    form = page.get_form()
+    secret = form["totp_secret"]
+    form["otp"] = utils.get_otp(secret)
+    page = form.submit().follow()
+
     if role == "team_member":
         assert not page.has_text("Manage members")
     if role == "team_leader":
