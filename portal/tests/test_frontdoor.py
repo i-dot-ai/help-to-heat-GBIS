@@ -1,7 +1,6 @@
 import unittest
 import uuid
 
-from django.conf import settings
 from help_to_heat.frontdoor import interface
 from help_to_heat.portal import models
 
@@ -13,7 +12,6 @@ def _add_epc(uprn, rating):
     assert interface.api.epc.get_epc(uprn)
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_flow_northern_ireland():
     client = utils.get_client()
     page = client.get("/")
@@ -40,7 +38,6 @@ def test_flow_northern_ireland():
     assert page.has_one("h1:contains('Which country is your property located in?')")
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_flow_scotland():
     client = utils.get_client()
     page = client.get("/")
@@ -67,7 +64,6 @@ def test_flow_scotland():
     assert page.has_one("h1:contains('Which country is your property located in?')")
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_flow_errors():
     client = utils.get_client()
     page = client.get("/")
@@ -165,7 +161,6 @@ def _answer_house_questions(page, session_id, benefits_answer):
     return page
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_happy_flow():
     client = utils.get_client()
@@ -258,7 +253,6 @@ def _make_check_page(session_id):
     return _check_page
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 def test_back_button():
     client = utils.get_client()
     page = client.get("/")
@@ -298,7 +292,6 @@ def test_back_button():
     assert form["country"] == "England"
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_no_benefits_flow():
     client = utils.get_client()
@@ -323,7 +316,6 @@ def test_no_benefits_flow():
     page = form.submit().follow()
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_summary():
     client = utils.get_client()
@@ -356,7 +348,6 @@ def test_summary():
     assert page.has_text("10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA")
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.EmptyAPI)
 def test_no_address():
     client = utils.get_client()
@@ -419,7 +410,6 @@ def test_no_address():
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
 
 
-@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.EmptyAPI)
 def test_no_epc():
     client = utils.get_client()
