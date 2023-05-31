@@ -1,10 +1,14 @@
+import base64
 import enum
 import functools
+import hashlib
 import inspect
+import secrets
 import types
 import uuid
 
 import marshmallow
+from django.conf import settings
 from django.db import models
 from django.http import HttpResponseNotAllowed
 
@@ -211,3 +215,16 @@ class Entity:
         possible_methods = (getattr(self, key) for key in dir(self) if not key.startswith("_"))
         possible_event_names = (getattr(item, "event_name", None) for item in possible_methods)
         self.event_names = tuple(item for item in possible_event_names if item)
+
+
+def make_totp_key():
+    return secrets.token_hex(32)
+
+
+def make_totp_secret(user_id, key, length=32):
+    raw = ":".join((str(user_id), key, settings.SECRET_KEY))
+    raw_bytes = raw.encode("utf-8")
+    hashed_bytes = hashlib.sha256(raw_bytes)
+    digest = hashed_bytes.digest()
+    encoded_secret = base64.b32encode(digest)
+    return encoded_secret[:32]

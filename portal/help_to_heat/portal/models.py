@@ -1,5 +1,7 @@
 import string
 
+import pyotp
+from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
@@ -72,6 +74,33 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
         return super().save(*args, **kwargs)
+
+    def get_totp_uri(self):
+        secret = self.get_totp_secret()
+        uri = pyotp.utils.build_uri(
+            secret=secret,
+            name=self.email,
+            issuer=settings.TOTP_ISSUER,
+        )
+        return uri
+
+    def get_totp_secret(self):
+        if not self.totp_key:
+            self.totp_key = utils.make_totp_key()
+            self.save()
+        totp_secret = utils.make_totp_secret(self.id, self.totp_key)
+        return totp_secret
+
+    def verify_otp(self, otp):
+        if otp == self.last_totp:
+            return False
+        secret = self.get_totp_secret()
+        totp = pyotp.TOTP(secret)
+        success = totp.verify(otp)
+        if success:
+            self.last_otp = otp
+            self.save()
+        return success
 
 
 class ReferralDownload(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):

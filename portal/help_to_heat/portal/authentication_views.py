@@ -1,7 +1,9 @@
 import logging
 
+import segno
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
@@ -102,6 +104,49 @@ class SetPassword(MethodDispatcher):
         user.save()
         messages.info(request, "Password successfully set.")
         login(request, user)
+        if user.totp_key:
+            return redirect("portal:homepage")
+        else:
+            return redirect("portal:mfa-setup")
+
+
+@require_http_methods(["GET", "POST"])
+@login_required
+class MFASetup(MethodDispatcher):
+    template_name = "account/mfa-setup.html"
+    error_message = "Something has gone wrong.  Please contact your team leader."
+
+    def error(self, request, message=error_message):
+        messages.error(request, message)
+        return render(request, self.template_name)
+
+    def get(self, request):
+        user = request.user
+        totp_secret = user.get_totp_secret()
+        qr_code = segno.make(totp_secret).svg_inline()
+        context = {
+            "qr_code": qr_code,
+            "totp_secret": totp_secret,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        user = request.user
+
+        otp = request.POST.get("otp", None)
+        secret = request.POST.get("secret", None)
+
+        if not otp:
+            return self.error(request, message="Please enter the otp.")
+
+        user_secret = user.get_totp_secret()
+
+        if secret != user_secret:
+            return self.error(request)
+
+        if not user.verify_otp(otp):
+            return self.error(request)
+
         return redirect("portal:homepage")
 
 
