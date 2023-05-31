@@ -190,7 +190,7 @@ wall_insulation_options = (
 )
 loft_options = (
     "Yes, I have a loft that hasn't been converted into a room",
-    "No, I don't have a loft or my loft has been converted into a room"
+    "No, I don't have a loft or my loft has been converted into a room",
 )
 loft_access_options = ("Yes, there is access to my loft", "No, there is no access to my loft")
 supplier_options = (

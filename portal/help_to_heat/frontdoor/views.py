@@ -351,19 +351,16 @@ class SummaryView(PageView):
             if question in session_data
         )
         return {"summary_lines": summary_lines}
-    
+
     def get_prev_next_urls(self, session_id, page_name):
         loft_data = interface.api.session.get_answer(session_id, "loft")
-        
+
         if loft_data.get("loft", None) == "Yes, I have a loft that hasn't been converted into a room":
             _, next_page_url = get_prev_next_urls(session_id, page_name)
-            prev_page_url = reverse(
-                "frontdoor:page", kwargs=dict(session_id=session_id, page_name="loft-insulation")
-            )
+            prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name="loft-insulation"))
             return prev_page_url, next_page_url
         else:
             return super().get_prev_next_urls(session_id, page_name)
-        
 
 
 @register_page("schemes")
