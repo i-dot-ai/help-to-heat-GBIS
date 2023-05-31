@@ -7,7 +7,7 @@ page_order = (
     "own-property",
     "address",
     "council-tax-band",
-    "epc-found",
+    "epc",
     "benefits",
     "household-income",
     "property-type",
@@ -34,6 +34,7 @@ extra_pages = (
 page_prev_next_map = {
     "address-select": {"prev": "address", "next": "council-tax-band"},
     "address-manual": {"prev": "address", "next": "council-tax-band"},
+    "epc-disagree": {"prev": "address", "next": "benefits"},
 }
 
 summary_map = {
@@ -41,7 +42,7 @@ summary_map = {
     "own_property": "Do you own your property?",
     "address": "Property address",
     "council_tax_band": "Council tax band",
-    "epc-found": "Energy Performance Certificate",
+    "epc": "Energy Performance Certificate",
     "benefits": "Is anyone in your household receiving any benefits?",
     "household_income": "Annual household income",
     "property_type": "Property type",
@@ -67,7 +68,7 @@ household_pages = {
     "own-property": ("own_property",),
     "address": ("address",),
     "council-tax-band": ("council_tax_band",),
-    "epc-found": ("epc",),
+    "epc": ("epc",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
     "property-type": ("property_type",),
@@ -105,7 +106,8 @@ own_property_options = (
     "No, I am a social housing tenant",
     "I am a property owner but lease my property to one or more tenants",
 )
-epc_found_options = ("Yes", "No", "I don't know")
+epc_display_options = ("Yes", "No", "I don't know")
+epc_validation_options = epc_display_options + ("Not found",)
 council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
@@ -199,7 +201,7 @@ supplier_options = (
     "Utilita",
     "Utility Warehouse",
 )
-epc_rating_options = ("A", "B", "C", "D", "E", "F", "G", "H")
+epc_rating_options = ("A", "B", "C", "D", "E", "F", "G", "H", "Not found")
 loft_insulation_options = (
     "Yes, there is at least 200mm of insulation in my loft",
     "No, there is less than 200mm of insulation in my loft",
@@ -218,7 +220,7 @@ class SessionSchema(Schema):
     uprn = fields.Integer()
     address = fields.String()
     council_tax_band = fields.String(validate=validate.OneOf(council_tax_band_options))
-    accept_suggested_epc = fields.String(validate=validate.OneOf(epc_found_options))
+    accept_suggested_epc = fields.String(validate=validate.OneOf(epc_validation_options))
     epc_rating = fields.String(validate=validate.OneOf(epc_rating_options))
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))

@@ -15,8 +15,8 @@ page_compulsory_field_map = {
     "address": ("address_line_1", "postcode"),
     "address-select": ("uprn",),
     "address-manual": ("address_line_1", "town_or_city", "postcode"),
-    "epc-found": ("accept_suggested_epc",),
     "council-tax-band": ("council_tax_band",),
+    "epc": ("accept_suggested_epc",),
     "benefits": ("benefits",),
     "household-income": ("household_income",),
     "property-type": ("property_type",),
@@ -200,27 +200,58 @@ class CouncilTaxBandView(PageView):
         return {"council_tax_band_options": schemas.council_tax_band_options}
 
 
-@register_page("epc-found")
-class EpcFoundView(PageView):
+@register_page("epc")
+class EpcView(PageView):
     def get_context(self, request, session_id, page_name, data):
         session_data = interface.api.session.get_session(session_id)
         uprn = session_data.get("uprn")
         address = session_data.get("address")
-        epc_rating = interface.api.epc.get_epc(uprn)
+        if uprn:
+            epc = interface.api.epc.get_epc(uprn)
+        else:
+            epc = {}
         context = {
-            "epc_rating": epc_rating["rating"],
-            "epc_found_options": schemas.epc_found_options,
+            "epc_rating": epc.get("rating"),
+            "epc_display_options": schemas.epc_display_options,
             "address": address,
         }
         return context
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
+        prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+        epc_rating = data.get("epc_rating")
+        if not epc_rating:
+            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+
         choice = data["accept_suggested_epc"]
-        if choice == "Yes":
+        if choice in ("Yes", "Not found"):
             prev_page_name, next_page_name = get_prev_next_page_name(page_name)
             return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
         else:
-            return redirect("frontdoor:page", session_id=session_id, page_name="epc-not-found")
+            return redirect("frontdoor:page", session_id=session_id, page_name="epc-disagree")
+
+
+@register_page("epc-disagree")
+class EpcDisagreeView(PageView):
+    def get(self, request, session_id, page_name, errors=None, is_change_page=False):
+        if not errors:
+            errors = {}
+        data = {}
+        prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
+        extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
+        context = {
+            "data": data,
+            "session_id": session_id,
+            "errors": errors,
+            "prev_url": prev_page_url,
+            "next_url": next_page_url,
+            **extra_context,
+        }
+        return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
+
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
+        data = interface.api.session.save_answer(session_id, "epc", request.POST.dict())
+        return data
 
 
 @register_page("benefits")

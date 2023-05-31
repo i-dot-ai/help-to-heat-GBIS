@@ -124,7 +124,7 @@ def _answer_house_questions(page, session_id, benefits_answer):
     page = _check_page(page, "council-tax-band", "council_tax_band", "B")
 
     assert page.has_one("h1:contains('We found an Energy Performance Certificate that might be yours')")
-    page = _check_page(page, "epc-found", "accept_suggested_epc", "Yes")
+    page = _check_page(page, "epc", "accept_suggested_epc", "Yes")
 
     assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
     page = _check_page(page, "benefits", "benefits", benefits_answer)
@@ -417,3 +417,58 @@ def test_no_address():
     assert data["county"] == "Big County"
 
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
+
+
+@unittest.skipIf(not settings.SHOW_FRONTDOOR, "Frontdoor disabled")
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.EmptyAPI)
+def test_no_epc():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    _check_page = _make_check_page(session_id)
+
+    form = page.get_form()
+    form["country"] = "England"
+    page = form.submit().follow()
+
+    assert page.has_text("Do you own your property?")
+    page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
+
+    assert page.has_one("h1:contains('What is the address of your property?')")
+
+    form = page.get_form()
+    form["address_line_1"] = "999 Letsby Avenue"
+    form["postcode"] = "PO99 9PO"
+    page = form.submit().follow()
+
+    assert page.has_text("No addresses found")
+    page = page.click(contains="I want to enter it manually")
+    form = page.get_form()
+    assert form["address_line_1"] == "999 Letsby Avenue"
+    assert form["postcode"] == "PO99 9PO"
+
+    form["town_or_city"] = "Metropolis"
+
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")
+    page = _check_page(page, "council-tax-band", "council_tax_band", "B")
+
+    assert page.has_one("h1:contains('We did not find a complete Energy Performance Certificate for your property')")
+    form = page.get_form()
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="epc")
+
+    assert data["epc_rating"] == "Not found"
+
+    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
