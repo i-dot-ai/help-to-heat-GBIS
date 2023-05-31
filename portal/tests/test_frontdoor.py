@@ -35,7 +35,7 @@ def test_flow_northern_ireland():
     assert data["country"] == "Northern Ireland"
 
     page = page.click(contains="Back")
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
 
 
 def test_flow_scotland():
@@ -61,7 +61,7 @@ def test_flow_scotland():
     assert data["country"] == "Scotland"
 
     page = page.click(contains="Back")
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
 
 
 def test_flow_errors():
@@ -94,10 +94,10 @@ def _answer_house_questions(page, session_id, benefits_answer):
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
     page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
 
     form = page.get_form()
     form["address_line_1"] = "999 Letsby Avenue"
@@ -266,20 +266,20 @@ def test_back_button():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
     assert page.has_one("a:contains('Back')")
 
     form = page.get_form()
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
 
     form = page.get_form()
     form["own_property"] = "Yes, I own my property and live in it"
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
 
     page = page.click(contains="Back")
 
@@ -335,7 +335,7 @@ def test_summary():
 
     page = page.click(contains="Back")
 
-    page = page.click(contains="Change Do you own your property?")
+    page = page.click(contains="Change Do you own the property?")
 
     form = page.get_form()
     form["own_property"] = "I am a property owner but lease my property to one or more tenants"
@@ -362,20 +362,20 @@ def test_no_address():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
     assert page.has_one("a:contains('Back')")
 
     form = page.get_form()
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
 
     form = page.get_form()
     form["own_property"] = "Yes, I own my property and live in it"
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
     form = page.get_form()
     form["address_line_1"] = "999 Letsby Avenue"
     form["postcode"] = "PO99 9PO"
@@ -430,10 +430,10 @@ def test_no_epc():
     form["country"] = "England"
     page = form.submit().follow()
 
-    assert page.has_text("Do you own your property?")
+    assert page.has_text("Do you own the property?")
     page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
 
-    assert page.has_one("h1:contains('What is the address of your property?')")
+    assert page.has_one("h1:contains('What is the property’s address?')")
 
     form = page.get_form()
     form["address_line_1"] = "999 Letsby Avenue"
