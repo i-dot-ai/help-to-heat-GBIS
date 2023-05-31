@@ -91,7 +91,7 @@ class PageView(utils.MethodDispatcher):
             prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=prev_page_name))
             next_page_url = None
         else:
-            prev_page_url, next_page_url = get_prev_next_urls(session_id, page_name)
+            prev_page_url, next_page_url = self.get_prev_next_urls(session_id, page_name)
         data = interface.api.session.get_answer(session_id, page_name)
         extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
         context = {
@@ -103,6 +103,9 @@ class PageView(utils.MethodDispatcher):
             **extra_context,
         }
         return render(request, template_name=f"frontdoor/{page_name}.html", context=context)
+
+    def get_prev_next_urls(self, session_id, page_name):
+        return get_prev_next_urls(session_id, page_name)
 
     def post(self, request, session_id, page_name, is_change_page=False):
         data = request.POST.dict()
@@ -305,7 +308,20 @@ class WallInsulationView(PageView):
 @register_page("loft")
 class LoftView(PageView):
     def get_context(self, *args, **kwargs):
-        return {"loft_options": schemas.yes_no_options}
+        return {"loft_options": schemas.loft_options}
+
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+        loft = data.get("loft")
+        if not loft:
+            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+
+        choice = data["loft"]
+        if choice == "Yes, I have a loft that hasn't been converted into a room":
+            prev_page_name, next_page_name = get_prev_next_page_name(page_name)
+            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+        else:
+            return redirect("frontdoor:page", session_id=session_id, page_name="summary")
 
 
 @register_page("loft-access")
@@ -335,6 +351,16 @@ class SummaryView(PageView):
             if question in session_data
         )
         return {"summary_lines": summary_lines}
+
+    def get_prev_next_urls(self, session_id, page_name):
+        loft_data = interface.api.session.get_answer(session_id, "loft")
+
+        if loft_data.get("loft", None) == "Yes, I have a loft that hasn't been converted into a room":
+            _, next_page_url = get_prev_next_urls(session_id, page_name)
+            prev_page_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name="loft-insulation"))
+            return prev_page_url, next_page_url
+        else:
+            return super().get_prev_next_urls(session_id, page_name)
 
 
 @register_page("schemes")
