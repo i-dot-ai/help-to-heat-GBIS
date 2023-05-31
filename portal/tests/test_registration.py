@@ -8,7 +8,7 @@ from . import utils
 
 def test_registration():
     client = utils.get_client()
-    page = client.get(utils.make_url("/"))
+    page = client.get("/portal/")
     assert page.status_code == 302
 
 
@@ -110,7 +110,7 @@ def test_no_supplier_set():
 
     client = utils.get_client()
     utils.login(client, email, password)
-    page = client.get(utils.make_url("/"))
+    page = client.get("/portal/")
     assert page.status_code == 403
 
 
@@ -120,7 +120,7 @@ def test_password_reset():
     new_password = "Bl4mbl3Bl4mbl3"
     client = utils.get_client()
     page = utils.login_as_team_leader(client, email=email)
-    page = client.get(utils.make_url("/accounts/login/"))
+    page = client.get("/portal/accounts/login/")
     page = page.click(contains="Request password reset")
     form = page.get_form()
     form["email"] = email
@@ -144,7 +144,7 @@ def test_login_without_invite():
     models.User.objects.create_user(email, password)
     client = utils.get_client()
 
-    page = client.get(utils.make_url("/accounts/login/"))
+    page = client.get("/portal/accounts/login/")
     form = page.get_form()
     form["login"] = email
     form["password"] = password

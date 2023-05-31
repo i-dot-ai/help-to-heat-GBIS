@@ -4,7 +4,7 @@ from . import utils
 
 
 def login(client, email, password):
-    page = client.get(utils.make_url("/accounts/login/"))
+    page = client.get("/portal/accounts/login/")
     form = page.get_form()
     form["login"] = email
     form["password"] = password

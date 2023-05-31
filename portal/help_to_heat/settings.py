@@ -159,6 +159,6 @@ else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
 
-SHOW_FRONTDOOR = env.bool("SHOW_FRONTDOOR", default=False)
+SHOW_FRONTDOOR = True
 
 OS_API_KEY = env.str("OS_API_KEY")

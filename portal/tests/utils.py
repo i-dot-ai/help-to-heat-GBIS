@@ -74,13 +74,6 @@ def with_client(func):
     return _inner
 
 
-def make_url(url):
-    if settings.SHOW_FRONTDOOR:
-        return str(furl.furl("/portal") / url)
-    else:
-        return url
-
-
 def get_client():
     return testino.WSGIAgent(wsgi.application, base_url=TEST_SERVER_URL)
 
@@ -141,7 +134,7 @@ def login_as_role(client, role, email=None, password=None):
 
 
 def login(client, email, password):
-    page = client.get(make_url("/accounts/login/"))
+    page = client.get("/portal/accounts/login/")
     form = page.get_form()
     form["login"] = email
     form["password"] = password
