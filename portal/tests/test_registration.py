@@ -48,6 +48,10 @@ def invite_user(name, email, password, role, try_fake_email=False):
     form["password1"] = password
     form["password2"] = password
     page = form.submit().follow()
+    if role == "team_member":
+        assert not page.has_text("Manage members")
+    if role == "team_leader":
+        assert page.has_text("Manage members")
     return page
 
 
