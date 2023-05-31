@@ -106,7 +106,8 @@ own_property_options = (
     "No, I am a social housing tenant",
     "I am a property owner but lease my property to one or more tenants",
 )
-epc_found_options = ("Yes", "No", "I don't know", "Not found")
+epc_display_options = ("Yes", "No", "I don't know", "Not found")
+epc_validation_options = epc_display_options + ("Not found",)
 council_tax_band_options = ("A", "B", "C", "D", "E", "F", "G", "H")
 yes_no_options = ("Yes", "No")
 household_income_options = ("Less than £31,000 a year", "£31,000 or more a year")
@@ -219,7 +220,7 @@ class SessionSchema(Schema):
     uprn = fields.Integer()
     address = fields.String()
     council_tax_band = fields.String(validate=validate.OneOf(council_tax_band_options))
-    accept_suggested_epc = fields.String(validate=validate.OneOf(epc_found_options))
+    accept_suggested_epc = fields.String(validate=validate.OneOf(epc_validation_options))
     epc_rating = fields.String(validate=validate.OneOf(epc_rating_options))
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))

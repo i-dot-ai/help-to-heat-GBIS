@@ -212,7 +212,7 @@ class EpcView(PageView):
             epc = {}
         context = {
             "epc_rating": epc.get("rating"),
-            "epc_found_options": schemas.epc_found_options,
+            "epc_display_options": schemas.epc_display_options,
             "address": address,
         }
         return context
