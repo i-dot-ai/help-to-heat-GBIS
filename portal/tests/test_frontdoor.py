@@ -35,7 +35,7 @@ def test_flow_northern_ireland():
     assert data["country"] == "Northern Ireland"
 
     page = page.click(contains="Back")
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
 
 
 def test_flow_scotland():
@@ -61,7 +61,7 @@ def test_flow_scotland():
     assert data["country"] == "Scotland"
 
     page = page.click(contains="Back")
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
 
 
 def test_flow_errors():
@@ -266,7 +266,7 @@ def test_back_button():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
     assert page.has_one("a:contains('Back')")
 
     form = page.get_form()
@@ -362,7 +362,7 @@ def test_no_address():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
-    assert page.has_one("h1:contains('Which country is your property located in?')")
+    assert page.has_one("h1:contains('Where is the property located?')")
     assert page.has_one("a:contains('Back')")
 
     form = page.get_form()
