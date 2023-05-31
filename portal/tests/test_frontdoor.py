@@ -426,7 +426,7 @@ def test_no_epc():
     page = client.get("/")
 
     assert page.status_code == 200
-    assert page.has_one("h1:contains('Get home energy improvements')")
+    assert page.has_one("h1:contains('Check if you may be eligible for help with home energy efficiency improvements')")
 
     page = page.click(contains="Start")
     assert page.status_code == 200
