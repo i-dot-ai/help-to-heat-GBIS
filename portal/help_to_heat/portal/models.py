@@ -62,6 +62,8 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
+    totp_key = models.CharField(max_length=255, blank=True, null=True)
+    last_otp = models.CharField(max_length=8, blank=True, null=True)
 
     @property
     def referral_count(self):
