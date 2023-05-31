@@ -16,8 +16,6 @@ page_order = (
     "wall-type",
     "wall-insulation",
     "loft",
-    "loft-access",
-    "loft-insulation",
     "summary",
     "schemes",
     "supplier",
@@ -29,12 +27,18 @@ page_order = (
 extra_pages = (
     "address-select",
     "address-manual",
+    "epc-disagree",
+    "loft-access",
+    "loft-insulation",
 )
 
 page_prev_next_map = {
     "address-select": {"prev": "address", "next": "council-tax-band"},
     "address-manual": {"prev": "address", "next": "council-tax-band"},
     "epc-disagree": {"prev": "address", "next": "benefits"},
+    "loft": {"prev": "wall-insulation", "next": "loft-access"},
+    "loft-access": {"prev": "loft", "next": "loft-insulation"},
+    "loft-insulation": {"prev": "loft-access", "next": "summary"},
 }
 
 summary_map = {
@@ -184,6 +188,10 @@ wall_insulation_options = (
     "No they are not insulated",
     "I don't know",
 )
+loft_options = (
+    "Yes, I have a loft that hasn't been converted into a room",
+    "No, I don't have a loft or my loft has been converted into a room"
+)
 loft_access_options = ("Yes, there is access to my loft", "No, there is no access to my loft")
 supplier_options = (
     "British Gas",
@@ -233,7 +241,7 @@ class SessionSchema(Schema):
     number_of_bedrooms = fields.String(validate=validate.OneOf(number_of_bedrooms_options))
     wall_type = fields.String(validate=validate.OneOf(wall_type_options))
     wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))
-    loft = fields.String(validate=validate.OneOf(yes_no_options))
+    loft = fields.String(validate=validate.OneOf(loft_options))
     loft_access = fields.String(validate=validate.OneOf(loft_access_options))
     loft_insulation = fields.String(validate=validate.OneOf(loft_insulation_options))
     supplier = fields.String(validate=validate.OneOf(supplier_options))
