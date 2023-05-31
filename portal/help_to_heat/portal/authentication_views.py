@@ -19,7 +19,7 @@ class CustomLoginView(MethodDispatcher):
 
     def error(self, request):
         messages.error(request, self.error_message)
-        return render(request, "account/accept_invite.html")
+        return render(request, "account/login.html")
 
     def get(self, request):
         return render(request, "account/login.html")
