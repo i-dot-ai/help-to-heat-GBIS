@@ -57,12 +57,7 @@ def homepage_view(request):
         referrals = models.Referral.objects.filter(referral_download=None, supplier=supplier)
         unread_leads = referrals.count()
         archives = models.ReferralDownload.objects.filter(referral_download__supplier=supplier).order_by("-created_at")
-        data = {
-            "supplier": supplier,
-            "unread_leads": unread_leads,
-            "archives": archives,
-            **data
-        }
+        data = {"supplier": supplier, "unread_leads": unread_leads, "archives": archives, **data}
     if user.is_supplier_admin:
         template = "portal/supplier-admin/homepage.html"
         suppliers = models.Supplier.objects.all()
