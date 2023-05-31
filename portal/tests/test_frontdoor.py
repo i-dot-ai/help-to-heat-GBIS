@@ -55,7 +55,7 @@ def test_flow_scotland():
     form["country"] = "Scotland"
     page = form.submit().follow()
 
-    assert page.has_text("As your property is in Scotland, you must use a different service")
+    assert page.has_one("h1:contains('Do you own your property?')")
 
     data = interface.api.session.get_answer(session_id, page_name="country")
     assert data["country"] == "Scotland"
