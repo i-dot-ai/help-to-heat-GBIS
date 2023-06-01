@@ -13,6 +13,11 @@ class SaveAnswerSchema(marshmallow.Schema):
     data = marshmallow.fields.Nested(schemas.SessionSchema(unknown=marshmallow.EXCLUDE))
 
 
+class RemoveAnswerSchema(marshmallow.Schema):
+    session_id = marshmallow.fields.UUID()
+    page_name = marshmallow.fields.String(validate=marshmallow.validate.OneOf(schemas.pages))
+
+
 class GetAnswerSchema(marshmallow.Schema):
     session_id = marshmallow.fields.UUID()
     page_name = marshmallow.fields.String(validate=marshmallow.validate.OneOf(schemas.pages))
@@ -65,6 +70,19 @@ class Session(Entity):
             defaults={"data": data},
         )
         return answer.data
+
+    @with_schema(load=RemoveAnswerSchema, dump=schemas.SessionSchema)
+    @register_event(models.Event, "Answer removed")
+    def delete_answer(self, session_id, page_name):
+        answers = models.Answer.objects.filter(session_id=session_id, page_name=page_name)
+        print(answers)
+        if answers.count() < 1:
+            print("none")
+            return {}
+        answer = answers.first()
+        print(answer)
+        answer.delete()
+        return {}
 
     @with_schema(load=GetAnswerSchema, dump=schemas.SessionSchema)
     def get_answer(self, session_id, page_name):
