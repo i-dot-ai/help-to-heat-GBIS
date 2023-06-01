@@ -144,6 +144,15 @@ def test_password_reset():
     user = authenticate(None, email=email, password=new_password)
     assert user.email == email
 
+    assert page.has_text("Please setup Two Factor Authentication (2FA)")
+
+    form = page.get_form()
+    secret = form["totp_secret"]
+    form["otp"] = utils.get_otp(secret)
+    page = form.submit().follow()
+
+    assert page.has_text("Manage members")
+
 
 def test_login_without_invite():
     email = f"admin-user{utils.make_code()}@example.com"
