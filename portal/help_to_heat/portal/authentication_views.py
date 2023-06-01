@@ -38,9 +38,35 @@ class CustomLoginView(MethodDispatcher):
                 if not user.invite_accepted_at:
                     return self.error(request)
                 login(request, user)
-                return redirect("portal:homepage")
+                return redirect("portal:verify-otp")
             else:
                 return self.error(request)
+
+
+@require_http_methods(["GET", "POST"])
+class VerifyOTPView(MethodDispatcher):
+    error_message = "Something has gone wrong.  Please contact your team leader."
+    template_name = "account/verify-otp.html"
+
+    def error(self, request):
+        messages.error(request, self.error_message)
+        return render(request, self.template_name)
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        otp = request.POST.get("otp", None)
+
+        user = request.user
+
+        if not otp:
+            return self.error(request, message="Please enter the otp.")
+
+        if not user.verify_otp(otp):
+            return self.error(request)
+
+        return redirect("portal:homepage")
 
 
 @require_http_methods(["GET", "POST"])
