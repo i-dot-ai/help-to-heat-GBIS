@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.utils import timezone
@@ -13,6 +14,19 @@ from help_to_heat.portal import email_handler, models
 from help_to_heat.utils import MethodDispatcher
 
 logger = logging.getLogger(__name__)
+
+
+def _strip_microseconds(dt):
+    if not dt:
+        return None
+    return dt.replace(microsecond=0, tzinfo=None)
+
+
+class LoginTokenGenerator(PasswordResetTokenGenerator):
+    def _make_hash_value(self, user, timestamp):
+        email = user.email or ""
+        token_timestamp = _strip_microseconds(user.last_login)
+        return f"{user.pk}{user.password}{timestamp}{email}{token_timestamp}"
 
 
 @require_http_methods(["GET", "POST"])
@@ -37,8 +51,8 @@ class CustomLoginView(MethodDispatcher):
             if user is not None:
                 if not user.invite_accepted_at:
                     return self.error(request)
-                login(request, user)
-                return redirect("portal:verify-otp")
+                token = LoginTokenGenerator().make_token(user)
+                return redirect("portal:verify-otp", user_id=user.id, token=token)
             else:
                 return self.error(request)
 
@@ -52,19 +66,28 @@ class VerifyOTPView(MethodDispatcher):
         messages.error(request, self.error_message)
         return render(request, self.template_name)
 
-    def get(self, request):
+    def get(self, request, user_id, token):
         return render(request, self.template_name)
 
-    def post(self, request):
+    def post(self, request, user_id, token):
         otp = request.POST.get("otp", None)
 
-        user = request.user
+        try:
+            user = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            return self.error(request)
+
+        token_valid = LoginTokenGenerator().check_token(user, token)
+        if not token_valid:
+            return self.error(request)
 
         if not otp:
             return self.error(request, message="Please enter the otp.")
 
         if not user.verify_otp(otp):
             return self.error(request)
+
+        login(request, user)
 
         return redirect("portal:homepage")
 
