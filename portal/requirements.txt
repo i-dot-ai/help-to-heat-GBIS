@@ -17,3 +17,5 @@ watchdog[watchmedo]
 whitenoise
 marshmallow
 osdatahub
+segno
+pyotp

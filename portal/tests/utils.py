@@ -7,6 +7,7 @@ import string
 
 import furl
 import httpx
+import pyotp
 import requests_mock
 import testino
 from django.conf import settings
@@ -140,4 +141,19 @@ def login(client, email, password):
     form["password"] = password
     page = form.submit()
     page = page.follow()
+
+    assert page.has_text("Please enter your One Time Password (OTP)")
+
+    user = models.User.objects.get(email=email)
+    secret = user.get_totp_secret()
+
+    form = page.get_form()
+    form["otp"] = get_otp(secret)
+    page = form.submit().follow()
+
     return page
+
+
+def get_otp(secret):
+    totp = pyotp.TOTP(secret)
+    return totp.now()

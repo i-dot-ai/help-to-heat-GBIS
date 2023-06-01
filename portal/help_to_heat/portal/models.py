@@ -1,11 +1,16 @@
+import logging
 import string
 
+import pyotp
+from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 from help_to_heat import utils
 
 epc_rating_choices = tuple((letter, letter) for letter in string.ascii_letters.upper()[:8])
+
+logger = logging.getLogger(__name__)
 
 
 class SupplierChoices(utils.Choices):
@@ -62,6 +67,8 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
+    totp_key = models.CharField(max_length=255, blank=True, null=True)
+    last_otp = models.CharField(max_length=8, blank=True, null=True)
 
     @property
     def referral_count(self):
@@ -70,6 +77,34 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
         return super().save(*args, **kwargs)
+
+    def get_totp_uri(self):
+        secret = self.get_totp_secret()
+        uri = pyotp.utils.build_uri(
+            secret=secret,
+            name=self.email,
+            issuer=settings.TOTP_ISSUER,
+        )
+        return uri
+
+    def get_totp_secret(self):
+        if not self.totp_key:
+            self.totp_key = utils.make_totp_key()
+            self.save()
+        totp_secret = utils.make_totp_secret(self.id, self.totp_key)
+        return totp_secret
+
+    def verify_otp(self, otp):
+        if otp == self.last_otp:
+            logger.error("OTP same as previous one")
+            return False
+        secret = self.get_totp_secret()
+        totp = pyotp.TOTP(secret)
+        success = totp.verify(otp)
+        if success:
+            self.last_otp = otp
+            self.save()
+        return success
 
 
 class ReferralDownload(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):

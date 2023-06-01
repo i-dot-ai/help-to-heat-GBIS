@@ -1,3 +1,6 @@
+import datetime
+
+import freezegun
 import nose
 from django.contrib.auth import authenticate
 from django.utils import timezone
@@ -48,6 +51,14 @@ def invite_user(name, email, password, role, try_fake_email=False):
     form["password1"] = password
     form["password2"] = password
     page = form.submit().follow()
+
+    assert page.has_text("Please setup Two Factor Authentication (2FA)")
+
+    form = page.get_form()
+    secret = form["totp_secret"]
+    form["otp"] = utils.get_otp(secret)
+    page = form.submit().follow()
+
     if role == "team_member":
         assert not page.has_text("Manage members")
     if role == "team_leader":
@@ -119,7 +130,9 @@ def test_password_reset():
     email = f"team-leader-password-reset+{utils.make_code()}@example.com"
     new_password = "Bl4mbl3Bl4mbl3"
     client = utils.get_client()
-    page = utils.login_as_team_leader(client, email=email)
+    ten_minutes_ago = datetime.datetime.now() - datetime.timedelta(seconds=600)
+    with freezegun.freeze_time(ten_minutes_ago):
+        page = utils.login_as_team_leader(client, email=email)
     page = client.get("/portal/accounts/login/")
     page = page.click(contains="Request password reset")
     form = page.get_form()
@@ -135,6 +148,15 @@ def test_password_reset():
 
     user = authenticate(None, email=email, password=new_password)
     assert user.email == email
+
+    assert page.has_text("Please setup Two Factor Authentication (2FA)")
+
+    form = page.get_form()
+    secret = form["totp_secret"]
+    form["otp"] = utils.get_otp(secret)
+    page = form.submit().follow()
+
+    assert page.has_text("Manage members")
 
 
 def test_login_without_invite():

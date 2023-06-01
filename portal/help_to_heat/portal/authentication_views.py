@@ -1,7 +1,9 @@
 import logging
 
+import segno
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
@@ -36,9 +38,35 @@ class CustomLoginView(MethodDispatcher):
                 if not user.invite_accepted_at:
                     return self.error(request)
                 login(request, user)
-                return redirect("portal:homepage")
+                return redirect("portal:verify-otp")
             else:
                 return self.error(request)
+
+
+@require_http_methods(["GET", "POST"])
+class VerifyOTPView(MethodDispatcher):
+    error_message = "Something has gone wrong.  Please contact your team leader."
+    template_name = "account/verify-otp.html"
+
+    def error(self, request):
+        messages.error(request, self.error_message)
+        return render(request, self.template_name)
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        otp = request.POST.get("otp", None)
+
+        user = request.user
+
+        if not otp:
+            return self.error(request, message="Please enter the otp.")
+
+        if not user.verify_otp(otp):
+            return self.error(request)
+
+        return redirect("portal:homepage")
 
 
 @require_http_methods(["GET", "POST"])
@@ -76,6 +104,8 @@ class AcceptInviteView(MethodDispatcher):
         if not result:
             return self.error(request)
 
+        login(request, user)
+
         return redirect("portal:account_login_set_password", user.id)
 
 
@@ -102,6 +132,49 @@ class SetPassword(MethodDispatcher):
         user.save()
         messages.info(request, "Password successfully set.")
         login(request, user)
+        return redirect("portal:mfa-setup")
+
+
+@require_http_methods(["GET", "POST"])
+@login_required
+class MFASetup(MethodDispatcher):
+    template_name = "account/mfa-setup.html"
+    error_message = "Something has gone wrong. Please contact your team leader."
+
+    def error(self, request, message=error_message):
+        messages.error(request, message)
+        return render(request, self.template_name)
+
+    def get(self, request):
+        user = request.user
+        totp_secret = user.get_totp_secret()
+        uri = user.get_totp_uri()
+        qr_code = segno.make(uri).svg_inline(scale=8)
+        context = {
+            "qr_code": qr_code,
+            "totp_secret": totp_secret,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        user = request.user
+
+        otp = request.POST.get("otp", None)
+        secret = request.POST.get("totp_secret", None)
+
+        if not otp:
+            return self.error(request, message="Please enter the otp.")
+
+        user_secret = user.get_totp_secret()
+
+        if secret != user_secret:
+            logger.error("Secret doesn't match")
+            return self.error(request)
+
+        if not user.verify_otp(otp):
+            logger.error("Incorrect OTP")
+            return self.error(request)
+
         return redirect("portal:homepage")
 
 
@@ -179,4 +252,5 @@ class PasswordChange(MethodDispatcher):
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         user.set_password(pwd1)
         user.save()
-        return redirect("portal:password-reset-from-key-done")
+        login(request, user)
+        return redirect("portal:mfa-setup")

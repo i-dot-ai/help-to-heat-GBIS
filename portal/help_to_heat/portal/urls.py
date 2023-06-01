@@ -82,6 +82,8 @@ portal_patterns = [
         name="account_login_set_password",
     ),
     path("accept-invite/", authentication_views.AcceptInviteView, name="accept-invite"),
+    path("mfa-setup/", authentication_views.MFASetup, name="mfa-setup"),
+    path("verify-otp/", authentication_views.VerifyOTPView, name="verify-otp"),
     path("accounts/login/", authentication_views.CustomLoginView, name="account_login"),
     path("accounts/", include("allauth.urls")),
 ]

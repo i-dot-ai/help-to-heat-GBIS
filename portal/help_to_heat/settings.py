@@ -164,3 +164,5 @@ else:
 SHOW_FRONTDOOR = True
 
 OS_API_KEY = env.str("OS_API_KEY")
+
+TOTP_ISSUER = "Help to Heat Supplier Portal"
