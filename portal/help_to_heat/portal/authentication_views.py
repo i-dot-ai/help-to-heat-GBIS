@@ -251,4 +251,5 @@ class PasswordChange(MethodDispatcher):
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         user.set_password(pwd1)
         user.save()
-        return redirect("portal:password-reset-from-key-done")
+        login(request, user)
+        return redirect("portal:mfa-setup")
