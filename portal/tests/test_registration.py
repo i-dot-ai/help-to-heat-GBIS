@@ -1,3 +1,6 @@
+import datetime
+
+import freezegun
 import nose
 from django.contrib.auth import authenticate
 from django.utils import timezone
@@ -127,7 +130,9 @@ def test_password_reset():
     email = f"team-leader-password-reset+{utils.make_code()}@example.com"
     new_password = "Bl4mbl3Bl4mbl3"
     client = utils.get_client()
-    page = utils.login_as_team_leader(client, email=email)
+    ten_minutes_ago = datetime.datetime.now() - datetime.timedelta(seconds=600)
+    with freezegun.freeze_time(ten_minutes_ago):
+        page = utils.login_as_team_leader(client, email=email)
     page = client.get("/portal/accounts/login/")
     page = page.click(contains="Request password reset")
     form = page.get_form()
