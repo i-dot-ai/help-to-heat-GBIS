@@ -78,6 +78,8 @@ class AcceptInviteView(MethodDispatcher):
         if not result:
             return self.error(request)
 
+        login(request, user)
+
         return redirect("portal:account_login_set_password", user.id)
 
 
