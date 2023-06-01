@@ -106,10 +106,7 @@ class SetPassword(MethodDispatcher):
         user.save()
         messages.info(request, "Password successfully set.")
         login(request, user)
-        if user.totp_key:
-            return redirect("portal:homepage")
-        else:
-            return redirect("portal:mfa-setup")
+        return redirect("portal:mfa-setup")
 
 
 @require_http_methods(["GET", "POST"])
