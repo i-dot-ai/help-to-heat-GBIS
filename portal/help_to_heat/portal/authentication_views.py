@@ -1,6 +1,7 @@
 import logging
 
 import segno
+import pyotp
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -148,7 +149,8 @@ class MFASetup(MethodDispatcher):
     def get(self, request):
         user = request.user
         totp_secret = user.get_totp_secret()
-        qr_code = segno.make(totp_secret).svg_inline()
+        uri = user.get_totp_uri()
+        qr_code = segno.make(uri).svg_inline(scale=8)
         context = {
             "qr_code": qr_code,
             "totp_secret": totp_secret,
