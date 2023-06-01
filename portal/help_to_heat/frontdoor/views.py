@@ -51,9 +51,9 @@ def calculate_eligibility(session_data):
     :param session_data:
     :return: A tuple of which schemes the person is eligible for, if any
     """
-    selected_epc = session_data.get("epc")
+    selected_epc = session_data.get("epc_rating")
     property_status = session_data.get("own_property_options")
-    selected_council_tax_band = session_data.get("council_tax")
+    selected_council_tax_band = session_data.get("council_tax_band")
     selected_country = session_data.get("country")
     selected_benefits = session_data.get("benefits")
     eligible_for_eco4 = selected_benefits == "Yes" and selected_epc in ("E", "F", "G")
@@ -71,26 +71,24 @@ def calculate_eligibility(session_data):
     # not eligible for GBIS so check ECO4
     if selected_council_tax_band not in eligible_council_tax[selected_country]:
         if eligible_for_eco4:
-            return ("ECO4",),
+            return [schemas.schemes_map[scheme] for scheme in ("ECO4",)]
         else:
-            return ()
+            return []
     else:
-        if selected_benefits == "Yes":
-            if selected_epc in ("D",) and property_status == "No, I am a tenant":
-                if eligible_for_eco4:
-                    return ("GBIS", "ECO4",),
-                else:
-                    return ("GBIS",),
+        if selected_epc in ("D",) and property_status == "No, I am a tenant" and selected_benefits == "Yes":
+            if eligible_for_eco4:
+                return [schemas.schemes_map[scheme] for scheme in ("GBIS", "ECO4",)]
             else:
-                return ()
+                return [schemas.schemes_map[scheme] for scheme in ("GBIS",)]
+        elif selected_benefits == "No" and selected_epc in ("D", "E", "F", "G"):
+            if eligible_for_eco4:
+                return [schemas.schemes_map[scheme] for scheme in ("GBIS", "ECO4",)]
+            else:
+                return [schemas.schemes_map[scheme] for scheme in ("GBIS",)]
+        elif eligible_for_eco4 and selected_council_tax_band in eligible_council_tax[selected_country]:
+            return [schemas.schemes_map[scheme] for scheme in ("GBIS", "ECO4",)]
         else:
-            if selected_epc in ("D", "E", "F", "G"):
-                if eligible_for_eco4:
-                    return ("GBIS", "ECO4",),
-                else:
-                    return ("GBIS",),
-            else:
-                return ()
+            return []
 
 
 def homepage_view(request):
@@ -429,7 +427,9 @@ class SummaryView(PageView):
 class SchemesView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
         session_data = interface.api.session.get_session(session_id)
+        print(session_data)
         eligible_schemes = calculate_eligibility(session_data)
+        print(eligible_schemes)
         return {"eligible_schemes": eligible_schemes}
 
 
