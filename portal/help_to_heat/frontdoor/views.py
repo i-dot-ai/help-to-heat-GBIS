@@ -1,5 +1,6 @@
 import uuid
 
+from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from help_to_heat import utils
@@ -94,7 +95,9 @@ class PageView(utils.MethodDispatcher):
             prev_page_url, next_page_url = self.get_prev_next_urls(session_id, page_name)
         data = interface.api.session.get_answer(session_id, page_name)
         extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
+        gtag_id = settings.GTAG_ID
         context = {
+            "gtag_id": gtag_id,
             "data": data,
             "session_id": session_id,
             "errors": errors,
