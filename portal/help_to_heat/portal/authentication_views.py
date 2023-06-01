@@ -140,7 +140,7 @@ class SetPassword(MethodDispatcher):
 @login_required
 class MFASetup(MethodDispatcher):
     template_name = "account/mfa-setup.html"
-    error_message = "Something has gone wrong.  Please contact your team leader."
+    error_message = "Something has gone wrong. Please contact your team leader."
 
     def error(self, request, message=error_message):
         messages.error(request, message)
