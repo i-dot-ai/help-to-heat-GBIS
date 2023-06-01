@@ -141,9 +141,11 @@ class MFASetup(MethodDispatcher):
         user_secret = user.get_totp_secret()
 
         if secret != user_secret:
+            logger.error("Secret doesn't match")
             return self.error(request)
 
         if not user.verify_otp(otp):
+            logger.error("Incorrect OTP")
             return self.error(request)
 
         return redirect("portal:homepage")

@@ -1,3 +1,4 @@
+import logging
 import string
 
 import pyotp
@@ -8,6 +9,8 @@ from django_use_email_as_username.models import BaseUser, BaseUserManager
 from help_to_heat import utils
 
 epc_rating_choices = tuple((letter, letter) for letter in string.ascii_letters.upper()[:8])
+
+logger = logging.getLogger(__name__)
 
 
 class SupplierChoices(utils.Choices):
@@ -93,6 +96,7 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
 
     def verify_otp(self, otp):
         if otp == self.last_otp:
+            logger.error("OTP same as previous one")
             return False
         secret = self.get_totp_secret()
         totp = pyotp.TOTP(secret)
