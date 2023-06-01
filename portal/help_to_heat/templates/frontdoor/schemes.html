@@ -5,6 +5,9 @@
   <a href="{{prev_url}}" class="govuk-back-link">Back</a>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
+      {% if eligible_schemes %}
+
       <form method="POST">
         {{csrf_input}}
         <div class="govuk-form-group">
@@ -33,6 +36,15 @@
           Create a referral
         </button>
       </form>
+
+      {% else %}
+
+        <h1>You are not eligible</h1>
+
+        <p>[insert content here]</p>
+
+      {% endif %}
+
     </div>
   </div>
 

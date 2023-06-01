@@ -41,6 +41,10 @@ def register_page(name):
     return _inner
 
 
+def calculate_eligibility(session_data):
+    return ()
+
+
 def homepage_view(request):
     session_id = uuid.uuid4()
     next_url = reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name="country"))
@@ -374,8 +378,8 @@ class SummaryView(PageView):
 @register_page("schemes")
 class SchemesView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
-        benefits_data = interface.api.session.get_answer(session_id, "benefits")
-        eligible_schemes = schemas.schemes_map[benefits_data["benefits"]]
+        session_data = interface.api.session.get_session(session_id)
+        eligible_schemes  = calculate_eligibility(session_data)
         return {"eligible_schemes": eligible_schemes}
 
 
