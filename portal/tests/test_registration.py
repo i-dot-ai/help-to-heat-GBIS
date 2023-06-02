@@ -16,7 +16,7 @@ def test_registration():
 
 
 @nose.with_setup(utils.wipe_emails)
-def invite_user(name, email, password, role, try_fake_email=False):
+def invite_user(name, email, password, role, try_fake_email=False, skip_otp=False):
     client = utils.get_client()
     page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
@@ -54,15 +54,16 @@ def invite_user(name, email, password, role, try_fake_email=False):
 
     assert page.has_text("Please setup Two Factor Authentication (2FA)")
 
-    form = page.get_form()
-    secret = form["totp_secret"]
-    form["otp"] = utils.get_otp(secret)
-    page = form.submit().follow()
+    if not skip_otp:
+        form = page.get_form()
+        secret = form["totp_secret"]
+        form["otp"] = utils.get_otp(secret)
+        page = form.submit().follow()
 
-    if role == "team_member":
-        assert not page.has_text("Manage members")
-    if role == "team_leader":
-        assert page.has_text("Manage members")
+        if role == "team_member":
+            assert not page.has_text("Manage members")
+        if role == "team_leader":
+            assert page.has_text("Manage members")
     return page
 
 
@@ -202,3 +203,28 @@ def test_accept_fake_email():
     page = invite_user(team_lead_name, email, new_password, role, try_fake_email=True)
     assert page.status_code == 200
     assert not page.has_one("""h1:contains('Manage team members')""")
+
+
+def test_invite_user_skip_otp():
+    email = f"larry-the-leader+{utils.make_code()}@example.com"
+    password = "Fl1bbl3Fl1bbl3"
+    user = models.User.objects.create_user(email, password)
+    user.full_name = f"Larry the Leader {utils.make_code()}"
+    user.invite_accepted_at = timezone.now()
+    user.is_team_leader = True
+    user.supplier_id = models.Supplier.objects.get(name="Octopus").id
+    user.save()
+
+    client = utils.get_client()
+
+    page = client.get("/portal/accounts/login/")
+    form = page.get_form()
+    form["login"] = email
+    form["password"] = password
+    page = form.submit()
+    page = page.follow()
+
+    page = client.get("/portal/")
+    page = page.follow()
+    assert not page.has_text("Manage members")
+    assert page.has_text("Log in")
