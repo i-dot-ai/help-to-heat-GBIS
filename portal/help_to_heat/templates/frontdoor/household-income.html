@@ -15,6 +15,19 @@
           Your annual household income is the total income before paying tax for all adults living in your home.
         </p>
 
+        <details class="govuk-details" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Why we need this info
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            Your annual household income is used to work out how much support you can get through each scheme. 
+          </div>
+        </details>
+
+
+
         {{macros.radios('household_income', household_income_options, data, errors)}}
 
       </fieldset>
