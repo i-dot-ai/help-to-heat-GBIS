@@ -59,13 +59,34 @@ def calculate_eligibility(session_data):
     eligible_for_eco4 = selected_benefits == "Yes" and selected_epc in ("E", "F", "G")
 
     eligible_council_tax = {
-        "England": ("A", "B", "C", "D",),
-        "Scotland": ("A", "B", "C", "D", "E",),
-        "Wales": ("A", "B", "C", "D", "E",),
+        "England": (
+            "A",
+            "B",
+            "C",
+            "D",
+        ),
+        "Scotland": (
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+        ),
+        "Wales": (
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+        ),
     }
 
     # Immediately excluded from both
-    if selected_epc in ("A", "B", "C",):
+    if selected_epc in (
+        "A",
+        "B",
+        "C",
+    ):
         return ()
 
     # not eligible for GBIS so check ECO4
@@ -77,16 +98,34 @@ def calculate_eligibility(session_data):
     else:
         if selected_epc in ("D",) and property_status == "No, I am a tenant" and selected_benefits == "Yes":
             if eligible_for_eco4:
-                return [schemas.schemes_map[scheme] for scheme in ("GBIS", "ECO4",)]
+                return [
+                    schemas.schemes_map[scheme]
+                    for scheme in (
+                        "GBIS",
+                        "ECO4",
+                    )
+                ]
             else:
                 return [schemas.schemes_map[scheme] for scheme in ("GBIS",)]
         elif selected_benefits == "No" and selected_epc in ("D", "E", "F", "G"):
             if eligible_for_eco4:
-                return [schemas.schemes_map[scheme] for scheme in ("GBIS", "ECO4",)]
+                return [
+                    schemas.schemes_map[scheme]
+                    for scheme in (
+                        "GBIS",
+                        "ECO4",
+                    )
+                ]
             else:
                 return [schemas.schemes_map[scheme] for scheme in ("GBIS",)]
         elif eligible_for_eco4 and selected_council_tax_band in eligible_council_tax[selected_country]:
-            return [schemas.schemes_map[scheme] for scheme in ("GBIS", "ECO4",)]
+            return [
+                schemas.schemes_map[scheme]
+                for scheme in (
+                    "GBIS",
+                    "ECO4",
+                )
+            ]
         else:
             return []
 
