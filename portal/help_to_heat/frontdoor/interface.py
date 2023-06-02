@@ -75,12 +75,9 @@ class Session(Entity):
     @register_event(models.Event, "Answer removed")
     def delete_answer(self, session_id, page_name):
         answers = models.Answer.objects.filter(session_id=session_id, page_name=page_name)
-        print(answers)
         if answers.count() < 1:
-            print("none")
             return {}
         answer = answers.first()
-        print(answer)
         answer.delete()
         return {}
 

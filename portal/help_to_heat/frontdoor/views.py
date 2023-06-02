@@ -466,9 +466,7 @@ class SummaryView(PageView):
 class SchemesView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
         session_data = interface.api.session.get_session(session_id)
-        print(session_data)
         eligible_schemes = calculate_eligibility(session_data)
-        print(eligible_schemes)
         return {"eligible_schemes": eligible_schemes}
 
 
