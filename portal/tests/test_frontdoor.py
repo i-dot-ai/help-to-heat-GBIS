@@ -107,9 +107,9 @@ def test_flow_errors():
     assert page.has_text("Please answer this question")
 
 
-def _answer_house_questions(page, session_id, benefits_answer):
+def _answer_house_questions(page, session_id, benefits_answer, epc_rating="C"):
     """Answer main flow with set answers"""
-    _add_epc(uprn="100023336956", rating="C")
+    _add_epc(uprn="100023336956", rating=epc_rating)
 
     _check_page = _make_check_page(session_id)
 
@@ -201,7 +201,7 @@ def test_happy_flow():
     _check_page = _make_check_page(session_id)
 
     # Answer main flow
-    page = _answer_house_questions(page, session_id, benefits_answer="Yes")
+    page = _answer_house_questions(page, session_id, benefits_answer="Yes", epc_rating="F")
 
     assert page.has_one("h1:contains('Information based on your answers')")
     assert page.has_text("Great British Insulation scheme")
@@ -332,11 +332,10 @@ def test_no_benefits_flow():
     # Answer main flow
     page = _answer_house_questions(page, session_id, benefits_answer="No")
 
-    assert page.has_one("h1:contains('Information based on your answers')")
-    assert page.has_text("Great British Insulation scheme")
+    assert page.has_one("h1:contains('You are not eligible')")
+    assert not page.has_text("Great British Insulation scheme")
     assert not page.has_text("Energy Company Obligation 4")
-    form = page.get_form()
-    page = form.submit().follow()
+    assert page.has_text("[insert content here]")
 
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
