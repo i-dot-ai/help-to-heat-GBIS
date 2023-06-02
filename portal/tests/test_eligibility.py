@@ -1,8 +1,12 @@
 from help_to_heat.frontdoor.views import calculate_eligibility
 
 result_map = {
-    "GBIS": ["Great British Insulation scheme",],
-    "ECO4": ["Energy Company Obligation 4",],
+    "GBIS": [
+        "Great British Insulation scheme",
+    ],
+    "ECO4": [
+        "Energy Company Obligation 4",
+    ],
     "NONE": [],
     "BOTH": ["Great British Insulation scheme", "Energy Company Obligation 4"],
 }
@@ -14,7 +18,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "F",
             "country": "England",
-            "own_property_options": "Yes, I own my property and live in it"
+            "own_property_options": "Yes, I own my property and live in it",
         },
         "BOTH",
     ),
@@ -24,7 +28,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "F",
             "country": "England",
-            "own_property_options": "Yes, I own my property and live in it"
+            "own_property_options": "Yes, I own my property and live in it",
         },
         "ECO4",
     ),
@@ -34,7 +38,7 @@ scenarios = (
             "benefits": "No",
             "epc_rating": "E",
             "country": "England",
-            "own_property_options": "Yes, I own my property and live in it"
+            "own_property_options": "Yes, I own my property and live in it",
         },
         "GBIS",
     ),
@@ -44,7 +48,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "D",
             "country": "England",
-            "own_property_options": "No, I am a tenant"
+            "own_property_options": "No, I am a tenant",
         },
         "GBIS",
     ),
@@ -63,7 +67,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "D",
             "country": "England",
-            "own_property_options": "No, I am a tenant"
+            "own_property_options": "No, I am a tenant",
         },
         "NONE",
     ),
@@ -81,6 +85,5 @@ scenarios = (
 def test_eligibility():
     for data, expected in scenarios:
         result = calculate_eligibility(data)
-        print(result)
         expected = result_map[expected]
         assert expected == result, (data, expected, result)
