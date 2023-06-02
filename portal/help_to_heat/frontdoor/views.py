@@ -92,42 +92,42 @@ def calculate_eligibility(session_data):
     # not eligible for GBIS so check ECO4
     if selected_council_tax_band not in eligible_council_tax[selected_country]:
         if eligible_for_eco4:
-            return [schemas.schemes_map[scheme] for scheme in ("ECO4",)]
+            return list(schemas.schemes_map[scheme] for scheme in ("ECO4",))
         else:
-            return []
+            return list()
     else:
         if selected_epc in ("D",) and property_status == "No, I am a tenant" and selected_benefits == "Yes":
             if eligible_for_eco4:
-                return [
+                return list(
                     schemas.schemes_map[scheme]
                     for scheme in (
                         "GBIS",
                         "ECO4",
                     )
-                ]
+                )
             else:
-                return [schemas.schemes_map[scheme] for scheme in ("GBIS",)]
+                return list(schemas.schemes_map[scheme] for scheme in ("GBIS",))
         elif selected_benefits == "No" and selected_epc in ("D", "E", "F", "G"):
             if eligible_for_eco4:
-                return [
+                return list(
                     schemas.schemes_map[scheme]
                     for scheme in (
                         "GBIS",
                         "ECO4",
                     )
-                ]
+                )
             else:
-                return [schemas.schemes_map[scheme] for scheme in ("GBIS",)]
+                return list(schemas.schemes_map[scheme] for scheme in ("GBIS",))
         elif eligible_for_eco4 and selected_council_tax_band in eligible_council_tax[selected_country]:
-            return [
+            return list(
                 schemas.schemes_map[scheme]
                 for scheme in (
                     "GBIS",
                     "ECO4",
                 )
-            ]
+            )
         else:
-            return []
+            return list()
 
 
 def homepage_view(request):
@@ -467,7 +467,7 @@ class SchemesView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
         session_data = interface.api.session.get_session(session_id)
         eligible_schemes = calculate_eligibility(session_data)
-        _ = interface.api.session.save_answer(session_id, "schemes", eligible_schemes)
+        _ = interface.api.session.save_answer(session_id, "schemes", {"schemes": eligible_schemes})
         return {"eligible_schemes": eligible_schemes}
 
 

@@ -249,6 +249,7 @@ class SessionSchema(Schema):
     last_name = fields.String()
     contact_number = fields.String()
     email = fields.String()
+    schemes = fields.List(fields.Str())
 
     class Meta:
         ordered = True
