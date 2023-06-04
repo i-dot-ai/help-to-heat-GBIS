@@ -249,12 +249,13 @@ class SessionSchema(Schema):
     last_name = fields.String()
     contact_number = fields.String()
     email = fields.String()
+    schemes = fields.List(fields.Str())
 
     class Meta:
         ordered = True
 
 
 schemes_map = {
-    "Yes": ("Great British Insulation scheme", "Energy Company Obligation 4"),
-    "No": ("Great British Insulation scheme",),
+    "ECO4": "Energy Company Obligation 4",
+    "GBIS": "Great British Insulation scheme",
 }
