@@ -1,4 +1,4 @@
-from help_to_heat.frontdoor.views import calculate_eligibility
+from help_to_heat.frontdoor.eligibility import calculate_eligibility
 
 result_map = {
     "GBIS": [
