@@ -271,6 +271,14 @@ class BenefitsView(PageView):
         context = interface.api.session.get_session(session_id)
         return {"benefits_options": schemas.yes_no_options, "context": context}
 
+    def handle_post(self, request, session_id, page_name, data, is_change_page):
+        session_data = interface.api.session.get_session(session_id)
+        is_ineligible = eligibility.is_ineligible(session_data)
+        if is_ineligible:
+            return redirect("frontdoor:page", session_id=session_id, page_name="ineligible")
+        else:
+            return super().handle_post(request, session_id, page_name, data, is_change_page)
+
 
 @register_page("household-income")
 class HouseholdIncomeView(PageView):

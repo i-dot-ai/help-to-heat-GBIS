@@ -24,6 +24,26 @@ eligible_council_tax = {
 }
 
 
+def is_ineligible(session_data):
+    "A quick check to see if we can divert them to a not for you page"
+    council_tax_band = session_data.get("council_tax_band")
+    epc_rating = session_data.get("epc_rating")
+    accept_suggested_epc = session_data.get("accept_suggested_epc")
+    benefits = session_data.get("benefits")
+    country = session_data.get("country")
+
+    if council_tax_band not in eligible_council_tax[country]:
+        if epc_rating in ("D", "E", "F", "G"):
+            if benefits == "No":
+                return True
+        if epc_rating == "D":
+            if benefits == "Yes":
+                return True
+        if accept_suggested_epc in ("No", "I don't know", "Not found"):
+            if benefits == "No":
+                return True
+
+
 def calculate_eligibility(session_data):
     """
     Calculate which schemes the user is able to use.
