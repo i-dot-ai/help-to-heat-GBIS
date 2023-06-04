@@ -12,7 +12,7 @@ def calculate_eligibility(session_data):
     :return: A tuple of which schemes the person is eligible for, if any
     """
     selected_epc = session_data.get("epc_rating")
-    property_status = session_data.get("own_property_options")
+    property_status = session_data.get("own_property")
     selected_council_tax_band = session_data.get("council_tax_band")
     selected_country = session_data.get("country")
     selected_benefits = session_data.get("benefits")
