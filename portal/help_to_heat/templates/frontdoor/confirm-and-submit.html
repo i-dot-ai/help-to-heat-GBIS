@@ -6,27 +6,26 @@
     <h1 class="govuk-heading-l">Confirm and submit</h1>
     {{macros.details_summary(summary_lines)}}
 
-    
-      {% if errors.get('permission') %}
-        <p id="permission-error" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> {{errors.get('permission')}}
-        </p>
-      {% endif %}
+    {% if errors.get('permission') %}
+      <p id="permission-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{errors.get('permission')}}
+      </p>
+    {% endif %}
 
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset" aria-describedby="permission-hint">
-          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="permission" name="permission" type="checkbox" aria-describedby="permission-item-hint">
-              <label class="govuk-label govuk-checkboxes__label" for="permission">
-                I agree for my details to be shared with energy suppliers and / or their delivery partners, as well as other government departments, to see if I qualify for the Energy Company Obligation (ECO4) scheme and/or The Great British Insulation Scheme and for any relevant services to be delivered.
-              </label>
-              <div id="permission-item-hint" class="govuk-hint govuk-checkboxes__hint">
-                <a class="govuk-link" href="#">Further information on our GDPR UK Privacy Policy.</a>
-              </div>
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset" aria-describedby="permission-hint">
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="permission" name="permission" type="checkbox" aria-describedby="permission-item-hint">
+            <label class="govuk-label govuk-checkboxes__label" for="permission">
+              I agree for my personal details to be shared with the energy supplier I selected to see if my property is eligible for support from the Energy Company Obligation scheme and The Great British Insulation Scheme and to contact me about my referral. I agree that they may share my personal details with their approved delivery partners and installers to check my eligibility, my property's suitability, and to contact me.
+            </label>
+            <div id="permission-item-hint" class="govuk-hint govuk-checkboxes__hint">
+              <a class="govuk-link" href="#">Further information on our GDPR UK Privacy Policy.</a>
             </div>
           </div>
-        </fieldset>
+        </div>
+      </fieldset>
     </div>
   {%- endcall %}
 {% endblock %}
