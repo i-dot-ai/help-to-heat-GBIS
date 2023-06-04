@@ -1,5 +1,28 @@
 from . import schemas
 
+eligible_council_tax = {
+    "England": (
+        "A",
+        "B",
+        "C",
+        "D",
+    ),
+    "Scotland": (
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+    ),
+    "Wales": (
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+    ),
+}
+
 
 def calculate_eligibility(session_data):
     """
@@ -17,29 +40,6 @@ def calculate_eligibility(session_data):
     selected_country = session_data.get("country")
     selected_benefits = session_data.get("benefits")
     eligible_for_eco4 = selected_benefits == "Yes" and selected_epc in ("E", "F", "G")
-
-    eligible_council_tax = {
-        "England": (
-            "A",
-            "B",
-            "C",
-            "D",
-        ),
-        "Scotland": (
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-        ),
-        "Wales": (
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-        ),
-    }
 
     # Immediately excluded from both
     if selected_epc in (
