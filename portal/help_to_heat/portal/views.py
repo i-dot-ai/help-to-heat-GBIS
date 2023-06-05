@@ -26,11 +26,6 @@ def unauthorised_view(request):
     return render(request, "portal/unauthorised.html", {}, status=403)
 
 
-is_supplier = user_passes_test(
-    lambda user: user.is_supplier and user.supplier, login_url="unauthorised", redirect_field_name=None
-)
-
-
 @require_http_methods(["GET"])
 @login_required(login_url="portal:unauthorised")
 def homepage_view(request):
