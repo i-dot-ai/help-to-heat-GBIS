@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework import serializers
 from rest_framework.parsers import JSONParser
@@ -78,6 +79,7 @@ class RefferalSerializer(serializers.ModelSerializer):
         fields = ["data"]
 
 
+@csrf_exempt
 @require_http_methods(["POST"])
 def create_referral(request):
     data = JSONParser().parse(request)
@@ -88,6 +90,7 @@ def create_referral(request):
     return JsonResponse(serializer.errors, status=400)
 
 
+@csrf_exempt
 @require_http_methods(["GET"])
 def lookup_epc_view(request, uprn):
     try:

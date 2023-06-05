@@ -21,24 +21,7 @@ FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 DEBUG = env.bool("DEBUG", default=False)
 
 # TODO: Replace with fixed hosts once we know the domain
-ALLOWED_HOSTS = [
-    "help-to-heat-frontdoor-develop.london.cloudapps.digital",
-    "help-to-heat-frontdoor-staging.london.cloudapps.digital",
-    "help-to-heat-frontdoor-suppliers.london.cloudapps.digital",
-    "localhost",
-    "127.0.0.1",
-    "help-to-heat-testserver",
-]
-
-HOST_MAP = {
-    "http://localhost:8012": "http://127.0.0.1:8012",
-    "https://help-to-heat-frontdoor-develop.london.cloudapps.digital": "https://help-to-heat-frontdoor-develop.london.cloudapps.digital",
-    "https://help-to-heat-frontdoor-staging.london.cloudapps.digital": "https://help-to-heat-frontdoor-staging.london.cloudapps.digital",
-    "https://help-to-heat-frontdoor-suppliers.london.cloudapps.digital": "https://help-to-heat-frontdoor-suppliers.london.cloudapps.digital",
-}
-
-if DEBUG:
-    CORS_ALLOWED_ORIGINS = [HOST_MAP[BASE_URL]]
+ALLOWED_HOSTS = ["*"]
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 
