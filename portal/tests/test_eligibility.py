@@ -1,4 +1,4 @@
-from help_to_heat.frontdoor.views import calculate_eligibility
+from help_to_heat.frontdoor.eligibility import calculate_eligibility
 
 result_map = {
     "GBIS": [
@@ -18,7 +18,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "F",
             "country": "England",
-            "own_property_options": "Yes, I own my property and live in it",
+            "own_property": "Yes, I own my property and live in it",
         },
         "BOTH",
     ),
@@ -28,7 +28,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "F",
             "country": "England",
-            "own_property_options": "Yes, I own my property and live in it",
+            "own_property": "Yes, I own my property and live in it",
         },
         "ECO4",
     ),
@@ -38,7 +38,7 @@ scenarios = (
             "benefits": "No",
             "epc_rating": "E",
             "country": "England",
-            "own_property_options": "Yes, I own my property and live in it",
+            "own_property": "Yes, I own my property and live in it",
         },
         "GBIS",
     ),
@@ -48,7 +48,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "D",
             "country": "England",
-            "own_property_options": "No, I am a tenant",
+            "own_property": "No, I am a tenant",
         },
         "GBIS",
     ),
@@ -67,7 +67,7 @@ scenarios = (
             "benefits": "Yes",
             "epc_rating": "D",
             "country": "England",
-            "own_property_options": "No, I am a tenant",
+            "own_property": "No, I am a tenant",
         },
         "NONE",
     ),

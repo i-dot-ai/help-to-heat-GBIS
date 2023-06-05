@@ -484,3 +484,67 @@ def test_no_epc():
     assert data["epc_rating"] == "Not found"
 
     assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+
+
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
+def test_eligibility():
+    client = utils.get_client()
+    page = client.get("/")
+
+    epc_rating = "A"
+    council_tax_band = "G"
+
+    assert page.status_code == 200
+    assert page.has_one("h1:contains('Check if you may be eligible for the Great British Insulation Scheme')")
+
+    page = page.click(contains="Start")
+    assert page.status_code == 200
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    _check_page = _make_check_page(session_id)
+
+    _add_epc(uprn="100023336956", rating=epc_rating)
+
+    _check_page = _make_check_page(session_id)
+
+    form = page.get_form()
+    form["country"] = "England"
+    page = form.submit().follow()
+
+    assert page.has_text("Do you own the property?")
+    page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
+
+    assert page.has_one("h1:contains('What is the property’s address?')")
+
+    form = page.get_form()
+    form["address_line_1"] = "999 Letsby Avenue"
+    form["postcode"] = "PO99 9PO"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address")
+    assert data["address_line_1"] == "999 Letsby Avenue"
+    assert data["postcode"] == "PO99 9PO"
+
+    form = page.get_form()
+    form["uprn"] = "100023336956"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address-select")
+    assert data["uprn"] == 100023336956
+    assert data["address"] == "10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA"
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")
+    page = _check_page(page, "council-tax-band", "council_tax_band", council_tax_band)
+
+    assert page.has_one("h1:contains('We found an Energy Performance Certificate that might be yours')")
+    page = _check_page(page, "epc", "accept_suggested_epc", "No")
+
+    form = page.get_form()
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+    page = _check_page(page, "benefits", "benefits", "No")
+
+    assert page.has_one("h1:contains('Your property is not eligible')")

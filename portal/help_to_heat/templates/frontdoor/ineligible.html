@@ -1,0 +1,20 @@
+{% extends "frontdoor/base.html" %}
+
+{% block content %}
+  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Your property is not eligible</h1>
+      <p class="govuk-body">This is likely because your property's council tax band is too high. This service is for properties in an eligible council tax band (A to D in England and A to E in Scotland and Wales).</p>
+
+      <h2 class="govuk-heading-s">Find other support</h2>
+
+      <p class="govuk-body">Check out what other help you can get with your energy bills from the government's <a href="https://helpforhouseholds.campaign.gov.uk/energy-saving-advice/" class="govuk-link">Help for Households</a>.</p>
+
+      <p class="govuk-body">Find out if you can get support from your local council from the <a href="https://www.gov.uk/cost-living-help-local-council" class="govuk-link">Household Support Fund</a>.</p>
+
+      </p>
+    </div>
+  </div>
+{% endblock %}
