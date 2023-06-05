@@ -1,8 +1,28 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
 
+
+def requires_service_manager(func):
+    return user_passes_test(
+        lambda user: user.is_authenticated and user.is_supplier_admin and user.is_active,
+        login_url="portal:unauthorised",
+    )
+
+
+def requires_team_leader(func):
+    return user_passes_test(
+        lambda user: user.is_authenticated and user.is_team_leader and user.supplier and user.is_active,
+        login_url="portal:unauthorised",
+    )
+
+
+def requires_team_member(func):
+    return user_passes_test(
+        lambda user: user.is_authenticated and user.is_team_member and user.supplier and user.is_active,
+        login_url="portal:unauthorised",
+    )
 
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="portal:unauthorised")
