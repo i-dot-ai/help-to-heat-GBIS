@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from help_to_heat import views
 from help_to_heat.frontdoor.urls import frontdoor_patterns
 from help_to_heat.portal.urls import api_patterns, portal_patterns
 
@@ -18,4 +19,5 @@ else:
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(api_patterns)),
+    path("robots.txt", views.robots_txt_view),
 ] + urlpatterns
