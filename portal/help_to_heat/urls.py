@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import include, path
 from help_to_heat.frontdoor.urls import frontdoor_patterns
 from help_to_heat.portal.urls import api_patterns, portal_patterns
+from portal.help_to_heat import views
 
 if settings.SHOW_FRONTDOOR:
     urlpatterns = [
