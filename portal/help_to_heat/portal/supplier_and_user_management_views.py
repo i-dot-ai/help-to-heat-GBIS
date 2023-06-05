@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
