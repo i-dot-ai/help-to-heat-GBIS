@@ -1,9 +1,10 @@
-from http.client import HTTPResponse
-from importlib.abc import Finder
+from django.http import HttpResponse
+import os
 
+from help_to_heat import settings
 
 def robots_txt_view(request):
-    file_path = Finder.find("robots.txt")
+    file_path = os.path.join(settings.BASE_DIR, "static/robots.txt")
     with open(file_path, "r") as f:
         content = f.read()
-    return HTTPResponse(content, content_type="text/plain")
+    return HttpResponse(content, content_type="text/plain")
