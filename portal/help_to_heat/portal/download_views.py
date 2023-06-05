@@ -39,7 +39,7 @@ legacy_referral_keys_map = {
 
 
 @require_http_methods(["GET"])
-@login_required
+@login_required(login_url="portal:unauthorised")
 def download_csv_view(request):
     referrals = models.Referral.objects.filter(referral_download=None, supplier=request.user.supplier)
     downloaded_at = timezone.now()
@@ -54,7 +54,7 @@ def download_csv_view(request):
 
 
 @require_http_methods(["GET"])
-@login_required
+@login_required(login_url="portal:unauthorised")
 def download_csv_by_id_view(request, download_id):
     referral_download = models.ReferralDownload.objects.get(pk=download_id)
     if referral_download is None:

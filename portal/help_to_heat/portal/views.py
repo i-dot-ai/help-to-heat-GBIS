@@ -12,7 +12,7 @@ from . import models
 
 
 @require_http_methods(["GET"])
-@login_required
+@login_required(login_url="portal:unauthorised")
 def index_view(request):
     return render(
         request,
@@ -32,7 +32,7 @@ is_supplier = user_passes_test(
 
 
 @require_http_methods(["GET"])
-@login_required
+@login_required(login_url="portal:unauthorised")
 def homepage_view(request):
     user = request.user
     if not user.is_supplier_admin and not user.is_team_leader and not user.is_team_member:
