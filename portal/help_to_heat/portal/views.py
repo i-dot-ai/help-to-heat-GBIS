@@ -74,32 +74,6 @@ class ReferalSerializer(serializers.ModelSerializer):
         fields = ["data"]
 
 
-@csrf_exempt
-@require_http_methods(["POST"])
-def create_referral(request):
-    data = JSONParser().parse(request)
-    serializer = ReferalSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
-
-
-@csrf_exempt
-@require_http_methods(["GET"])
-def lookup_epc_view(request, uprn):
-    try:
-        epc_rating = models.EpcRating.objects.get(uprn=uprn)
-    except models.EpcRating.DoesNotExist:
-        return JsonResponse({"errors": "Not found"}, status=400)
-    data = {
-        "uprn": epc_rating.uprn,
-        "rating": epc_rating.rating,
-        "date": epc_rating.date,
-    }
-    return JsonResponse(data, status=201)
-
-
 @require_http_methods(["GET"])
 def healthcheck_view(request):
     _ = models.User.objects.exists()
