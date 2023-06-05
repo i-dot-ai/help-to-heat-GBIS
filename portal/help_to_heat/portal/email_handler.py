@@ -108,8 +108,8 @@ def send_invite_email(user):
 def send_referral_confirmation_email(session_data):
     data = EMAIL_MAPPING["referral-confirmation"]
     data["subject"] = f"Referral to {session_data.get('supplier')} successful"
-    context = {"supplier_name": session_data.get('supplier')}
-    return _send_normal_email(to_address=session_data.get('email'), context=context, **data)
+    context = {"supplier_name": session_data.get("supplier")}
+    return _send_normal_email(to_address=session_data.get("email"), context=context, **data)
 
 
 def verify_token(user_id, token, token_type):
