@@ -54,12 +54,12 @@ def calculate_eligibility(session_data):
     :param session_data:
     :return: A tuple of which schemes the person is eligible for, if any
     """
-    selected_epc = session_data.get("epc_rating")
+    selected_epc = session_data.get("epc_rating", "Unknown")
     property_status = session_data.get("own_property")
     selected_council_tax_band = session_data.get("council_tax_band")
     selected_country = session_data.get("country")
     selected_benefits = session_data.get("benefits")
-    eligible_for_eco4 = selected_benefits == "Yes" and selected_epc in ("E", "F", "G")
+    eligible_for_eco4 = selected_benefits == "Yes" and (selected_epc in ("E", "F", "G", "Unknown"))
 
     # Immediately excluded from both
     if selected_epc in (
@@ -76,7 +76,11 @@ def calculate_eligibility(session_data):
         else:
             return list()
     else:
-        if selected_epc in ("D",) and property_status == "No, I am a tenant" and selected_benefits == "Yes":
+        if (
+            (selected_epc in ("D", "Unknown"))
+            and (property_status == "No, I am a tenant")
+            and (selected_benefits == "Yes")
+        ):
             if eligible_for_eco4:
                 return list(
                     schemas.schemes_map[scheme]
@@ -87,7 +91,7 @@ def calculate_eligibility(session_data):
                 )
             else:
                 return list(schemas.schemes_map[scheme] for scheme in ("GBIS",))
-        elif selected_benefits == "No" and selected_epc in ("D", "E", "F", "G"):
+        elif (selected_benefits == "No") and (selected_epc in ("D", "E", "F", "G", "Unknown")):
             if eligible_for_eco4:
                 return list(
                     schemas.schemes_map[scheme]
