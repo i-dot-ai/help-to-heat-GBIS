@@ -92,9 +92,8 @@ def test_team_leader():
     page = page.click(contains="Disable")
 
     form = page.get_form()
-    page = form.submit().follow()
-
-    assert page.has_one("dt:contains('Status') ~ dd:contains('Disabled')")
+    page = form.submit().follow().follow()
+    assert page.has_one("h1:contains('Unauthorised')")
 
 
 def test_team_member():
@@ -227,4 +226,4 @@ def test_invite_user_skip_otp():
     page = client.get("/portal/")
     page = page.follow()
     assert not page.has_text("Manage members")
-    assert page.has_text("Log in")
+    assert page.has_text("Unauthorised")
