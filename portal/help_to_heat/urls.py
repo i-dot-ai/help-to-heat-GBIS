@@ -18,4 +18,5 @@ else:
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(api_patterns)),
+    path("robots.txt", views.robots_txt_view),
 ] + urlpatterns
