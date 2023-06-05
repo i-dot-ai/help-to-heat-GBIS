@@ -5,8 +5,8 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from help_to_heat import utils
 
-from . import eligibility, interface, schemas
 from ..portal import email_handler
+from . import eligibility, interface, schemas
 
 page_map = {}
 
