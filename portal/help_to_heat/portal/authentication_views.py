@@ -3,7 +3,6 @@ import logging
 import segno
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.exceptions import ValidationError
@@ -127,39 +126,52 @@ class AcceptInviteView(MethodDispatcher):
         if not result:
             return self.error(request)
 
-        login(request, user)
+        set_password_token = LoginTokenGenerator().make_token(user)
 
-        return redirect("portal:account_login_set_password", user.id)
+        return redirect("portal:account_login_set_password", user.id, set_password_token)
 
 
 @require_http_methods(["GET", "POST"])
 class SetPassword(MethodDispatcher):
-    def get(self, request, user_id):
+    error_message = "Something has gone wrong.  Please contact your team leader."
+
+    def error(self, request, message=error_message):
+        messages.error(request, message)
+        return render(request, "account/accept_invite.html")
+
+    def get(self, request, user_id, token):
         return render(request, "account/login_set_password.html", {"user_id": user_id})
 
-    def post(self, request, user_id):
+    def post(self, request, user_id, token):
+        user = models.User.objects.get(pk=user_id)
+
+        token_valid = LoginTokenGenerator().check_token(user, token)
+        if not token_valid:
+            return self.error(request)
+
         pwd1 = request.POST.get("password1", None)
         pwd2 = request.POST.get("password2", None)
         if pwd1 != pwd2:
-            messages.error(request, "Passwords must match.")
-            return render(request, "account/login_set_password.html", {"user_id": user_id})
+            return self.error(request, message="Passwords must match.")
+
         try:
             validate_password(pwd1)
         except ValidationError as e:
             for msg in e:
                 messages.error(request, str(msg))
-            return render(request, "account/login_set_password.html", {"user_id": user_id})
-        user = models.User.objects.get(pk=user_id)
+            return self.error(request, message="Please fix the errors and try again")
+
         user.set_password(pwd1)
         user.invite_accepted_at = timezone.now()
         user.save()
         messages.info(request, "Password successfully set.")
-        login(request, user)
-        return redirect("portal:mfa-setup")
+
+        mfa_setup_token = LoginTokenGenerator().make_token(user)
+
+        return redirect("portal:mfa-setup", user_id=user_id, token=mfa_setup_token)
 
 
 @require_http_methods(["GET", "POST"])
-@login_required
 class MFASetup(MethodDispatcher):
     template_name = "account/mfa-setup.html"
     error_message = "Something has gone wrong. Please contact your team leader."
@@ -168,8 +180,8 @@ class MFASetup(MethodDispatcher):
         messages.error(request, message)
         return render(request, self.template_name)
 
-    def get(self, request):
-        user = request.user
+    def get(self, request, user_id, token):
+        user = models.User.objects.get(pk=user_id)
         totp_secret = user.get_totp_secret()
         uri = user.get_totp_uri()
         qr_code = segno.make(uri).svg_inline(scale=8)
@@ -179,8 +191,12 @@ class MFASetup(MethodDispatcher):
         }
         return render(request, self.template_name, context)
 
-    def post(self, request):
-        user = request.user
+    def post(self, request, user_id, token):
+        user = models.User.objects.get(pk=user_id)
+
+        token_valid = LoginTokenGenerator().check_token(user, token)
+        if not token_valid:
+            return self.error(request)
 
         otp = request.POST.get("otp", None)
         secret = request.POST.get("totp_secret", None)
@@ -197,6 +213,8 @@ class MFASetup(MethodDispatcher):
         if not user.verify_otp(otp):
             logger.error("Incorrect OTP")
             return self.error(request)
+
+        login(request, user)
 
         return redirect("portal:homepage")
 
@@ -275,5 +293,7 @@ class PasswordChange(MethodDispatcher):
             return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
         user.set_password(pwd1)
         user.save()
-        login(request, user)
-        return redirect("portal:mfa-setup")
+
+        mfa_setup_token = LoginTokenGenerator().make_token(user)
+
+        return redirect("portal:mfa-setup", user_id=user_id, token=mfa_setup_token)
