@@ -59,14 +59,10 @@ def calculate_eligibility(session_data):
     selected_council_tax_band = session_data.get("council_tax_band")
     selected_country = session_data.get("country")
     selected_benefits = session_data.get("benefits")
-    eligible_for_eco4 = selected_benefits == "Yes" and (selected_epc in ("E", "F", "G", "Unknown"))
+    eligible_for_eco4 = selected_benefits == "Yes" and (selected_epc in ("E", "F", "G", "Unknown", "Not found"))
 
     # Immediately excluded from both
-    if selected_epc in (
-        "A",
-        "B",
-        "C",
-    ):
+    if selected_epc in ("A", "B", "C"):
         return ()
 
     # not eligible for GBIS so check ECO4
@@ -77,7 +73,7 @@ def calculate_eligibility(session_data):
             return list()
     else:
         if (
-            (selected_epc in ("D", "Unknown"))
+            (selected_epc in ("D", "Unknown", "Not found"))
             and (property_status == "No, I am a tenant")
             and (selected_benefits == "Yes")
         ):
@@ -91,7 +87,7 @@ def calculate_eligibility(session_data):
                 )
             else:
                 return list(schemas.schemes_map[scheme] for scheme in ("GBIS",))
-        elif (selected_benefits == "No") and (selected_epc in ("D", "E", "F", "G", "Unknown")):
+        elif (selected_benefits == "No") and (selected_epc in ("D", "E", "F", "G", "Unknown", "Not found")):
             if eligible_for_eco4:
                 return list(
                     schemas.schemes_map[scheme]
