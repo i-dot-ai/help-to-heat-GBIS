@@ -6,6 +6,7 @@ from django.urls import reverse
 from help_to_heat import utils
 
 from . import eligibility, interface, schemas
+from ..portal import email_handler
 
 page_map = {}
 
@@ -418,6 +419,8 @@ class ConfirmSubmitView(PageView):
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         interface.api.session.create_referral(session_id)
+        session_data = interface.api.session.get_session(session_id)
+        email_handler.send_referral_confirmation_email(session_data)
         return super().handle_post(request, session_id, page_name, data, is_change_page)
 
 

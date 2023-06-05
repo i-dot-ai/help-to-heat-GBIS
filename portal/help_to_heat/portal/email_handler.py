@@ -57,6 +57,10 @@ EMAIL_MAPPING = {
         "url_name": "portal:accept-invite",
         "token_generator": INVITE_TOKEN_GENERATOR,
     },
+    "referral-confirmation": {
+        "from_address": settings.FROM_EMAIL,
+        "template_name": "portal/email/referral-confirmation.txt",
+    },
 }
 
 
@@ -99,6 +103,13 @@ def send_invite_email(user):
     user.invited_at = timezone.now()
     user.save()
     return _send_token_email(user, **data)
+
+
+def send_referral_confirmation_email(session_data):
+    data = EMAIL_MAPPING["referral-confirmation"]
+    data["subject"] = f"Referral to {session_data.get('supplier')} successful"
+    context = {"supplier_name": session_data.get('supplier')}
+    return _send_normal_email(to_address=session_data.get('email'), context=context, **data)
 
 
 def verify_token(user_id, token, token_type):
