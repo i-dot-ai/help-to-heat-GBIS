@@ -62,11 +62,7 @@ def calculate_eligibility(session_data):
     eligible_for_eco4 = selected_benefits == "Yes" and (selected_epc in ("E", "F", "G", "Unknown", "Not found"))
 
     # Immediately excluded from both
-    if selected_epc in (
-        "A",
-        "B",
-        "C",
-    ):
+    if selected_epc in ("A", "B", "C"):
         return ()
 
     # not eligible for GBIS so check ECO4
