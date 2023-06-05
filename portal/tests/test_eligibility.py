@@ -81,9 +81,80 @@ scenarios = (
     ),
 )
 
+unknown_epc_scenarios = (
+    (
+        {
+            "council_tax_band": "B",
+            "benefits": "Yes",
+            "country": "England",
+            "own_property": "Yes, I own my property and live in it",
+        },
+        "BOTH",
+    ),
+    (
+        {
+            "council_tax_band": "G",
+            "benefits": "Yes",
+            "country": "England",
+            "own_property": "Yes, I own my property and live in it",
+        },
+        "ECO4",
+    ),
+    (
+        {
+            "council_tax_band": "D",
+            "benefits": "No",
+            "country": "England",
+            "own_property": "Yes, I own my property and live in it",
+        },
+        "GBIS",
+    ),
+    (
+        {
+            "council_tax_band": "D",
+            "benefits": "Yes",
+            "country": "England",
+            "own_property": "No, I am a tenant",
+        },
+        "BOTH",
+    ),
+    (
+        {
+            "council_tax_band": "F",
+            "benefits": "No",
+            "country": "England",
+        },
+        "NONE",
+    ),
+    (
+        {
+            "council_tax_band": "F",
+            "benefits": "Yes",
+            "country": "England",
+            "own_property": "No, I am a tenant",
+        },
+        "ECO4",
+    ),
+    (
+        {
+            "council_tax_band": "F",
+            "benefits": "No",
+            "country": "England",
+        },
+        "NONE",
+    ),
+)
+
 
 def test_eligibility():
     for data, expected in scenarios:
+        result = calculate_eligibility(data)
+        expected = result_map[expected]
+        assert expected == result, (data, expected, result)
+
+
+def test_eligibility_unknown_epc():
+    for data, expected in unknown_epc_scenarios:
         result = calculate_eligibility(data)
         expected = result_map[expected]
         assert expected == result, (data, expected, result)
