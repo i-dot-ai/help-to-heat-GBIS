@@ -237,10 +237,12 @@ class PasswordReset(MethodDispatcher):
         return redirect("portal:password-reset-done")
 
 
+@require_http_methods(["GET"])
 def password_reset_done(request):
     return render(request, "account/password_reset_done.html", {})
 
 
+@require_http_methods(["GET"])
 def password_reset_from_key_done(request):
     return render(request, "account/password_reset_from_key_done.html", {})
 
