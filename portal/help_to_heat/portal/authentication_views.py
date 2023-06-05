@@ -30,21 +30,22 @@ class LoginTokenGenerator(PasswordResetTokenGenerator):
 
 @require_http_methods(["GET", "POST"])
 class CustomLoginView(MethodDispatcher):
+    template_name = "account/login.html"
     error_message = "Something has gone wrong.  Please contact your team leader."
 
     def error(self, request):
         messages.error(request, self.error_message)
-        return render(request, "account/login.html")
+        return render(request, self.template_name)
 
     def get(self, request):
-        return render(request, "account/login.html")
+        return render(request, self.template_name)
 
     def post(self, request):
         password = request.POST.get("password", None)
         email = request.POST.get("login", None)
         if not password or not email:
             messages.error(request, "Please enter an email and password.")
-            return render(request, "account/login.html", {})
+            return render(request, self.template_name, {})
         else:
             user = authenticate(request, email=email, password=password)
             if user is not None:
@@ -93,14 +94,15 @@ class VerifyOTPView(MethodDispatcher):
 
 @require_http_methods(["GET", "POST"])
 class AcceptInviteView(MethodDispatcher):
+    template_name = "account/accept_invite.html"
     error_message = "Something has gone wrong.  Please contact your team leader."
 
     def get(self, request):
-        return render(request, "account/accept_invite.html")
+        return render(request, self.template_name)
 
     def error(self, request):
         messages.error(request, self.error_message)
-        return render(request, "account/accept_invite.html")
+        return render(request, self.template_name)
 
     def post(self, request):
         email = request.POST.get("email", None)
@@ -109,7 +111,7 @@ class AcceptInviteView(MethodDispatcher):
 
         if not email:
             messages.error(request, "Please enter an email.")
-            return render(request, "account/accept_invite.html")
+            return render(request, self.template_name)
 
         try:
             user = models.User.objects.get(id=user_id, email=email)
@@ -133,14 +135,15 @@ class AcceptInviteView(MethodDispatcher):
 
 @require_http_methods(["GET", "POST"])
 class SetPassword(MethodDispatcher):
+    template_name = "account/login_set_password.html"
     error_message = "Something has gone wrong.  Please contact your team leader."
 
     def error(self, request, message=error_message):
         messages.error(request, message)
-        return render(request, "account/accept_invite.html")
+        return render(request, self.template_name)
 
     def get(self, request, user_id, token):
-        return render(request, "account/login_set_password.html", {"user_id": user_id})
+        return render(request, self.template_name, {"user_id": user_id})
 
     def post(self, request, user_id, token):
         user = models.User.objects.get(pk=user_id)
@@ -244,6 +247,7 @@ def password_reset_from_key_done(request):
 
 @require_http_methods(["GET", "POST"])
 class PasswordChange(MethodDispatcher):
+    template_name = "account/password_reset_from_key.html"
     password_reset_error_message = (
         "This link is not valid. It may have expired or have already been used. Please try again."
     )
@@ -267,9 +271,9 @@ class PasswordChange(MethodDispatcher):
     def get(self, request):
         try:
             _, _, valid_request = self.get_token_request_args(request)
-            return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
+            return render(request, self.template_name, {"valid": valid_request})
         except models.User.DoesNotExist:
-            return render(request, "account/password_reset_from_key.html", {"valid": False})
+            return render(request, self.template_name, {"valid": False})
 
     def post(self, request):
         user_id, token, valid_request = self.get_token_request_args(request)
@@ -278,11 +282,11 @@ class PasswordChange(MethodDispatcher):
         if pwd1 != pwd2:
             logger.error("Passwords don't match")
             messages.error(request, "Passwords must match.")
-            return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
+            return render(request, self.template_name, {"valid": valid_request})
         if not valid_request:
             logger.error("Not valid request")
             messages.error(request, self.password_reset_error_message)
-            return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
+            return render(request, self.template_name, {"valid": valid_request})
         user = models.User.objects.get(pk=user_id)
         try:
             validate_password(pwd1, user)
@@ -290,7 +294,7 @@ class PasswordChange(MethodDispatcher):
             for msg in e:
                 logger.error(str(msg))
                 messages.error(request, str(msg))
-            return render(request, "account/password_reset_from_key.html", {"valid": valid_request})
+            return render(request, self.template_name, {"valid": valid_request})
         user.set_password(pwd1)
         user.save()
 
