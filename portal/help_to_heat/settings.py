@@ -49,9 +49,6 @@ CORS_APPS = [
     "corsheaders",
 ]
 
-if DEBUG:
-    INSTALLED_APPS = INSTALLED_APPS + CORS_APPS
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
