@@ -68,7 +68,7 @@ def homepage_view(request):
     )
 
 
-class RefferalSerializer(serializers.ModelSerializer):
+class ReferalSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Referral
         fields = ["data"]
@@ -78,7 +78,7 @@ class RefferalSerializer(serializers.ModelSerializer):
 @require_http_methods(["POST"])
 def create_referral(request):
     data = JSONParser().parse(request)
-    serializer = RefferalSerializer(data=data)
+    serializer = ReferalSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=201)
