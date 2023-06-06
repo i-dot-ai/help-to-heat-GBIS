@@ -604,10 +604,10 @@ def test_referral_email():
 
     assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
 
-    data = utils.get_latest_email_text("freddy.flibble@example.com")
+    referral_email_text = utils.get_latest_email_text("freddy.flibble@example.com")
 
-    assert data.__contains__("Your details have been submitted to Octopus.")
-    assert data.__contains__("You do not need to create another referral at any point.")
+    assert "Your details have been submitted to Octopus." in referral_email_text
+    assert "You do not need to create another referral at any point." in referral_email_text
 
     referral = models.Referral.objects.get(session_id=session_id)
     referral.delete()
