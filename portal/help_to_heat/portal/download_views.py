@@ -1,10 +1,9 @@
 import csv
 
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
-from help_to_heat.portal import models
+from help_to_heat.portal import decorators, models
 
 legacy_referral_keys_map = {
     "receivingBenefits": "benefits",
@@ -39,7 +38,7 @@ legacy_referral_keys_map = {
 
 
 @require_http_methods(["GET"])
-@login_required
+@decorators.requires_team_leader_or_member
 def download_csv_view(request):
     referrals = models.Referral.objects.filter(referral_download=None, supplier=request.user.supplier)
     downloaded_at = timezone.now()
@@ -54,7 +53,7 @@ def download_csv_view(request):
 
 
 @require_http_methods(["GET"])
-@login_required
+@decorators.requires_team_leader_or_member
 def download_csv_by_id_view(request, download_id):
     referral_download = models.ReferralDownload.objects.get(pk=download_id)
     if referral_download is None:

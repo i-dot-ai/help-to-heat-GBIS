@@ -1,7 +1,12 @@
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
 from help_to_heat.portal import email_handler, models
 
+from .decorators import requires_service_manager, requires_team_leader
 
+
+@require_http_methods(["GET", "POST"])
+@requires_service_manager
 def add_supplier_view(request):
     if request.method == "GET":
         return render(request, "portal/supplier-admin/add-supplier.html", {})
@@ -12,6 +17,8 @@ def add_supplier_view(request):
         return redirect("portal:homepage")
 
 
+@require_http_methods(["GET", "POST"])
+@requires_service_manager
 def edit_supplier_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
@@ -23,6 +30,8 @@ def edit_supplier_view(request, supplier_id):
         return redirect("portal:homepage")
 
 
+@require_http_methods(["GET", "POST"])
+@requires_service_manager
 def change_supplier_disabled_status_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
@@ -34,6 +43,8 @@ def change_supplier_disabled_status_view(request, supplier_id):
         return redirect("portal:homepage")
 
 
+@require_http_methods(["GET"])
+@requires_service_manager
 def supplier_team_leads_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
@@ -43,6 +54,8 @@ def supplier_team_leads_view(request, supplier_id):
         )
 
 
+@require_http_methods(["GET", "POST"])
+@requires_service_manager
 def supplier_team_leads_add_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
@@ -61,6 +74,8 @@ def supplier_team_leads_add_view(request, supplier_id):
         return redirect("portal:supplier-team-leads", supplier.id)
 
 
+@require_http_methods(["GET", "POST"])
+@requires_service_manager
 def supplier_team_leads_edit_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
@@ -78,6 +93,8 @@ def supplier_team_leads_edit_view(request, supplier_id, user_id):
         return redirect("portal:supplier-team-leads", supplier.id)
 
 
+@require_http_methods(["GET", "POST"])
+@requires_service_manager
 def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
@@ -92,6 +109,8 @@ def change_supplier_team_leads_disable_status_view(request, supplier_id, user_id
         return redirect("portal:supplier-team-leads", supplier_id)
 
 
+@require_http_methods(["GET", "POST"])
+@requires_team_leader
 def team_member_add_role_view(request, supplier_id):
     if request.method == "GET":
         return render(request, "portal/team-leader/add-user-role-select.html", {"supplier_id": supplier_id})
@@ -100,6 +119,8 @@ def team_member_add_role_view(request, supplier_id):
         return redirect("portal:add-user-details-select", user_role=user_role, supplier_id=supplier_id)
 
 
+@require_http_methods(["GET", "POST"])
+@requires_team_leader
 def team_member_add_details_view(request, supplier_id, user_role):
     if request.method == "GET":
         return render(
@@ -122,11 +143,15 @@ def team_member_add_details_view(request, supplier_id, user_role):
         return redirect("portal:homepage")
 
 
+@require_http_methods(["GET"])
+@requires_team_leader
 def team_member_details_view(request, supplier_id, user_id):
     user = models.User.objects.get(pk=user_id)
     return render(request, "portal/team-leader/view-user-details.html", {"supplier_id": supplier_id, "user": user})
 
 
+@require_http_methods(["GET", "POST"])
+@requires_team_leader
 def team_member_change_status_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
@@ -142,6 +167,8 @@ def team_member_change_status_view(request, supplier_id, user_id):
         return redirect("portal:user-details", supplier_id, user_id)
 
 
+@require_http_methods(["GET", "POST"])
+@requires_team_leader
 def team_member_edit_view(request, supplier_id, user_id):
     if request.method == "GET":
         user = models.User.objects.get(pk=user_id)
