@@ -122,7 +122,7 @@ own_property_options_map = (
     {
         "value": "Yes, I am the property owner but I lease the property to one or more tenants",
         "label": "Yes, I am the property owner but I lease the property to one or more tenants",
-    }
+    },
 )
 epc_display_options = ("Yes", "No", "I don't know")
 epc_validation_options = epc_display_options + ("Not found",)
