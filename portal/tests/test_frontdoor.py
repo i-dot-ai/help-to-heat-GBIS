@@ -205,7 +205,7 @@ def test_happy_flow():
 
     assert page.has_one("h1:contains('Information based on your answers')")
     assert page.has_text("Great British Insulation scheme")
-    assert page.has_text("Energy Company Obligation 4")
+    assert not page.has_text("Energy Company Obligation 4")
     form = page.get_form()
     page = form.submit().follow()
 
@@ -571,7 +571,7 @@ def test_referral_email():
 
     assert page.has_one("h1:contains('Information based on your answers')")
     assert page.has_text("Great British Insulation scheme")
-    assert page.has_text("Energy Company Obligation 4")
+    assert not page.has_text("Energy Company Obligation 4")
     form = page.get_form()
     page = form.submit().follow()
 
