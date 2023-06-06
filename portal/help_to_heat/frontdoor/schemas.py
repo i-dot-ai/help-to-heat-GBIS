@@ -112,12 +112,12 @@ own_property_options_map = (
     {
         "value": "No, I am a tenant",
         "label": "No, I am a tenant",
-        "hint": "If you are eligible for a referral through this service, your energy supplier will need to check that you have your landlord’s permission to install any energy-saving measures to the property.",
+        "hint": "If you are eligible for a referral through this service, your energy supplier will need to check that you have your landlord’s permission to install any energy-saving measures to the property.",  # noqa E501
     },
     {
         "value": "No, I am a social housing tenant",
         "label": "No, I am a social housing tenant",
-        "hint": "If you are eligible for a referral through this service, your energy supplier will need to check that you have your landlord’s permission to install any energy-saving measures to the property.",
+        "hint": "If you are eligible for a referral through this service, your energy supplier will need to check that you have your landlord’s permission to install any energy-saving measures to the property.",  # noqa E501
     },
     {
         "value": "Yes, I am the property owner but I lease the property to one or more tenants",
