@@ -122,6 +122,7 @@ def test_no_supplier_set():
     client = utils.get_client()
     utils.login(client, email, password)
     page = client.get("/portal/")
+    page = page.follow()
     assert page.status_code == 403
 
 
