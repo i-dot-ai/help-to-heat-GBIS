@@ -233,7 +233,7 @@ loft_insulation_options = (
 
 class SessionSchema(Schema):
     country = fields.String(validate=validate.OneOf(country_options))
-    own_property = fields.String(validate=validate.OneOf(own_property_options_map))
+    own_property = fields.String(validate=validate.OneOf(tuple(value["value"] for value in own_property_options_map)))
     address_line_1 = fields.String()
     address_line_2 = fields.String()
     town_or_city = fields.String()
