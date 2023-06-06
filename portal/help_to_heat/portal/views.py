@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
-from rest_framework import serializers
 
 from . import decorators, models
 
@@ -89,12 +88,6 @@ def team_member_homepage_view(request):
         template_name=template,
         context={"request": request, "data": data},
     )
-
-
-class ReferalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Referral
-        fields = ["data"]
 
 
 @require_http_methods(["GET"])
