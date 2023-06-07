@@ -1,8 +1,11 @@
 import csv
+import datetime
 
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
+from help_to_heat.frontdoor import interface
+from help_to_heat.frontdoor.eligibility import calculate_eligibility
 from help_to_heat.portal import decorators, models
 
 legacy_referral_keys_map = {
@@ -70,12 +73,27 @@ def convert_row(row):
     return row
 
 
+def add_extra_row_data(row):
+    eligibility = calculate_eligibility(row)
+    row["ECO4"] = "Energy Company Obligation 4" in eligibility
+    row["GBIS"] = "Great British Insulation scheme" in eligibility
+    uprn = row.get("uprn")
+    epc = interface.api.epc.get_epc(uprn)
+    epc_date = epc.get("date")
+    epc_date = datetime.datetime.strptime(epc_date, "%Y-%m-%d")
+    row["epc_day"] = epc_date.day
+    row["epc_month"] = epc_date.month
+    row["epc_year"] = epc_date.year
+    return row
+
+
 def create_referral_csv(referrals, file_name):
     headers = {
         "Content-Type": "text/csv",
         "Content-Disposition": f"attachment; filename=referral-data-{file_name}.csv",
     }
     rows = [convert_row(referral.data) for referral in referrals]
+    rows = [add_extra_row_data(row) for row in rows]
     data_keys = []
     for row in rows:
         data_keys = data_keys | row.keys()

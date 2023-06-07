@@ -1,4 +1,3 @@
-import datetime
 import uuid
 
 from django.conf import settings
@@ -247,20 +246,6 @@ class EpcView(PageView):
         else:
             return redirect("frontdoor:page", session_id=session_id, page_name="epc-disagree")
 
-    def save_data(self, request, session_id, page_name, *args, **kwargs):
-        data = request.POST.dict()
-        session_data = interface.api.session.get_session(session_id)
-        uprn = session_data.get("uprn")
-        epc = interface.api.epc.get_epc(uprn)
-        epc_date = epc.get("date")
-        epc_date = datetime.datetime.strptime(epc_date, "%Y-%m-%d")
-        epc_day = epc_date.day
-        epc_month = epc_date.month
-        epc_year = epc_date.year
-        data = {**data, "epc_day": epc_day, "epc_month": epc_month, "epc_year": epc_year}
-        data = interface.api.session.save_answer(session_id, page_name, data)
-        return data
-
 
 @register_page("epc-disagree")
 class EpcDisagreeView(PageView):
@@ -409,9 +394,6 @@ class SchemesView(PageView):
         _ = interface.api.session.save_answer(session_id, "schemes", {"schemes": eligible_schemes})
         eligible_schemes = tuple(scheme for scheme in eligible_schemes if not scheme == "Energy Company Obligation 4")
         return {"eligible_schemes": eligible_schemes}
-
-    def save_data(self, request, session_id, page_name, *args, **kwargs):
-        pass
 
 
 @register_page("supplier")
