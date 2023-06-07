@@ -407,7 +407,9 @@ class SupplierView(PageView):
 
 @register_page("contact-details")
 class ContactDetailsView(PageView):
-    pass
+    def get_context(self, session_id, *args, **kwargs):
+        supplier_data = interface.api.session.get_answer(session_id, "supplier")
+        return {"supplier": supplier_data["supplier"]}
 
 
 @register_page("confirm-and-submit")
