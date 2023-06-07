@@ -1,7 +1,7 @@
 include envs/portal
 
 define _update_requirements
-	docker run -v ${PWD}/:/app/:z python:3.8-buster bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
+	docker run -v ${PWD}/:/app/:z python:3.9-buster bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
 endef
 
 .PHONY: update-requirements
