@@ -39,6 +39,9 @@ page_prev_next_map = {
     "loft": {"prev": "wall-insulation", "next": "loft-access"},
     "loft-access": {"prev": "loft", "next": "loft-insulation"},
     "loft-insulation": {"prev": "loft-access", "next": "summary"},
+    "epc-ineligible": {"prev": "epc", "next": None},
+    "ineligible": {"prev": "benefits", "next": None},
+    "northern-ireland": {"prev": "country", "next": None},
 }
 
 summary_map = {
