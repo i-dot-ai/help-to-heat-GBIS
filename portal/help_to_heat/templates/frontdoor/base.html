@@ -75,8 +75,6 @@
 </head>
 
 <body class="govuk-template__body" id="i-dot-ai">
-  <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-
   <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
 
@@ -169,19 +167,10 @@
 
   <script src="/static/govuk-frontend/govuk-frontend-4.3.1.min.js"></script>
 
-  <script>
-    window.GOVUKFrontend.initAll()
-  </script>
+  <script src="/static/main.js"></script>
   {% if gtag_id %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{gtag_id}}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', '{{gtag_id}}');
-    </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{gtag_id}}"></script>
+  <script src="/static/dataLayer.js"></script>
   {% endif %}
 </body>
 
