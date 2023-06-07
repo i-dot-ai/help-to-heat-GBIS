@@ -75,15 +75,18 @@ def convert_row(row):
 
 def add_extra_row_data(row):
     eligibility = calculate_eligibility(row)
-    row["ECO4"] = "Energy Company Obligation 4" in eligibility
-    row["GBIS"] = "Great British Insulation scheme" in eligibility
     uprn = row.get("uprn")
     epc = interface.api.epc.get_epc(uprn)
     epc_date = epc.get("date")
-    epc_date = datetime.datetime.strptime(epc_date, "%Y-%m-%d")
-    row["epc_day"] = epc_date.day
-    row["epc_month"] = epc_date.month
-    row["epc_year"] = epc_date.year
+    epc_date = epc_date and datetime.datetime.strptime(epc_date, "%Y-%m-%d")
+    row = {
+        **row,
+        "ECO4": "Energy Company Obligation 4" in eligibility,
+        "GBIS": "Great British Insulation scheme" in eligibility,
+        "epc_day": epc_date and epc_date.day or "",
+        "epc_month": epc_date and epc_date.month or "",
+        "epc_year": epc_date and epc_date.year or "",
+    }
     return row
 
 
