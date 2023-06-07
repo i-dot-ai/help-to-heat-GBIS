@@ -232,8 +232,12 @@ class EpcView(PageView):
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         prev_page_name, next_page_name = get_prev_next_page_name(page_name)
         epc_rating = data.get("epc_rating")
+        accept_suggested_epc = data.get("accept_suggested_epc")
         if not epc_rating:
             return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
+
+        if (epc_rating in ("A", "B", "C")) and (accept_suggested_epc == "Yes"):
+            return redirect("frontdoor:page", session_id=session_id, page_name="epc-ineligible")
 
         choice = data["accept_suggested_epc"]
         if choice in ("Yes", "Not found"):

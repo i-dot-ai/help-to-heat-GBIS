@@ -107,7 +107,7 @@ def test_flow_errors():
     assert page.has_text("Please answer this question")
 
 
-def _answer_house_questions(page, session_id, benefits_answer, epc_rating="C"):
+def _answer_house_questions(page, session_id, benefits_answer, epc_rating="D"):
     """Answer main flow with set answers"""
     _add_epc(uprn="100023336956", rating=epc_rating)
 
@@ -329,13 +329,47 @@ def test_no_benefits_flow():
     session_id = page.path.split("/")[1]
     assert uuid.UUID(session_id)
 
-    # Answer main flow
-    page = _answer_house_questions(page, session_id, benefits_answer="No")
+    _add_epc(uprn="100023336956", rating="A")
 
-    assert page.has_one("h1:contains('You are not eligible')")
-    assert not page.has_text("Great British Insulation scheme")
-    assert not page.has_text("Energy Company Obligation 4")
-    assert page.has_text("[insert content here]")
+    _check_page = _make_check_page(session_id)
+
+    form = page.get_form()
+    form["country"] = "England"
+    page = form.submit().follow()
+
+    assert page.has_text("Do you own the property?")
+    page = _check_page(page, "own-property", "own_property", "Yes, I own my property and live in it")
+
+    assert page.has_one("h1:contains('What is the property’s address?')")
+
+    form = page.get_form()
+    form["address_line_1"] = "999 Letsby Avenue"
+    form["postcode"] = "PO99 9PO"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address")
+    assert data["address_line_1"] == "999 Letsby Avenue"
+    assert data["postcode"] == "PO99 9PO"
+
+    form = page.get_form()
+    form["uprn"] = "100023336956"
+    page = form.submit().follow()
+
+    data = interface.api.session.get_answer(session_id, page_name="address-select")
+    assert data["uprn"] == 100023336956
+    assert data["address"] == "10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA"
+
+    assert page.has_one("h1:contains('What is the council tax band of your property?')")
+    page = _check_page(page, "council-tax-band", "council_tax_band", "B")
+
+    assert page.has_one("h1:contains('We found an Energy Performance Certificate that might be yours')")
+
+    form = page.get_form()
+    form['accept_suggested_epc'] = "Yes"
+    form = page.get_form()
+    page = form.submit().follow()
+
+    assert page.has_one('''h1:contains("It's likely that your home already has suitable energy saving measures")''')
 
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
@@ -491,7 +525,7 @@ def test_eligibility():
     client = utils.get_client()
     page = client.get("/")
 
-    epc_rating = "A"
+    epc_rating = "D"
     council_tax_band = "G"
 
     assert page.status_code == 200
