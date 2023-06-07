@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from django.conf import settings
@@ -245,6 +246,20 @@ class EpcView(PageView):
             return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
         else:
             return redirect("frontdoor:page", session_id=session_id, page_name="epc-disagree")
+        
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
+        data = request.POST.dict()
+        session_data = interface.api.session.get_session(session_id)
+        uprn = session_data.get("uprn")
+        epc = interface.api.epc.get_epc(uprn)
+        epc_date = epc.get("date")
+        epc_date = datetime.datetime.strptime(epc_date, "%Y-%m-%d")
+        epc_day = epc_date.day
+        epc_month = epc_date.month
+        epc_year = epc_date.year
+        data = {**data, "epc_day": epc_day, "epc_month": epc_month, "epc_year": epc_year}
+        data = interface.api.session.save_answer(session_id, page_name, data)
+        return data
 
 
 @register_page("epc-disagree")
