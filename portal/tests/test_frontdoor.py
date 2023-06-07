@@ -1,3 +1,4 @@
+import datetime
 import unittest
 import uuid
 
@@ -8,7 +9,7 @@ from . import utils
 
 
 def _add_epc(uprn, rating):
-    models.EpcRating.objects.update_or_create(uprn=uprn, defaults={"rating": rating})
+    models.EpcRating.objects.update_or_create(uprn=uprn, defaults={"rating": rating, "date": datetime.date(2020, 12, 25)})
     assert interface.api.epc.get_epc(uprn)
 
 
