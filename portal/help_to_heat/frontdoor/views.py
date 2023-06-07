@@ -157,7 +157,7 @@ class CountryView(PageView):
 @register_page("own-property")
 class OwnPropertyView(PageView):
     def get_context(self, *args, **kwargs):
-        return {"own_property_options": schemas.own_property_options}
+        return {"own_property_options_map": schemas.own_property_options_map}
 
 
 @register_page("address")

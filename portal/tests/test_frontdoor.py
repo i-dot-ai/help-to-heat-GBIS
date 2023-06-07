@@ -360,12 +360,12 @@ def test_summary():
     page = page.click(contains="Change Do you own the property?")
 
     form = page.get_form()
-    form["own_property"] = "I am a property owner but lease my property to one or more tenants"
+    form["own_property"] = "Yes, I am the property owner but I lease the property to one or more tenants"
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Check your answers')")
 
-    assert page.has_text("I am a property owner but lease my property to one or more tenants")
+    assert page.has_text("Yes, I am the property owner but I lease the property to one or more tenants")
 
     assert page.has_text("10, DOWNING STREET, LONDON, CITY OF WESTMINSTER, SW1A 2AA")
 

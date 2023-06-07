@@ -104,11 +104,25 @@ question_page_lookup = {
 pages = page_order + extra_pages
 
 country_options = ("England", "Scotland", "Wales", "Northern Ireland")
-own_property_options = (
-    "Yes, I own my property and live in it",
-    "No, I am a tenant",
-    "No, I am a social housing tenant",
-    "I am a property owner but lease my property to one or more tenants",
+own_property_options_map = (
+    {
+        "value": "Yes, I own my property and live in it",
+        "label": "Yes, I own my property and live in it",
+    },
+    {
+        "value": "No, I am a tenant",
+        "label": "No, I am a tenant",
+        "hint": "If you are eligible for a referral through this service, your energy supplier will need to check that you have your landlord’s permission to install any energy-saving measures to the property.",  # noqa E501
+    },
+    {
+        "value": "No, I am a social housing tenant",
+        "label": "No, I am a social housing tenant",
+        "hint": "If you are eligible for a referral through this service, your energy supplier will need to check that you have your landlord’s permission to install any energy-saving measures to the property.",  # noqa E501
+    },
+    {
+        "value": "Yes, I am the property owner but I lease the property to one or more tenants",
+        "label": "Yes, I am the property owner but I lease the property to one or more tenants",
+    },
 )
 epc_display_options = ("Yes", "No", "I don't know")
 epc_validation_options = epc_display_options + ("Not found",)
@@ -219,7 +233,7 @@ loft_insulation_options = (
 
 class SessionSchema(Schema):
     country = fields.String(validate=validate.OneOf(country_options))
-    own_property = fields.String(validate=validate.OneOf(own_property_options))
+    own_property = fields.String(validate=validate.OneOf(tuple(item["value"] for item in own_property_options_map)))
     address_line_1 = fields.String()
     address_line_2 = fields.String()
     town_or_city = fields.String()
