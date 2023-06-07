@@ -1,0 +1,17 @@
+{% extends "frontdoor/base.html" %}
+
+{% block content %}
+  <a href="{{url('frontdoor:page', session_id=session_id, page_name='epc')}}" class="govuk-back-link">Back</a>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">It's likely that your home already has suitable energy saving measures</h1>
+      <p class="govuk-body">This service is for homes with lower energy performance ratings, from D to G.</p>
+      <h2 class="govuk-heading-m">Find other support</h2>
+      <p class="govuk-body">Check out what other help you can get with your energy bills from the government's <a
+          class="govuk-link" href="#">Help for Households.</a>
+      </p>
+      <p class="govuk-body">Find out if you can get support from your local council from the <a class="govuk-link"
+          href="#">Household Support Fund.</a></p>
+    </div>
+  </div>
+{% endblock %}
