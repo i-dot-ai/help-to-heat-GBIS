@@ -365,11 +365,11 @@ def test_no_benefits_flow():
     assert page.has_one("h1:contains('We found an Energy Performance Certificate that might be yours')")
 
     form = page.get_form()
-    form['accept_suggested_epc'] = "Yes"
+    form["accept_suggested_epc"] = "Yes"
     form = page.get_form()
     page = form.submit().follow()
 
-    assert page.has_one('''h1:contains("It's likely that your home already has suitable energy saving measures")''')
+    assert page.has_one("""h1:contains("It's likely that your home already has suitable energy saving measures")""")
 
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
