@@ -27,7 +27,7 @@ legacy_referral_keys_map = {
     "walls": "wall_type",
     "wallInsulation": "wall_insulation",
     "energySupplier": "supplier",
-    "addressUPRN": "addressUPRN",
+    "addressUPRN": "uprn",
     "counciltaxBandsSize": "counciltaxBandsSize",
     "house": "house",
     "loftInsulation": "loft_insulation",
