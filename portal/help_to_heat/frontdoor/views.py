@@ -395,6 +395,9 @@ class SchemesView(PageView):
         eligible_schemes = tuple(scheme for scheme in eligible_schemes if not scheme == "Energy Company Obligation 4")
         return {"eligible_schemes": eligible_schemes}
 
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
+        pass
+
 
 @register_page("supplier")
 class SupplierView(PageView):
