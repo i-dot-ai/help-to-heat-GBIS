@@ -799,6 +799,7 @@ def test_incorrect_referral_phone():
 
     assert page.has_one("p:contains('Invalid phone number format')")
 
+
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_referral_not_providing_email():
     client = utils.get_client()
