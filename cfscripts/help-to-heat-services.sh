@@ -16,16 +16,25 @@ unencrypted_dbs_envs=(
 
 buckets=()
 
-autoscalers=(
-    scale-help-to-heat-${CF_SPACE}
-)
+if [ "${CF_SPACE}" == "prod" ]; then
+    autoscalers=(
+        scale-help-to-heat
+    )
 
-dbs=(
-    help-to-heat-postgres-${CF_SPACE}
-)
+    dbs=(
+        help-to-heat-postgres
+    )
+else
+    autoscalers=(
+        scale-help-to-heat-${CF_SPACE}
+    )
+
+    dbs=(
+        help-to-heat-postgres-${CF_SPACE}
+    )
+fi
 
 #################################### Set Envs and Services above this line only #################################
-
 
 if [[ " ${autoscale_envs[*]} " =~ " ${CF_SPACE} " ]]; then
     autoscale=true
@@ -34,7 +43,7 @@ if [[ " ${unencrypted_dbs_envs[*]} " =~ " ${CF_SPACE} " ]]; then
     unencrypted=true
 fi
 
-printf "Checking help-to-heat-portal services in the ${CF_SPACE} environment... \n "
+printf "Checking help-to-heat services in the ${CF_SPACE} environment... \n "
 
 while read -r line; do
 svcs=$(echo $line | head -n1 | cut -d " " -f1)
@@ -47,7 +56,6 @@ needed_svcs=(`echo ${buckets[@]}  ${dbs[@]} ${autoscalers[@]} `)
 
 newservice=(`echo ${cfservices[@]}  ${cfservices[@]} ${needed_svcs[@]} | tr ' ' '\n' | sort | uniq -u `)
 
-
 # Create new services that don't already exist
 for value in "${newservice[@]}"
 do
@@ -59,7 +67,6 @@ do
         else
             $(./cf create-service postgres medium-13 $value &> /dev/null)
         fi
-    fi
     elif grep -q "scale" <<< "$value" && [ $autoscale ]; then
         echo "Adding service ${value}..........."
         $(./cf create-service autoscaler autoscaler-free-plan $value &> /dev/null)
@@ -68,6 +75,7 @@ do
         $(./cf create-service aws-s3-bucket default $value -c '{"public_bucket":false}' &> /dev/null)
     fi
 done
+
 
 # Monitor and finish only when new DBs are created or timeout and fail
 for value in "${newservice[@]}"
