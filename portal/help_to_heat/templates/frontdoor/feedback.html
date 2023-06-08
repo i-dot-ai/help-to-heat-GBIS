@@ -7,7 +7,9 @@
   {% endif %}
 
 <h1 class="govuk-heading-l">Help us improve the service</h1>
-<form id="feedback" action="/form-handler" method="post" novalidate>
+<form id="feedback" method="post" novalidate>
+    {{csrf_input}}
+
   <div class="govuk-form-group govuk-!-padding-bottom-7">
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
