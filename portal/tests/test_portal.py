@@ -74,8 +74,9 @@ def test_service_manager_add_supplier():
 
 def test_legacy_download():
     models.Referral.objects.filter(referral_download=None).delete()
-    models.EpcRating.objects.update_or_create(uprn="202134001",
-                                              defaults={"rating": "E", "date": datetime.date(1990, 1, 1)})
+    models.EpcRating.objects.update_or_create(
+        uprn="202134001", defaults={"rating": "E", "date": datetime.date(1990, 1, 1)}
+    )
 
     legacy_data = {
         "loft": "no",
