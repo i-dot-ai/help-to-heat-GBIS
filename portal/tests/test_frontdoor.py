@@ -1,5 +1,6 @@
 import unittest
 import uuid
+import datetime
 
 from help_to_heat.frontdoor import interface
 from help_to_heat.portal import models
@@ -8,7 +9,7 @@ from . import utils
 
 
 def _add_epc(uprn, rating):
-    models.EpcRating.objects.update_or_create(uprn=uprn, defaults={"rating": rating})
+    models.EpcRating.objects.update_or_create(uprn=uprn, defaults={"rating": rating, "date": datetime.date(2022, 12, 25)})
     assert interface.api.epc.get_epc(uprn)
 
 
