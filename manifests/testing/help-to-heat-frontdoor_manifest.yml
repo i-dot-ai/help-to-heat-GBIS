@@ -1,12 +1,10 @@
 ---
 applications:
-- name: help-to-heat-portal-testing
+- name: help-to-heat-frontdoor-testing
   services:
   - help-to-heat-postgres-testing
   routes:
-  - route: help-to-heat-portal-testing.london.cloudapps.digital
-    protocol: http1
-  - route: help-to-heat-portal-testing.apps.internal
+  - route: help-to-heat-frontdoor-testing.london.cloudapps.digital
     protocol: http1
   processes:
   - type: web

@@ -17,6 +17,7 @@ on:
       - sandbox
       - suppliers
       - develop
+      - testing
       - prod
 
 permissions:
