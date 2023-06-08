@@ -87,6 +87,7 @@ jobs:
               "develop": {"CF_SPACE": "develop"},
               "staging": {"CF_SPACE": "staging"},
               "suppliers": {"CF_SPACE": "suppliers"},
+              "testing": {"CF_SPACE": "testing"},
               "feature/deploy-from-main": {"CF_SPACE": "flibble"}
             }
 
