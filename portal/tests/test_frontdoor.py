@@ -225,7 +225,7 @@ def test_happy_flow():
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
-    form["contact_number"] = "1234567890"
+    form["contact_number"] = "07777777777"
     form["email"] = "freddy.flibble@example.com"
     page = form.submit().follow()
 
@@ -255,7 +255,7 @@ def test_happy_flow():
     expected = {
         "first_name": "Freddy",
         "last_name": "Flibble",
-        "contact_number": "1234567890",
+        "contact_number": "07777777777",
         "email": "freddy.flibble@example.com",
     }
     assert data == expected, (data, expected)
@@ -625,7 +625,7 @@ def test_referral_email():
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
-    form["contact_number"] = "1234567890"
+    form["contact_number"] = "07777777777"
     form["email"] = "freddy.flibble@example.com"
     page = form.submit().follow()
 
