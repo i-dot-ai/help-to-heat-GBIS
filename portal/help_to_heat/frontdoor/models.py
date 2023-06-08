@@ -1,5 +1,3 @@
-import uuid
-
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from help_to_heat import utils
@@ -13,7 +11,7 @@ class Event(utils.TimeStampedModel):
 class Answer(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     data = models.JSONField(encoder=DjangoJSONEncoder, editable=False)
     page_name = models.CharField(max_length=128, editable=False)
-    session_id = models.UUIDField(default=uuid.uuid4, editable=False)
+    session_id = models.UUIDField(editable=False)
 
     class Meta:
         constraints = [
