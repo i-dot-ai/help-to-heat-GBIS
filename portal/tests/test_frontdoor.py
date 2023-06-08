@@ -1,6 +1,6 @@
+import datetime
 import unittest
 import uuid
-import datetime
 
 from help_to_heat.frontdoor import interface
 from help_to_heat.portal import models
