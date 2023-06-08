@@ -224,6 +224,7 @@ class EpcView(PageView):
             epc = {}
         context = {
             "epc_rating": epc.get("rating"),
+            "epc_date": epc.get("date"),
             "epc_display_options": schemas.epc_display_options,
             "address": address,
         }
