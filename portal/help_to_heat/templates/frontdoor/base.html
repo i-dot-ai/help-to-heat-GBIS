@@ -66,7 +66,7 @@
           Alpha
         </strong>
         <span class="govuk-phase-banner__text">
-          This is a new service – your <a class="govuk-link" href="/feedback">feedback</a> will help us to improve it.
+          This is a new service – your <a class="govuk-link" href="{% if session_id and page_name %}{{url('frontdoor:feedback', session_id=session_id, page_name=page_name)}}{% else %}{{url('frontdoor:feedback')}}{% endif %}">feedback</a> will help us to improve it.
         </span>
       </p>
     </div>
