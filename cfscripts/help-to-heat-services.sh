@@ -54,11 +54,12 @@ do
     if grep -q "postgres" <<< "$value"; then
         echo "Adding service ${value}..........."
         echo "Start Time: `date +%H:%M:%S`"
-        if [ $unencrypted_dbs_envs ]; then
+        if [[ " ${unencrypted_dbs_envs[*]} " =~ " ${CF_SPACE} " ]]; then
             $(./cf create-service postgres tiny-unencrypted-13 $value &> /dev/null)
         else
             $(./cf create-service postgres medium-13 $value &> /dev/null)
         fi
+    fi
     elif grep -q "scale" <<< "$value" && [ $autoscale ]; then
         echo "Adding service ${value}..........."
         $(./cf create-service autoscaler autoscaler-free-plan $value &> /dev/null)
