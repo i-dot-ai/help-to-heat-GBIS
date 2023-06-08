@@ -4,7 +4,6 @@ import datetime
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
-from help_to_heat.frontdoor import interface
 from help_to_heat.frontdoor.eligibility import calculate_eligibility
 from help_to_heat.portal import decorators, models
 
@@ -75,22 +74,16 @@ def convert_row(row):
 
 def add_extra_row_data(row):
     eligibility = calculate_eligibility(row)
+    epc_date = row.get("epc_date")
+    epc_date = epc_date and datetime.datetime.strptime(epc_date, "%Y-%m-%d")
     row = {
         **row,
         "ECO4": "Energy Company Obligation 4" in eligibility,
         "GBIS": "Great British Insulation scheme" in eligibility,
+        "epc_day": epc_date and epc_date.day or "",
+        "epc_month": epc_date and epc_date.month or "",
+        "epc_year": epc_date and epc_date.year or "",
     }
-    uprn = row.get("uprn")
-    if uprn:
-        epc = interface.api.epc.get_epc(uprn)
-        epc_date = epc.get("date")
-        epc_date = epc_date and datetime.datetime.strptime(epc_date, "%Y-%m-%d")
-        row = {
-            **row,
-            "epc_day": epc_date and epc_date.day or "",
-            "epc_month": epc_date and epc_date.month or "",
-            "epc_year": epc_date and epc_date.year or "",
-        }
     return row
 
 
