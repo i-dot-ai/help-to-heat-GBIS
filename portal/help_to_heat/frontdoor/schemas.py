@@ -1,7 +1,7 @@
 import itertools
 import re
 
-from marshmallow import Schema, ValidationError, fields, validate, validates
+from marshmallow import Schema, ValidationError, fields, validate
 
 page_order = (
     "country",
@@ -257,7 +257,7 @@ def validate_email_or_none(value):
 
 
 def validate_phone_number(value):
-    phone_regex = "^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$"
+    phone_regex = "^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$"  # noqa E501, W605
     if not re.match(phone_regex, value):
         raise ValidationError("Invalid phone number format")
 
