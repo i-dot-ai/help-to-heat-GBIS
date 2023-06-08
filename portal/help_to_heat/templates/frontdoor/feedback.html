@@ -1,0 +1,190 @@
+{% extends "frontdoor/base.html" %}
+
+{% block content %}
+<h1 class="govuk-heading-l">Help us improve the service</h1>
+<form id="feedback" action="/form-handler" method="post" novalidate>
+  <div class="govuk-form-group govuk-!-padding-bottom-7">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--m" for="how-useful-detail">
+            I found this service useful for learning about government energy
+            efficiency support.
+          </label>
+        </h1>
+        <div id="how-useful-detail-hint" class="govuk-hint">
+          How much do you agree with the statement above?
+        </div>
+      </legend>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="how-useful" name="how-useful" type="radio" value="Completely disagree">
+          <label class="govuk-label govuk-radios__label" for="how-useful">
+            Completely disagree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="how-useful-2" name="how-useful" type="radio" value="Disagree">
+          <label class="govuk-label govuk-radios__label" for="how-useful-2">
+            Disagree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="how-useful-3" name="how-useful" type="radio" value="Neutral">
+          <label class="govuk-label govuk-radios__label" for="how-useful-3">
+            Neutral
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="how-useful-4" name="how-useful" type="radio" value="Agree">
+          <label class="govuk-label govuk-radios__label" for="how-useful-4">
+            Agree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="how-useful-5" name="how-useful" type="radio" value="Completely agree">
+          <label class="govuk-label govuk-radios__label" for="how-useful-5">
+            Completely agree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="how-useful-6" name="how-useful" type="radio"
+            value="Not sure / not applicable">
+          <label class="govuk-label govuk-radios__label" for="how-useful-6">
+            Not sure / not applicable
+          </label>
+        </div>
+      </div>
+
+
+    </fieldset>
+  </div>
+
+  <div class="govuk-form-group govuk-!-padding-bottom-7">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--m" for="guidance-detail">
+            I had sufficient detail or guidance on every page to proceed to the next step.
+          </label>
+        </h1>
+        <div id="guidance-detail-hint" class="govuk-hint">
+          How much do you agree with the statement above?
+        </div>
+
+      </legend>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="guidance" name="guidance" type="radio" value="Completely disagree">
+          <label class="govuk-label govuk-radios__label" for="guidance">
+            Completely disagree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="guidance-2" name="guidance" type="radio" value="Disagree">
+          <label class="govuk-label govuk-radios__label" for="guidance-2">
+            Disagree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="guidance-3" name="guidance" type="radio" value="Neutral">
+          <label class="govuk-label govuk-radios__label" for="guidance-3">
+            Neutral
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="guidance-4" name="guidance" type="radio" value="Agree">
+          <label class="govuk-label govuk-radios__label" for="guidance-4">
+            Agree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="guidance-5" name="guidance" type="radio" value="Completely agree">
+          <label class="govuk-label govuk-radios__label" for="guidance-5">
+            Completely agree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="guidance-6" name="guidance" type="radio"
+            value="Not sure / not applicable">
+          <label class="govuk-label govuk-radios__label" for="guidance-6">
+            Not sure / not applicable
+          </label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="govuk-form-group govuk-!-padding-bottom-7">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--m" for="accuracy-detail">
+            I was able to answer all questions accurately, to the best of my knowledge.
+          </label>
+        </h1>
+        <div id="accuracy-detail-hint" class="govuk-hint">
+          How much do you agree with the statement above?
+        </div>
+      </legend>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="accuracy" name="accuracy" type="radio" value="Completely disagree">
+          <label class="govuk-label govuk-radios__label" for="accuracy">
+            Completely disagree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="accuracy-2" name="accuracy" type="radio" value="Disagree">
+          <label class="govuk-label govuk-radios__label" for="accuracy-2">
+            Disagree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="accuracy-3" name="accuracy" type="radio" value="Neutral">
+          <label class="govuk-label govuk-radios__label" for="accuracy-3">
+            Neutral
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="accuracy-4" name="accuracy" type="radio" value="Agree">
+          <label class="govuk-label govuk-radios__label" for="accuracy-4">
+            Agree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="accuracy-5" name="accuracy" type="radio" value="Completely agree">
+          <label class="govuk-label govuk-radios__label" for="accuracy-5">
+            Completely agree
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="accuracy-6" name="accuracy" type="radio"
+            value="Not sure / not applicable">
+          <label class="govuk-label govuk-radios__label" for="accuracy-6">
+            Not sure / not applicable
+          </label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="govuk-form-group govuk-!-padding-bottom-7">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--m" for="more-detail">
+        While using our service, was there any specific aspect of this service that you
+        believe can be improved?
+      </label>
+    </h1>
+    <div id="more-detail-hint" class="govuk-hint">
+      Please do not include any personal or financial information in your response
+    </div>
+    <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="8"
+      aria-describedby="more-detail-hint"></textarea>
+  </div>
+
+  <button class="govuk-button" data-module="govuk-button">
+    Send feedback
+  </button>
+</form>
+{% endblock %}

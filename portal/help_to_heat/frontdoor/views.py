@@ -50,6 +50,9 @@ def homepage_view(request):
     }
     return render(request, template_name="frontdoor/homepage.html", context=context)
 
+def feedback_view(request):
+    return render(request, template_name="frontdoor/feedback.html")
+
 
 def get_prev_next_page_name(page_name):
     if page_name in schemas.page_prev_next_map:
