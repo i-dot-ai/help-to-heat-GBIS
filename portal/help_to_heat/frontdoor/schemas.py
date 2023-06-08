@@ -1,7 +1,7 @@
 import itertools
 import re
 
-from marshmallow import Schema, fields, validate, ValidationError, validates
+from marshmallow import Schema, ValidationError, fields, validate, validates
 
 page_order = (
     "country",
@@ -253,13 +253,13 @@ multichoice_options = (
 
 def validate_email_or_none(value):
     if value != "" and not validate.Email()(value):
-        raise ValidationError('Invalid email format')
+        raise ValidationError("Invalid email format")
 
 
 def validate_phone_number(value):
     phone_regex = "^((\(?0\d{4}\)?\s?\d{3}\s?\d{3})|(\(?0\d{3}\)?\s?\d{3}\s?\d{4})|(\(?0\d{2}\)?\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$"
     if not re.match(phone_regex, value):
-        raise ValidationError('Invalid phone number format')
+        raise ValidationError("Invalid phone number format")
 
 
 class SessionSchema(Schema):
