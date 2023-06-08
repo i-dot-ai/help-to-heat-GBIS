@@ -8,6 +8,7 @@ on:
     branches:
       - sandbox
       - develop
+      - testing
       - staging
 
 jobs:

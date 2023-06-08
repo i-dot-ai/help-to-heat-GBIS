@@ -10,6 +10,7 @@ on:
       - develop
       - staging
       - suppliers
+      - testing
 
 permissions:
   packages: write
