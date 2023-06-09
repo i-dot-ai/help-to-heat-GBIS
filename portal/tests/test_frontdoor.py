@@ -670,3 +670,43 @@ def test_feedback_no_session():
     assert feedback.data["guidance-detail"] == "Completely disagree"
     assert feedback.data["accuracy-detail"] == "Disagree"
     assert feedback.data["more-detail"] == "Blah, blah, blah"
+
+
+def test_feedback_with_session():
+    client = utils.get_client()
+    page = client.get("/")
+
+    assert page.has_one("h1:contains('Check if you may be eligible for the Great British Insulation Scheme')")
+
+    page = page.click(contains="Start")
+
+    session_id = page.path.split("/")[1]
+    assert uuid.UUID(session_id)
+
+    form = page.get_form()
+    form["country"] = "Scotland"
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('Do you own the property?')")
+
+    page = page.click(contains="feedback")
+    form = page.get_form()
+    form["how-much"] = "Agree"
+    form["guidance-detail"] = "Completely disagree"
+    form["accuracy-detail"] = "Disagree"
+    form["more-detail"] = "Blah, blah, blah"
+    page = form.submit().follow()
+
+    assert page.has_one("h1:contains('Thank you for your feedback')")
+
+    feedback = frontdoor_models.Feedback.objects.latest("created_at")
+    assert feedback.data["how-much"] == "Agree"
+    assert feedback.data["guidance-detail"] == "Completely disagree"
+    assert feedback.data["accuracy-detail"] == "Disagree"
+    assert feedback.data["more-detail"] == "Blah, blah, blah"
+
+    feedback_session_id = page.path.split("/")[3]
+    assert uuid.UUID(feedback_session_id)
+
+    page = page.click(contains="Back")
+    assert page.has_one("h1:contains('Do you own the property?')")
