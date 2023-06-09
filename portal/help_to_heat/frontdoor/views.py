@@ -336,17 +336,9 @@ class LoftView(PageView):
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         prev_page_name, next_page_name = get_prev_next_page_name(page_name)
         loft = data.get("loft")
-        if not loft:
-            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
-
-        choice = data["loft"]
-        if choice == "Yes, I have a loft that hasn't been converted into a room":
-            prev_page_name, next_page_name = get_prev_next_page_name(page_name)
-            return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
-        else:
-            _ = interface.api.session.delete_answer(session_id, "loft-insulation")
-            _ = interface.api.session.delete_answer(session_id, "loft-access")
-            return redirect("frontdoor:page", session_id=session_id, page_name="summary")
+        if loft == "No, I don't have a loft or my loft has been converted into a room":
+            next_page_name = "supplier"
+        return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
 @register_page("loft-access")
