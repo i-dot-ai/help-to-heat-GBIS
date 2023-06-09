@@ -466,3 +466,10 @@ class FeedbackView(utils.MethodDispatcher):
             return redirect("frontdoor:feedback-thanks", session_id=session_id, page_name=page_name)
         else:
             return redirect("frontdoor:feedback-thanks")
+
+
+def feedback_thanks_view(request, session_id=None, page_name=None):
+    template_name = "frontdoor/feedback-thanks.html"
+    prev_page_url = page_name and reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=page_name))
+    context = {"session_id": session_id, "page_name": page_name, "prev_url": prev_page_url}
+    return render(request, template_name=template_name, context=context)
