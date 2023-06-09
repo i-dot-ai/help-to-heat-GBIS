@@ -3,7 +3,9 @@
 
 {% block content %}
 
-  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  {% if prev_url %}
+    <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  {% endif %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

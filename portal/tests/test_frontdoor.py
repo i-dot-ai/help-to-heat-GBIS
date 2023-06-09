@@ -663,6 +663,7 @@ def test_feedback_no_session():
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Thank you for your feedback')")
+    assert not page.all("a:contains('Back')")
 
     feedback = frontdoor_models.Feedback.objects.latest("created_at")
     assert feedback.data["how-much"] == "Agree"
