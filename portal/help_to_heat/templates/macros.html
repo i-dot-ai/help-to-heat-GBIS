@@ -36,13 +36,13 @@
         {% set value, label = option %}
       {% endif %}
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="option-{{slugify(value)}}" name="{{name}}" type="radio" value="{{value}}" {{is_checked(data, name, value)}}>
-        <label class="govuk-label govuk-radios__label" for="option-{{slugify(value)}}">
+        <input class="govuk-radios__input" id="{{name}}-option-{{slugify(value)}}" name="{{name}}" type="radio" value="{{value}}" {{is_checked(data, name, value)}}>
+        <label class="govuk-label govuk-radios__label" for="{{name}}-option-{{slugify(value)}}">
           {{label}}
         </label>
         {% if option is mapping %}
           {% if option.hint %}
-            <div id="option-{{slugify(value)}}-hint" class="govuk-hint govuk-radios__hint">
+            <div id="{{name}}-option-{{slugify(value)}}-hint" class="govuk-hint govuk-radios__hint">
               {{option.hint}}
             </div>
           {% endif %}
@@ -120,7 +120,6 @@
 
       <p class="govuk-body">Find out if you can get support from your local council from the <a href="https://www.gov.uk/cost-living-help-local-council" class="govuk-link">Household Support Fund</a>.</p>
 
-    </p>
     </div>
   </div>
 {%- endmacro%}

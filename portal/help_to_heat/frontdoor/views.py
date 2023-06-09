@@ -101,6 +101,7 @@ class PageView(utils.MethodDispatcher):
             "gtag_id": gtag_id,
             "data": data,
             "session_id": session_id,
+            "page_name": page_name,
             "errors": errors,
             "prev_url": prev_page_url,
             "next_url": next_page_url,
@@ -449,3 +450,31 @@ def page_view(request, session_id, page_name):
 def change_page_view(request, session_id, page_name):
     assert page_name in page_map
     return page_map[page_name](request, session_id, page_name, is_change_page=True)
+
+
+class FeedbackView(utils.MethodDispatcher):
+    def get(self, request, session_id=None, page_name=None):
+        template_name = "frontdoor/feedback.html"
+        prev_page_url = page_name and reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=page_name))
+        context = {
+            "session_id": session_id,
+            "page_name": page_name,
+            "prev_url": prev_page_url,
+            "multichoice_options": schemas.multichoice_options,
+        }
+        return render(request, template_name=template_name, context=context)
+
+    def post(self, request, session_id=None, page_name=None):
+        data = request.POST.dict()
+        interface.api.feedback.save_feedback(session_id, page_name, data)
+        if session_id and page_name:
+            return redirect("frontdoor:feedback-thanks", session_id=session_id, page_name=page_name)
+        else:
+            return redirect("frontdoor:feedback-thanks")
+
+
+def feedback_thanks_view(request, session_id=None, page_name=None):
+    template_name = "frontdoor/feedback-thanks.html"
+    prev_page_url = page_name and reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=page_name))
+    context = {"session_id": session_id, "page_name": page_name, "prev_url": prev_page_url}
+    return render(request, template_name=template_name, context=context)
