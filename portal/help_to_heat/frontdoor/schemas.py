@@ -232,6 +232,14 @@ loft_insulation_options = (
     "No, there is less than 200mm of insulation in my loft",
     "I don't know",
 )
+multichoice_options = (
+    "Completely disagree",
+    "Disagree",
+    "Neutral",
+    "Agree",
+    "Completely agree",
+    "Not sure / not applicable",
+)
 
 
 class SessionSchema(Schema):
