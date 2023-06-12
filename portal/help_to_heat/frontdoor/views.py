@@ -333,6 +333,15 @@ class LoftView(PageView):
     def get_context(self, *args, **kwargs):
         return {"loft_options": schemas.loft_options}
 
+    def save_data(self, request, session_id, page_name, *args, **kwargs):
+        data = request.POST.dict()
+        loft = data.get("loft")
+        if loft == "No, I don't have a loft or my loft has been converted into a room":
+            data['loft_access'] = "No loft"
+            data['loft_insulation'] = "No loft"
+        data = interface.api.session.save_answer(session_id, page_name, data)
+        return data
+
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         prev_page_name, next_page_name = get_prev_next_page_name(page_name)
         loft = data.get("loft")
