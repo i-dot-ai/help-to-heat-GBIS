@@ -81,16 +81,6 @@ class Session(Entity):
         )
         return answer.data
 
-    @with_schema(load=RemoveAnswerSchema, dump=schemas.SessionSchema)
-    @register_event(models.Event, "Answer removed")
-    def delete_answer(self, session_id, page_name):
-        answers = models.Answer.objects.filter(session_id=session_id, page_name=page_name)
-        if answers.count() < 1:
-            return {}
-        answer = answers.first()
-        answer.delete()
-        return {}
-
     @with_schema(load=GetAnswerSchema, dump=schemas.SessionSchema)
     def get_answer(self, session_id, page_name):
         try:
