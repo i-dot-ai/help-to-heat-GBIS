@@ -210,6 +210,7 @@ loft_options = (
     "No, I don't have a loft or my loft has been converted into a room",
 )
 loft_access_options = ("Yes, there is access to my loft", "No, there is no access to my loft")
+loft_access_validation_options = loft_access_options + ("No loft",)
 supplier_options = (
     "British Gas",
     "Bulb",
@@ -232,6 +233,7 @@ loft_insulation_options = (
     "No, there is less than 200mm of insulation in my loft",
     "I don't know",
 )
+loft_insulation_validation_options = loft_insulation_options + ("No loft",)
 multichoice_options = (
     "Completely disagree",
     "Disagree",
@@ -267,8 +269,8 @@ class SessionSchema(Schema):
     wall_type = fields.String(validate=validate.OneOf(wall_type_options))
     wall_insulation = fields.String(validate=validate.OneOf(wall_insulation_options))
     loft = fields.String(validate=validate.OneOf(loft_options))
-    loft_access = fields.String(validate=validate.OneOf(loft_access_options))
-    loft_insulation = fields.String(validate=validate.OneOf(loft_insulation_options))
+    loft_access = fields.String(validate=validate.OneOf(loft_access_validation_options))
+    loft_insulation = fields.String(validate=validate.OneOf(loft_insulation_validation_options))
     supplier = fields.String(validate=validate.OneOf(supplier_options))
     first_name = fields.String()
     last_name = fields.String()
