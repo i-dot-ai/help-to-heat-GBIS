@@ -13,11 +13,6 @@ class Answer(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     page_name = models.CharField(max_length=128, editable=False)
     session_id = models.UUIDField(editable=False)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["page_name", "session_id"], name="unique answer per page per session")
-        ]
-
 
 class Feedback(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     session_id = models.UUIDField(editable=False, blank=True, null=True)

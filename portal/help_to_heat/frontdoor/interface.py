@@ -74,27 +74,17 @@ class Session(Entity):
     @with_schema(load=SaveAnswerSchema, dump=schemas.SessionSchema)
     @register_event(models.Event, "Answer saved")
     def save_answer(self, session_id, page_name, data):
-        answer, created = models.Answer.objects.update_or_create(
+        answer = models.Answer.objects.create(
             session_id=session_id,
             page_name=page_name,
-            defaults={"data": data},
+            data=data,
         )
         return answer.data
-
-    @with_schema(load=RemoveAnswerSchema, dump=schemas.SessionSchema)
-    @register_event(models.Event, "Answer removed")
-    def delete_answer(self, session_id, page_name):
-        answers = models.Answer.objects.filter(session_id=session_id, page_name=page_name)
-        if answers.count() < 1:
-            return {}
-        answer = answers.first()
-        answer.delete()
-        return {}
 
     @with_schema(load=GetAnswerSchema, dump=schemas.SessionSchema)
     def get_answer(self, session_id, page_name):
         try:
-            answer = models.Answer.objects.get(session_id=session_id, page_name=page_name)
+            answer = models.Answer.objects.filter(session_id=session_id, page_name=page_name).latest("created_at")
             return answer.data
         except models.Answer.DoesNotExist:
             return {}
