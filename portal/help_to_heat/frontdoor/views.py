@@ -346,7 +346,7 @@ class LoftView(PageView):
         prev_page_name, next_page_name = get_prev_next_page_name(page_name)
         loft = data.get("loft")
         if loft == "No, I don't have a loft or my loft has been converted into a room":
-            next_page_name = "supplier"
+            next_page_name = "summary"
         return redirect("frontdoor:page", session_id=session_id, page_name=next_page_name)
 
 
