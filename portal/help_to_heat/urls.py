@@ -5,7 +5,6 @@ from help_to_heat import views
 from help_to_heat.frontdoor.urls import frontdoor_patterns
 from help_to_heat.portal.urls import api_patterns, portal_patterns
 
-
 if not settings.KILL_SWITCH:
     if settings.SHOW_FRONTDOOR:
         urlpatterns = [
@@ -16,7 +15,6 @@ if not settings.KILL_SWITCH:
         urlpatterns = [
             path("", include((portal_patterns, "portal"))),
         ]
-
 
     urlpatterns = [
         path("admin/", admin.site.urls),
