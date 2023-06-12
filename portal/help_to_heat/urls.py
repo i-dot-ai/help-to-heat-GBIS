@@ -16,7 +16,6 @@ if not settings.KILL_SWITCH:
             path("", include((portal_patterns, "portal"))),
         ]
 
-
     urlpatterns = [
         path("admin/", admin.site.urls),
         path("api/", include(api_patterns)),
