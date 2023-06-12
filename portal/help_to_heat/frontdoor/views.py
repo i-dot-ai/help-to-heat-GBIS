@@ -337,8 +337,8 @@ class LoftView(PageView):
         data = request.POST.dict()
         loft = data.get("loft")
         if loft == "No, I don't have a loft or my loft has been converted into a room":
-            data['loft_access'] = "No loft"
-            data['loft_insulation'] = "No loft"
+            data["loft_access"] = "No loft"
+            data["loft_insulation"] = "No loft"
         data = interface.api.session.save_answer(session_id, page_name, data)
         return data
 
