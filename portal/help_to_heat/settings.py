@@ -26,6 +26,7 @@ ALLOWED_HOSTS = ["*"]
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 
 GTAG_ID = env.str("GTAG_ID", default=None)
+BASIC_AUTH = env.str("BASIC_AUTH", default="")
 
 # Application definition
 
@@ -59,6 +60,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if BASIC_AUTH:
+    MIDDLEWARE = ["help_to_heat.auth.basic_auth_middleware"] + MIDDLEWARE
 
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True
