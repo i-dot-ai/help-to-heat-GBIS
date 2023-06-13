@@ -1,5 +1,4 @@
 import itertools
-import re
 
 from marshmallow import Schema, ValidationError, fields, validate
 
