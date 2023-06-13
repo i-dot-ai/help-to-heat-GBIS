@@ -190,6 +190,11 @@ property_subtype_options_map = {
             "label": "Terraced",
             "hint": "Sits in the middle with a house or building on each side",
         },
+        {
+            "value": "End terrace",
+            "label": "End terrace",
+            "hint": "Sits at the end of a row of similar houses with one house attached to it",
+        },
     ),
 }
 number_of_bedrooms_options = ("Studio", "One bedroom", "Two bedrooms", "Three or more bedrooms")
