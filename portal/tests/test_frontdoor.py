@@ -732,7 +732,7 @@ def test_incorrect_referral_email():
     page = _answer_house_questions(page, session_id, benefits_answer="Yes", epc_rating="F")
 
     assert page.has_one("h1:contains('Information based on your answers')")
-    assert page.has_text("Great British Insulation scheme")
+    assert page.has_text("Great British Insulation Scheme")
     assert not page.has_text("Energy Company Obligation 4")
     form = page.get_form()
     page = form.submit().follow()
@@ -776,7 +776,7 @@ def test_referral_not_providing_email():
     page = _answer_house_questions(page, session_id, benefits_answer="Yes", epc_rating="F")
 
     assert page.has_one("h1:contains('Information based on your answers')")
-    assert page.has_text("Great British Insulation scheme")
+    assert page.has_text("Great British Insulation Scheme")
     assert not page.has_text("Energy Company Obligation 4")
     form = page.get_form()
     page = form.submit().follow()
