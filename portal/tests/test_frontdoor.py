@@ -757,50 +757,6 @@ def test_incorrect_referral_email():
 
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
-def test_incorrect_referral_phone():
-    client = utils.get_client()
-    page = client.get("/")
-
-    assert page.status_code == 200
-    assert page.has_one("h1:contains('Check if you may be eligible for the Great British Insulation Scheme')")
-
-    page = page.click(contains="Start")
-    assert page.status_code == 200
-
-    session_id = page.path.split("/")[1]
-    assert uuid.UUID(session_id)
-
-    _check_page = _make_check_page(session_id)
-
-    # Answer main flow
-    page = _answer_house_questions(page, session_id, benefits_answer="Yes", epc_rating="F")
-
-    assert page.has_one("h1:contains('Information based on your answers')")
-    assert page.has_text("Great British Insulation scheme")
-    assert not page.has_text("Energy Company Obligation 4")
-    form = page.get_form()
-    page = form.submit().follow()
-
-    assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
-    page = _check_page(page, "supplier", "supplier", "Octopus")
-
-    assert page.has_one("h1:contains('Add your personal and contact details')")
-    form = page.get_form()
-
-    page = form.submit()
-    assert page.has_text("Please answer this question")
-    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Please answer this question')")
-
-    form["first_name"] = "Freddy"
-    form["last_name"] = "Flibble"
-    form["contact_number"] = "000test000"
-    form["email"] = "freddy.flibble@example.com"
-    page = form.submit()
-
-    assert page.has_one("p:contains('Invalid phone number format')")
-
-
-@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_referral_not_providing_email():
     client = utils.get_client()
     page = client.get("/")

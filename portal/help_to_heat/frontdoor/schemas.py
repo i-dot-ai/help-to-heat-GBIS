@@ -256,12 +256,6 @@ def validate_email_or_none(value):
         raise ValidationError("Invalid email format")
 
 
-def validate_phone_number(value):
-    phone_regex = "^[0-9]*$"
-    if not re.match(phone_regex, value):
-        raise ValidationError("Invalid phone number format")
-
-
 class SessionSchema(Schema):
     country = fields.String(validate=validate.OneOf(country_options))
     own_property = fields.String(validate=validate.OneOf(tuple(item["value"] for item in own_property_options_map)))
@@ -292,7 +286,7 @@ class SessionSchema(Schema):
     supplier = fields.String(validate=validate.OneOf(supplier_options))
     first_name = fields.String()
     last_name = fields.String()
-    contact_number = fields.String(validate=validate_phone_number)
+    contact_number = fields.String()
     email = fields.String(validate=validate_email_or_none, allow_none=True)
     schemes = fields.List(fields.Str())
 
