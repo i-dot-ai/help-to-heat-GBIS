@@ -43,7 +43,7 @@ def basic_auth_middleware(get_response):
         try:
             username, password = get_auth_from_header(request)
         except InvalidAuthError as e:
-            logger.error(e.message)
+            logger.error(repr(e))
             username = None
 
         if username and (username in auth_map) and (auth_map[username] == password):
