@@ -62,9 +62,7 @@ MIDDLEWARE = [
 ]
 
 if BASIC_AUTH:
-    from help_to_heat.auth import basic_auth_middleware
-
-    MIDDLEWARE = [basic_auth_middleware] + MIDDLEWARE
+    MIDDLEWARE = ["help_to_heat.auth.basic_auth_middleware"] + MIDDLEWARE
 
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True
