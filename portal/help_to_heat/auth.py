@@ -6,33 +6,32 @@ from django.conf import settings
 from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
-SENTINEL = object()
+
+
+class InvalidAuthError(Exception):
+    pass
 
 
 def get_auth_from_header(request):
-    auth = request.META.get("HTTP_AUTHORIZATION", b"")
-    if isinstance(auth, str):
-        auth = auth.encode("utf-8")
-    if not auth or auth[0].lower() != b"basic":
-        return False
-    if len(auth) == 1:
-        logger.error("Basic auth header too short")
-        return False
-    elif len(auth) > 2:
-        logger.error("Basic auth header too long")
-        return False
+    auth_header = request.META.get("HTTP_AUTHORIZATION", b"")
+    if isinstance(auth_header, str):
+        auth_header = auth_header.encode("utf-8")
+    if b" " not in auth_header:
+        raise InvalidAuthError("No space in header")
+    auth_type, auth_value = auth_header.split(maxsplit=1)
+    if auth_type.lower() != b"basic":
+        raise InvalidAuthError("Not basic auth")
     try:
-        try:
-            auth_decoded = base64.b64decode(auth[1]).decode("utf-8")
-        except UnicodeDecodeError:
-            auth_decoded = base64.b64decode(auth[1]).decode("latin-1")
-
+        auth_decoded = base64.b64decode(auth_value).decode("utf-8")
         username, password = auth_decoded.split(":", 1)
     except (TypeError, ValueError, UnicodeDecodeError, binascii.Error):
-        logger.error("Basic auth incorrectly base64 encoded")
-        return False
+        raise InvalidAuthError("Basic auth incorrectly base64 encoded")
 
     return (username, password)
+
+
+def make_unauthorized_response():
+    return HttpResponse("Unauthorized", status=401, headers={"WWW-Authenticate": 'Basic realm="site"'})
 
 
 def basic_auth_middleware(get_response):
@@ -41,11 +40,16 @@ def basic_auth_middleware(get_response):
     auth_map = {k: v for (k, v) in auth_pairs}
 
     def middleware(request):
-        user_name, password = get_auth_from_header(request)
-        if (user_name in auth_map) and (auth_map[user_name] == password):
+        try:
+            username, password = get_auth_from_header(request)
+        except InvalidAuthError as e:
+            logger.error(e.message)
+            username = None
+
+        if username and (username in auth_map) and (auth_map[username] == password):
             response = get_response(request)
         else:
-            response = HttpResponse("Unauthorized", status=401, headers={"WWW-Authenticate": 'Basic realm="site"'})
+            response = make_unauthorized_response()
 
         return response
 
