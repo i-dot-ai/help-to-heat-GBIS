@@ -203,7 +203,12 @@ class AddressManualView(PageView):
 @register_page("council-tax-band")
 class CouncilTaxBandView(PageView):
     def get_context(self, request, session_id, *args, **kwargs):
-        return {"council_tax_band_options": schemas.council_tax_band_options}
+        data = interface.api.session.get_answer(session_id, "country")
+        selected_country = data.get("country")
+        council_tax_bands = schemas.council_tax_band_options
+        if selected_country == "Wales":
+            council_tax_bands = schemas.welsh_council_tax_band_options
+        return {"council_tax_band_options": council_tax_bands}
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         session_data = interface.api.session.get_session(session_id)
