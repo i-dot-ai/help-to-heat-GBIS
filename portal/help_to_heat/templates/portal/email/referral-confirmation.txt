@@ -14,7 +14,7 @@ Properties that are applicable for home improvements must have a home survey com
 
 # Contacting the energy supplier about your referral after X working days
 
-You can [find contact details for the energy supplier (opens in new tab)]() if you need to contact them.
+You can [find contact details for the energy supplier](https://www.ofgem.gov.uk/environmental-and-social-schemes/energy-company-obligation-eco/contacts-guidance-and-resources/eco-supplier-contact-details) if you need to contact them.
 
 You do not need to contact the energy supplier unless it has been more than X working days since you submitted the referral and you have not yet received a confirmation email from them.
 
