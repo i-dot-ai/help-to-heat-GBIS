@@ -36,11 +36,7 @@ def is_ineligible(session_data):
 
     if council_tax_band not in eligible_council_tax[country]:
         if epc_rating in ("D", "E", "F", "G"):
-            if benefits == "No":
-                return True
-        if epc_rating == "D":
-            if benefits == "Yes":
-                return True
+            return True
         if accept_suggested_epc in ("No", "I don't know", "Not found"):
             if benefits == "No":
                 return True
@@ -67,38 +63,41 @@ def calculate_eligibility(session_data):
     :return: A tuple of which schemes the person is eligible for, if any
     """
     selected_epc = session_data.get("epc_rating", "Unknown")
-    property_status = session_data.get("own_property")
     selected_council_tax_band = session_data.get("council_tax_band")
     selected_country = session_data.get("country")
     selected_benefits = session_data.get("benefits")
     eligible_for_eco4 = selected_benefits == "Yes" and (selected_epc in ("E", "F", "G", "Unknown", "Not found"))
 
-    # Immediately excluded from both
+    # A quick check for outlying cases of GBIS eligibility where EPC doesn't apply
+    if selected_epc in ("D", "Unknown", "Not found") and selected_benefits == "Yes":
+        if eligible_for_eco4:
+            return ("GBIS", "ECO4")
+        else:
+            return ("GBIS",)
+
+    # Immediately excluded from both GBIS and ECO4
     if selected_epc in ("A", "B", "C"):
         return ()
 
-    # not eligible for GBIS so check ECO4
+    # Check eligible for GBIS
     if selected_council_tax_band not in eligible_council_tax[selected_country]:
-        if eligible_for_eco4:
-            return ("ECO4",)
+        if selected_epc in ("E", "F", "G", "Unknown", "Not found") and selected_benefits == "Yes":
+            if eligible_for_eco4:
+                return ("GBIS", "ECO4")
+            else:
+                return ("GBIS",)
         else:
             return tuple()
     else:
-        if (
-            (selected_epc in ("D", "Unknown", "Not found"))
-            and (property_status == "No, I am a tenant")
-            and (selected_benefits == "Yes")
-        ):
+        if (selected_benefits == "No") and (selected_epc in ("D", "E", "F", "G", "Unknown", "Not found")):
             if eligible_for_eco4:
                 return ("GBIS", "ECO4")
             else:
                 return ("GBIS",)
-        elif (selected_benefits == "No") and (selected_epc in ("D", "E", "F", "G", "Unknown", "Not found")):
+        elif (selected_benefits == "Yes") and (selected_epc in ("E", "F", "G", "Unknown", "Not found")):
             if eligible_for_eco4:
                 return ("GBIS", "ECO4")
             else:
                 return ("GBIS",)
-        elif eligible_for_eco4 and selected_council_tax_band in eligible_council_tax[selected_country]:
-            return ("GBIS", "ECO4")
         else:
             return tuple()

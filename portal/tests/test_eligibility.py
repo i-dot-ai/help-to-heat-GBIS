@@ -10,6 +10,16 @@ result_map = {
 scenarios = (
     (
         {
+            "council_tax_band": "F",
+            "benefits": "Yes",
+            "epc_rating": "F",
+            "country": "England",
+            "own_property": "Yes, I own my property and live in it",
+        },
+        "BOTH",
+    ),
+    (
+        {
             "council_tax_band": "B",
             "benefits": "Yes",
             "epc_rating": "F",
@@ -26,7 +36,7 @@ scenarios = (
             "country": "England",
             "own_property": "Yes, I own my property and live in it",
         },
-        "ECO4",
+        "BOTH",
     ),
     (
         {
@@ -65,7 +75,7 @@ scenarios = (
             "country": "England",
             "own_property": "No, I am a tenant",
         },
-        "NONE",
+        "GBIS",
     ),
     (
         {
@@ -94,7 +104,7 @@ unknown_epc_scenarios = (
             "country": "England",
             "own_property": "Yes, I own my property and live in it",
         },
-        "ECO4",
+        "BOTH",
     ),
     (
         {
@@ -129,7 +139,7 @@ unknown_epc_scenarios = (
             "country": "England",
             "own_property": "No, I am a tenant",
         },
-        "ECO4",
+        "BOTH",
     ),
     (
         {
