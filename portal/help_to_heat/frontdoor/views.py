@@ -4,6 +4,7 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from help_to_heat import utils
+from marshmallow import ValidationError
 
 from ..portal import email_handler
 from . import eligibility, interface, schemas
@@ -29,7 +30,7 @@ page_compulsory_field_map = {
     "loft-access": ("loft_access",),
     "loft-insulation": ("loft_insulation",),
     "supplier": ("supplier",),
-    "contact-details": ("first_name", "last_name", "contact_number", "email"),
+    "contact-details": ("first_name", "last_name", "contact_number"),
     "confirm-and-submit": ("permission",),
 }
 
@@ -118,7 +119,11 @@ class PageView(utils.MethodDispatcher):
         if errors:
             return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
         else:
-            data = self.save_data(request, session_id, page_name)
+            try:
+                data = self.save_data(request, session_id, page_name)
+            except ValidationError as val_errors:
+                errors = {field: val_errors.messages["data"][field][0] for field in val_errors.messages["data"]}
+                return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
             return self.handle_post(request, session_id, page_name, data, is_change_page)
 
     def save_data(self, request, session_id, page_name, *args, **kwargs):
@@ -435,7 +440,8 @@ class ConfirmSubmitView(PageView):
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         interface.api.session.create_referral(session_id)
         session_data = interface.api.session.get_session(session_id)
-        email_handler.send_referral_confirmation_email(session_data)
+        if session_data.get("email"):
+            email_handler.send_referral_confirmation_email(session_data)
         return super().handle_post(request, session_id, page_name, data, is_change_page)
 
 

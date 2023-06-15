@@ -52,7 +52,7 @@
   </div>
 {%- endmacro%}
 
-{% macro input(name, label, data, errors) -%}
+{% macro input(name, label, data, errors, type="text") -%}
   {% if errors.get(name) %}
     <p id="question-{{name}}-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{errors.get(name)}}
@@ -63,7 +63,7 @@
     <label class="govuk-label" for="question-{{name}}">
       {{label}}
     </label>
-    <input class="govuk-input" id="question-{{name}}" name="{{name}}" type="text" autocomplete="{{name}}" value="{{data.get(name, '')}}">
+    <input class="govuk-input" id="question-{{name}}" name="{{name}}" type="{{type}}" autocomplete="{{name}}" value="{{data.get(name, '')}}">
   </div>
 {%- endmacro%}
 

@@ -1,6 +1,6 @@
 import itertools
 
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, ValidationError, fields, validate
 
 page_order = (
     "country",
@@ -250,6 +250,11 @@ multichoice_options = (
 )
 
 
+def validate_email_or_none(value):
+    if value != "" and not validate.Email()(value):
+        raise ValidationError("Invalid email format")
+
+
 class SessionSchema(Schema):
     country = fields.String(validate=validate.OneOf(country_options))
     own_property = fields.String(validate=validate.OneOf(tuple(item["value"] for item in own_property_options_map)))
@@ -281,7 +286,7 @@ class SessionSchema(Schema):
     first_name = fields.String()
     last_name = fields.String()
     contact_number = fields.String()
-    email = fields.String()
+    email = fields.String(validate=validate_email_or_none, allow_none=True)
     schemes = fields.List(fields.Str())
 
     class Meta:
