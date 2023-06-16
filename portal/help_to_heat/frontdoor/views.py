@@ -493,5 +493,6 @@ def feedback_thanks_view(request, session_id=None, page_name=None):
     context = {"session_id": session_id, "page_name": page_name, "prev_url": prev_page_url}
     return render(request, template_name=template_name, context=context)
 
+
 def cookies_view(request):
     return render(request, template_name="frontdoor/cookies.html")
