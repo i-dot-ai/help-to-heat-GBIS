@@ -164,3 +164,97 @@ def test_eligibility_unknown_epc():
         result = calculate_eligibility(data)
         expected = result_map[expected]
         assert expected == result, (data, expected, result)
+
+
+eligible_council_tax = {
+    "England": {
+        "eligible": ("A", "B", "C", "D"),
+        "ineligible": ("E", "F", "G"),
+    },
+    "Scotland": {
+        "eligible": ("A", "B", "C", "D", "E"),
+        "ineligible": ("F", "G"),
+    },
+    "Wales": {
+        "eligible": ("A", "B", "C", "D", "E"),
+        "ineligible": ("F", "G"),
+    },
+}
+
+
+def test_mural_scenario_1():
+    for country in eligible_council_tax:
+        for council_tax_band in eligible_council_tax[country]["eligible"]:
+            for epc_rating in ("E", "F", "G"):
+                for benefits in ("Yes",):
+                    session_data = {
+                        "epc_rating": epc_rating,
+                        "council_tax_band": council_tax_band,
+                        "country": country,
+                        "benefits": benefits,
+                    }
+                    result = calculate_eligibility(session_data)
+                    expected = result_map["BOTH"]
+                    assert result == expected
+
+
+def test_mural_scenario_2():
+    for country in eligible_council_tax:
+        for council_tax_band in eligible_council_tax[country]["ineligible"]:
+            for epc_rating in ("E", "F", "G"):
+                for benefits in ("Yes",):
+                    session_data = {
+                        "epc_rating": epc_rating,
+                        "council_tax_band": council_tax_band,
+                        "country": country,
+                        "benefits": benefits,
+                    }
+                    result = calculate_eligibility(session_data)
+                    expected = result_map["BOTH"]
+                    assert result == expected
+
+
+def test_mural_scenario_3():
+    for country in eligible_council_tax:
+        for council_tax_band in eligible_council_tax[country]["eligible"]:
+            for epc_rating in ("D", "E", "F", "G"):
+                for benefits in ("No",):
+                    session_data = {
+                        "epc_rating": epc_rating,
+                        "council_tax_band": council_tax_band,
+                        "country": country,
+                        "benefits": benefits,
+                    }
+                    result = calculate_eligibility(session_data)
+                    expected = result_map["GBIS"]
+                    assert result == expected
+
+    for country in eligible_council_tax:
+        for council_tax_band in eligible_council_tax[country]["eligible"]:
+            for epc_rating in "D":
+                for benefits in ("Yes",):
+                    session_data = {
+                        "epc_rating": epc_rating,
+                        "council_tax_band": council_tax_band,
+                        "country": country,
+                        "benefits": benefits,
+                    }
+                    result = calculate_eligibility(session_data)
+                    expected = result_map["GBIS"]
+                    assert result == expected
+
+
+def test_mural_scenario_3_1():
+    for country in eligible_council_tax:
+        for council_tax_band in eligible_council_tax[country]["ineligible"]:
+            for epc_rating in "D":
+                for benefits in ("Yes",):
+                    session_data = {
+                        "epc_rating": epc_rating,
+                        "council_tax_band": council_tax_band,
+                        "country": country,
+                        "benefits": benefits,
+                    }
+                    result = calculate_eligibility(session_data)
+                    expected = result_map["GBIS"]
+                    assert result == expected
