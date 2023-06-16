@@ -290,8 +290,8 @@ class BenefitsView(PageView):
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         session_data = interface.api.session.get_session(session_id)
-        is_ineligible = eligibility.is_ineligible(session_data)
-        if is_ineligible:
+        eligible_schemes = eligibility.calculate_eligibility(session_data)
+        if not eligible_schemes:
             return redirect("frontdoor:page", session_id=session_id, page_name="ineligible")
         else:
             return super().handle_post(request, session_id, page_name, data, is_change_page)
