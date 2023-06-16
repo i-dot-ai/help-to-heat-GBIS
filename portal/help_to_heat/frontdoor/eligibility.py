@@ -46,26 +46,26 @@ def calculate_eligibility(session_data):
     :param session_data:
     :return: A tuple of which schemes the person is eligible for, if any
     """
-    selected_epc = session_data.get("epc_rating", "Unknown")
-    selected_council_tax_band = session_data.get("council_tax_band")
-    selected_country = session_data.get("country")
-    selected_benefits = session_data.get("benefits")
-    eligible_for_eco4 = selected_benefits == "Yes" and (selected_epc in ("E", "F", "G", "Unknown", "Not found"))
+    epc_rating = session_data.get("epc_rating", "Unknown")
+    council_tax_band = session_data.get("council_tax_band")
+    country = session_data.get("country")
+    benefits = session_data.get("benefits")
+    eligible_for_eco4 = benefits == "Yes" and (epc_rating in ("E", "F", "G", "Unknown", "Not found"))
 
     # A quick check for outlying cases of GBIS eligibility where EPC doesn't apply
-    if selected_epc in ("D", "Unknown", "Not found") and selected_benefits == "Yes":
+    if epc_rating in ("D", "Unknown", "Not found") and benefits == "Yes":
         if eligible_for_eco4:
             return ("GBIS", "ECO4")
         else:
             return ("GBIS",)
 
     # Immediately excluded from both GBIS and ECO4
-    if selected_epc in ("A", "B", "C"):
+    if epc_rating in ("A", "B", "C"):
         return ()
 
     # Check eligible for GBIS
-    if selected_council_tax_band not in eligible_council_tax[selected_country]:
-        if selected_epc in ("E", "F", "G", "Unknown", "Not found") and selected_benefits == "Yes":
+    if council_tax_band not in eligible_council_tax[country]:
+        if epc_rating in ("E", "F", "G", "Unknown", "Not found") and benefits == "Yes":
             if eligible_for_eco4:
                 return ("GBIS", "ECO4")
             else:
@@ -73,12 +73,12 @@ def calculate_eligibility(session_data):
         else:
             return tuple()
     else:
-        if (selected_benefits == "No") and (selected_epc in ("D", "E", "F", "G", "Unknown", "Not found")):
+        if (benefits == "No") and (epc_rating in ("D", "E", "F", "G", "Unknown", "Not found")):
             if eligible_for_eco4:
                 return ("GBIS", "ECO4")
             else:
                 return ("GBIS",)
-        elif (selected_benefits == "Yes") and (selected_epc in ("E", "F", "G", "Unknown", "Not found")):
+        elif (benefits == "Yes") and (epc_rating in ("E", "F", "G", "Unknown", "Not found")):
             if eligible_for_eco4:
                 return ("GBIS", "ECO4")
             else:
