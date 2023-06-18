@@ -37,5 +37,8 @@
           autocomplete="postal-code">
       </div>
     </fieldset>
+
+    <a href="{{url('frontdoor:page', session_id=session_id, page_name='address-manual')}}" class="govuk-link">Enter address manually</a>
+
   {%- endcall %}
 {% endblock %}
