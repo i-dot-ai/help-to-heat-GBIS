@@ -91,15 +91,14 @@ class Session(Entity):
 
     @with_schema(load=GetSessionSchema, dump=schemas.SessionSchema)
     def get_session(self, session_id):
-        answers = models.Answer.objects.filter(session_id=session_id).all()
+        answers = models.Answer.objects.filter(session_id=session_id).order_by("created_at").all()
         session = {k: v for a in answers for (k, v) in a.data.items()}
         return session
 
     @with_schema(load=CreateReferralSchema, dump=ReferralSchema)
     @register_event(models.Event, "Referral created")
     def create_referral(self, session_id):
-        answers = models.Answer.objects.filter(session_id=session_id).all()
-        data = {k: v for a in answers for (k, v) in a.data.items()}
+        data = self.get_session(session_id)
         supplier = portal.models.Supplier.objects.get(name=data["supplier"])
         referral = portal.models.Referral.objects.create(session_id=session_id, data=data, supplier=supplier)
         referral_data = {"id": referral.id, "session_id": referral.session_id, "data": referral.data}

@@ -1,49 +1,24 @@
 import functools
+import logging
 
 from . import schemas
 
-eligible_council_tax = {
-    "England": (
-        "A",
-        "B",
-        "C",
-        "D",
-    ),
-    "Scotland": (
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-    ),
-    "Wales": (
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-    ),
+logger = logging.getLogger(__name__)
+
+country_council_tax_bands = {
+    "England": {
+        "eligible": ("A", "B", "C", "D"),
+        "ineligible": ("E", "F", "G", "H"),
+    },
+    "Scotland": {
+        "eligible": ("A", "B", "C", "D", "E"),
+        "ineligible": ("F", "G", "H"),
+    },
+    "Wales": {
+        "eligible": ("A", "B", "C", "D", "E"),
+        "ineligible": ("F", "G", "H", "I"),
+    },
 }
-
-
-def is_ineligible(session_data):
-    "A quick check to see if we can divert them to a not for you page"
-    council_tax_band = session_data.get("council_tax_band")
-    epc_rating = session_data.get("epc_rating")
-    accept_suggested_epc = session_data.get("accept_suggested_epc")
-    benefits = session_data.get("benefits")
-    country = session_data.get("country")
-
-    if council_tax_band not in eligible_council_tax[country]:
-        if epc_rating in ("D", "E", "F", "G"):
-            if benefits == "No":
-                return True
-        if epc_rating == "D":
-            if benefits == "Yes":
-                return True
-        if accept_suggested_epc in ("No", "I don't know", "Not found"):
-            if benefits == "No":
-                return True
 
 
 def filter_scheme_names(func):
@@ -58,47 +33,76 @@ def filter_scheme_names(func):
 @filter_scheme_names
 def calculate_eligibility(session_data):
     """
-    Calculate which schemes the user is able to use.
-    The logic is as follows:
-    EPC A-C are not eligible at all
-    ECO4 eligibility is calculated with the user being on benefits with a low EPC rating of E-G
-    GBIS is calculated with the user being in an acceptable council tax bracket, and an EPC rating that matches
+    Calculate which schemes the user is able to use.  Based literally on the logic in the Mural file
+    (hence why it is illogical)
     :param session_data:
     :return: A tuple of which schemes the person is eligible for, if any
     """
-    selected_epc = session_data.get("epc_rating", "Unknown")
-    property_status = session_data.get("own_property")
-    selected_council_tax_band = session_data.get("council_tax_band")
-    selected_country = session_data.get("country")
-    selected_benefits = session_data.get("benefits")
-    eligible_for_eco4 = selected_benefits == "Yes" and (selected_epc in ("E", "F", "G", "Unknown", "Not found"))
+    epc_rating = session_data.get("epc_rating", "Not found")
+    council_tax_band = session_data.get("council_tax_band")
+    country = session_data.get("country")
+    benefits = session_data.get("benefits")
 
-    # Immediately excluded from both
-    if selected_epc in ("A", "B", "C"):
-        return ()
+    # Scenario 1
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["eligible"]:
+            if epc_rating in ("E", "F", "G", "Not found"):
+                if benefits in ("Yes",):
+                    logger.error("Scenario 1")
+                    return ("GBIS", "ECO4")
 
-    # not eligible for GBIS so check ECO4
-    if selected_council_tax_band not in eligible_council_tax[selected_country]:
-        if eligible_for_eco4:
-            return ("ECO4",)
-        else:
-            return tuple()
-    else:
-        if (
-            (selected_epc in ("D", "Unknown", "Not found"))
-            and (property_status == "No, I am a tenant")
-            and (selected_benefits == "Yes")
-        ):
-            if eligible_for_eco4:
-                return ("GBIS", "ECO4")
-            else:
-                return ("GBIS",)
-        elif (selected_benefits == "No") and (selected_epc in ("D", "E", "F", "G", "Unknown", "Not found")):
-            if eligible_for_eco4:
-                return ("GBIS", "ECO4")
-            else:
-                return ("GBIS",)
-        elif eligible_for_eco4 and selected_council_tax_band in eligible_council_tax[selected_country]:
-            return ("GBIS", "ECO4")
-        else:
-            return tuple()
+    # Scenario 2
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["ineligible"]:
+            if epc_rating in ("E", "F", "G", "Not found"):
+                if benefits in ("Yes",):
+                    logger.error("Scenario 2")
+                    return ("GBIS", "ECO4")
+
+    # Scenario 3
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["eligible"]:
+            if epc_rating in ("D", "E", "F", "G", "Not found"):
+                if benefits in ("No",):
+                    logger.error("Scenario 3a")
+                    return ("GBIS",)
+
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["eligible"]:
+            if epc_rating in ("D", "Not Found"):
+                if benefits in ("Yes",):
+                    logger.error("Scenario 3b")
+                    return ("GBIS",)
+
+    # Scenario 3.1
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["ineligible"]:
+            if epc_rating in ("D", "Not Found"):
+                if benefits in ("Yes",):
+                    logger.error("Scenario 3.1")
+                    return ("GBIS",)
+
+    # Scenario 4
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["ineligible"]:
+            if epc_rating in ("D"):
+                if benefits in ("No",):
+                    logger.error("Scenario 4")
+                    return ()
+
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["ineligible"]:
+            if epc_rating in ("D", "E", "F", "G"):
+                if benefits in ("No",):
+                    logger.error("Scenario 4")
+                    return ()
+
+    # Scenario 5
+    if country in country_council_tax_bands:
+        if council_tax_band in country_council_tax_bands[country]["ineligible"]:
+            if epc_rating in ("Not found"):
+                if benefits in ("No",):
+                    logger.error("Scenario 5")
+                    return ()
+
+    return ()
