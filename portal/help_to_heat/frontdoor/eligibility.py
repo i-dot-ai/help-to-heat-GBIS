@@ -8,15 +8,15 @@ logger = logging.getLogger(__name__)
 country_council_tax_bands = {
     "England": {
         "eligible": ("A", "B", "C", "D"),
-        "ineligible": ("E", "F", "G"),
+        "ineligible": ("E", "F", "G", "H"),
     },
     "Scotland": {
         "eligible": ("A", "B", "C", "D", "E"),
-        "ineligible": ("F", "G"),
+        "ineligible": ("F", "G", "H"),
     },
     "Wales": {
         "eligible": ("A", "B", "C", "D", "E"),
-        "ineligible": ("F", "G"),
+        "ineligible": ("F", "G", "H", "I"),
     },
 }
 
