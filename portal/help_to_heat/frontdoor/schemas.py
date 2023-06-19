@@ -59,7 +59,7 @@ summary_map = {
     "wall_insulation": "Are your walls insulated?",
     "loft": "Does this property have a loft?",
     "loft_access": "Is there access to your loft?",
-    "loft_insulation": "Is there 200mm of insulation in your loft?",
+    "loft_insulation": "Is there 270mm of insulation in your loft?",
 }
 
 confirm_sumbit_map = {
@@ -235,8 +235,8 @@ supplier_options = (
 )
 epc_rating_options = ("A", "B", "C", "D", "E", "F", "G", "H", "Not found")
 loft_insulation_options = (
-    "Yes, there is at least 200mm of insulation in my loft",
-    "No, there is less than 200mm of insulation in my loft",
+    "Yes, there is at least 270mm of insulation in my loft",
+    "No, there is less than 270mm of insulation in my loft",
     "I don't know",
 )
 loft_insulation_validation_options = loft_insulation_options + ("No loft",)
