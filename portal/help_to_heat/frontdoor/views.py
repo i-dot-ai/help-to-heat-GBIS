@@ -435,7 +435,9 @@ class ConfirmSubmitView(PageView):
             for page_name, questions in schemas.details_pages.items()
             for question in questions
         )
-        return {"summary_lines": summary_lines}
+        supplier_data = interface.api.session.get_answer(session_id, "supplier")
+        supplier = supplier_data["supplier"]
+        return {"summary_lines": summary_lines, "supplier": supplier}
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         interface.api.session.create_referral(session_id)
