@@ -38,9 +38,13 @@
 
       {% else %}
 
-        <h1>You are not eligible</h1>
+        {% call macros.further_help() -%}
 
-        <p>[insert content here]</p>
+          <h1 class="govuk-heading-l">Your property is not eligible</h1>
+
+          <p class="govuk-body">This is likely because your property's council tax band is too high. This service is for properties in an eligible council tax band (A to D in England and A to E in Scotland and Wales).</p>
+
+        {%- endcall %}
 
       {% endif %}
 
