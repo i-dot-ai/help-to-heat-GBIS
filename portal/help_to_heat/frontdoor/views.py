@@ -436,7 +436,7 @@ class ConfirmSubmitView(PageView):
             for question in questions
         )
         supplier_data = interface.api.session.get_answer(session_id, "supplier")
-        supplier = supplier_data['supplier']
+        supplier = supplier_data["supplier"]
         return {"summary_lines": summary_lines, "supplier": supplier}
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
