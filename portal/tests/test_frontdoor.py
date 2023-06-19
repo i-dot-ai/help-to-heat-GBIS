@@ -178,7 +178,7 @@ def _answer_house_questions(page, session_id, benefits_answer, epc_rating="D"):
 
     assert page.has_one("h1:contains('Is your loft fully insulated?')")
     page = _check_page(
-        page, "loft-insulation", "loft_insulation", "No, there is less than 200mm of insulation in my loft"
+        page, "loft-insulation", "loft_insulation", "No, there is less than 270mm of insulation in my loft"
     )
 
     assert page.has_one("h1:contains('Check your answers')")
