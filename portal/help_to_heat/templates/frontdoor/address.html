@@ -1,37 +1,26 @@
 {% extends "frontdoor/base.html" %}
 {% import "macros.html" as macros with context %}
 
+{% block title %}
+  <title>What is the property address? - Check eligibility for Great British Insulation Scheme - GOV.UK</title>
+{% endblock %}
+
 {% block content %}
-  {% call macros.form_wrapper(prev_url) -%} 
+  {% call macros.form_wrapper(prev_url) -%}
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
         <h1 class="govuk-heading-l">
           What is the property’s address?
         </h1>
         <p class="govuk-body">We use this information to search the Energy Performance of Buildings Register for an Energy Performance Certificate that matches your address</p>
-        
-      </legend>
-      <div class="govuk-form-group">
-        <label class="govuk-label" for="address-line">
-          Building number or name
-        </label>
-        <div id="address-line-hint" class="govuk-hint">
-          e.g. 19 or Swiss Cottage
-        </div>
-        <input class="govuk-input" id="address-line-1" name="address_line_1" type="text"
-          autocomplete="address-line1">
-      </div>
 
-      <div class="govuk-form-group">
-        <label class="govuk-label" for="address-postcode">
-          Postcode
-        </label>
-        <div id="address-postcode-hint" class="govuk-hint">
-          e.g AB12 3CD
-        </div>
-        <input class="govuk-input govuk-input--width-10" id="address-postcode" name="postcode" type="text"
-          autocomplete="postal-code">
-      </div>
-    </fieldset>
+      </legend>
+
+      {{macros.input('address_line_1', 'Address line 1', data, errors)}}
+      {{macros.input('postcode', 'Postcode', data, errors)}}
+
   {%- endcall %}
+
+  <a href="{{url('frontdoor:page', session_id=session_id, page_name='address-manual')}}" class="govuk-link">Enter address manually</a>
+
 {% endblock %}

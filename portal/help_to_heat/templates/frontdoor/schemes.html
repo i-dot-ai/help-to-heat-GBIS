@@ -1,14 +1,18 @@
 {% extends "frontdoor/base.html" %}
 {% import "macros.html" as macros with context %}
 
+{% block title %}
+  <title>Schemes you are eligible for - Check eligibility for Great British Insulation Scheme - GOV.UK</title>
+{% endblock %}
+
 {% block content %}
-  <a href="{{prev_url}}" class="govuk-back-link">Back</a>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
 
-      {% if eligible_schemes %}
+  {% if eligible_schemes %}
+    <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
 
-        <form method="POST">
+        <form method="POST" novalidate>
           {{csrf_input}}
           <div class="govuk-form-group">
             <h1 class="govuk-heading-l">Information based on your answers</h1>
@@ -31,16 +35,19 @@
             Create a referral
           </button>
         </form>
-
-      {% else %}
-
-        <h1>You are not eligible</h1>
-
-        <p>[insert content here]</p>
-
-      {% endif %}
-
+      </div>
     </div>
-  </div>
+
+  {% else %}
+
+    {% call macros.further_help() -%}
+
+      <h1 class="govuk-heading-l">Your property is not eligible</h1>
+
+      <p class="govuk-body">This is likely because your property's council tax band is too high. This service is for properties in an eligible council tax band (A to D in England and A to E in Scotland and Wales).</p>
+
+    {%- endcall %}
+
+  {% endif %}
 
 {% endblock %}

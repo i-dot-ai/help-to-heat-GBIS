@@ -3,7 +3,7 @@
 {% block content %}
 
 <a href="{{url('portal:homepage')}}#member-tab" class="govuk-back-link">Back</a>
-<form method="POST">
+<form method="POST" novalidate>
   {{csrf_input}}
   <div class="govuk-form-group">
   <fieldset class="govuk-fieldset">

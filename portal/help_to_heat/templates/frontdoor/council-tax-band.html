@@ -1,6 +1,10 @@
 {% extends "frontdoor/base.html" %}
 {% import "macros.html" as macros with context %}
 
+{% block title %}
+  <title>What is the properties council tax band? - Check eligibility for Great British Insulation Scheme - GOV.UK</title>
+{% endblock %}
+
 {% block content %}
   {% call macros.form_wrapper(prev_url) -%}
     <div class="govuk-form-group">
@@ -13,9 +17,7 @@
 
         <div id="hint" class="govuk-hint">
           <p class="govuk-hint">Select your council tax band from the list below</p>
-          <a href="https://www.gov.uk/council-tax-bands" class="govuk-link">
-            If you're unsure, you can check your property's council tax band
-          </a>.
+          <a href="https://www.gov.uk/council-tax-bands" target="_blank" rel="noopener noreferrer"  class="govuk-link" >If you're unsure, you can check your property's council tax band.</a>
         </div>
 
           {{macros.radios('council_tax_band', council_tax_band_options, data, errors)}}

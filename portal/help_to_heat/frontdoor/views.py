@@ -4,6 +4,7 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from help_to_heat import utils
+from marshmallow import ValidationError
 
 from ..portal import email_handler
 from . import eligibility, interface, schemas
@@ -29,7 +30,7 @@ page_compulsory_field_map = {
     "loft-access": ("loft_access",),
     "loft-insulation": ("loft_insulation",),
     "supplier": ("supplier",),
-    "contact-details": ("first_name", "last_name", "contact_number", "email"),
+    "contact-details": ("first_name", "last_name", "contact_number"),
     "confirm-and-submit": ("permission",),
 }
 
@@ -118,7 +119,11 @@ class PageView(utils.MethodDispatcher):
         if errors:
             return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
         else:
-            data = self.save_data(request, session_id, page_name)
+            try:
+                data = self.save_data(request, session_id, page_name)
+            except ValidationError as val_errors:
+                errors = {field: val_errors.messages["data"][field][0] for field in val_errors.messages["data"]}
+                return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
             return self.handle_post(request, session_id, page_name, data, is_change_page)
 
     def save_data(self, request, session_id, page_name, *args, **kwargs):
@@ -285,8 +290,8 @@ class BenefitsView(PageView):
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         session_data = interface.api.session.get_session(session_id)
-        is_ineligible = eligibility.is_ineligible(session_data)
-        if is_ineligible:
+        eligible_schemes = eligibility.calculate_eligibility(session_data)
+        if not eligible_schemes:
             return redirect("frontdoor:page", session_id=session_id, page_name="ineligible")
         else:
             return super().handle_post(request, session_id, page_name, data, is_change_page)
@@ -430,12 +435,15 @@ class ConfirmSubmitView(PageView):
             for page_name, questions in schemas.details_pages.items()
             for question in questions
         )
-        return {"summary_lines": summary_lines}
+        supplier_data = interface.api.session.get_answer(session_id, "supplier")
+        supplier = supplier_data["supplier"]
+        return {"summary_lines": summary_lines, "supplier": supplier}
 
     def handle_post(self, request, session_id, page_name, data, is_change_page):
         interface.api.session.create_referral(session_id)
         session_data = interface.api.session.get_session(session_id)
-        email_handler.send_referral_confirmation_email(session_data)
+        if session_data.get("email"):
+            email_handler.send_referral_confirmation_email(session_data)
         return super().handle_post(request, session_id, page_name, data, is_change_page)
 
 
@@ -486,3 +494,7 @@ def feedback_thanks_view(request, session_id=None, page_name=None):
     prev_page_url = page_name and reverse("frontdoor:page", kwargs=dict(session_id=session_id, page_name=page_name))
     context = {"session_id": session_id, "page_name": page_name, "prev_url": prev_page_url}
     return render(request, template_name=template_name, context=context)
+
+
+def cookies_view(request):
+    return render(request, template_name="frontdoor/cookies.html")
