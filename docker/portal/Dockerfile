@@ -15,18 +15,18 @@ RUN chmod +x /bin/wait-for-db
 
 RUN python3 -m pip install -U pip setuptools wheel
 
-COPY ./portal/requirements.lock /app/portal/requirements.lock
-RUN python3 -m pip install -r /app/portal/requirements.lock --no-cache-dir
+COPY ./requirements.lock /app/requirements.lock
+RUN python3 -m pip install -r /app/requirements.lock --no-cache-dir
 
-COPY ./docker/portal/start.sh /start.sh
+COPY ./docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
-COPY ./docker/portal/entrypoint.sh /entrypoint.sh
+COPY ./docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 COPY . /app
 
-WORKDIR /app/portal
+WORKDIR /app/
 
 RUN \
     DJANGO_SETTINGS_MODULE=help_to_heat.settings_base \

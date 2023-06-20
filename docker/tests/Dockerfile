@@ -13,7 +13,7 @@ RUN chmod +x /bin/wait-for-db
 
 RUN python3 -m pip install -U pip setuptools wheel
 
-COPY ./portal/requirements-dev.lock /app/requirements-dev.lock
+COPY ./requirements-dev.lock /app/requirements-dev.lock
 RUN python3 -m pip install -r /app/requirements-dev.lock --no-cache-dir
 
 COPY ./docker/tests/entrypoint.sh /entrypoint.sh
@@ -22,7 +22,7 @@ RUN chmod +x /entrypoint.sh
 COPY ./docker/tests/start.sh /start.sh
 RUN chmod +x /start.sh
 
-COPY ./portal/ /app
+COPY ./ /app
 
 WORKDIR /app/
 
