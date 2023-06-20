@@ -6,8 +6,8 @@ endef
 
 .PHONY: update-requirements
 update-requirements:
-	$(call _update_requirements,portal/requirements)
-	$(call _update_requirements,portal/requirements-dev)
+	$(call _update_requirements,requirements)
+	$(call _update_requirements,requirements-dev)
 
 .PHONY: reset-db
 reset-db:
@@ -38,6 +38,6 @@ check-migrations:
 
 .PHONY: test
 test:
-	docker-compose -f portal/tests/docker-compose.yml down
-	docker-compose -f portal/tests/docker-compose.yml build tests-help-to-heat help-to-heat-test-db && docker-compose -f portal/tests/docker-compose.yml run --rm tests-help-to-heat
-	docker-compose -f portal/tests/docker-compose.yml down
+	docker-compose -f tests/docker-compose.yml down
+	docker-compose -f tests/docker-compose.yml build tests-help-to-heat help-to-heat-test-db && docker-compose -f tests/docker-compose.yml run --rm tests-help-to-heat
+	docker-compose -f tests/docker-compose.yml down
