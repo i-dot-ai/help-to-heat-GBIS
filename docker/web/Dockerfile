@@ -18,10 +18,10 @@ RUN python3 -m pip install -U pip setuptools wheel
 COPY ./requirements.lock /app/requirements.lock
 RUN python3 -m pip install -r /app/requirements.lock --no-cache-dir
 
-COPY ./docker/start.sh /start.sh
+COPY ./docker/web/start.sh /start.sh
 RUN chmod +x /start.sh
 
-COPY ./docker/entrypoint.sh /entrypoint.sh
+COPY ./docker/web/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 COPY . /app
