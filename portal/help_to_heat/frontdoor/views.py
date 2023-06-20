@@ -97,9 +97,7 @@ class PageView(utils.MethodDispatcher):
             prev_page_url, next_page_url = self.get_prev_next_urls(session_id, page_name)
         data = interface.api.session.get_answer(session_id, page_name)
         extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
-        gtag_id = settings.GTAG_ID
         context = {
-            "gtag_id": gtag_id,
             "data": data,
             "session_id": session_id,
             "page_name": page_name,
@@ -498,3 +496,7 @@ def feedback_thanks_view(request, session_id=None, page_name=None):
 
 def cookies_view(request):
     return render(request, template_name="frontdoor/cookies.html")
+
+
+def data_layer_js_view(request):
+    return render(request, "dataLayer.js", {"gtag_id": settings.GTAG_ID}, content_type="application/x-javascript")

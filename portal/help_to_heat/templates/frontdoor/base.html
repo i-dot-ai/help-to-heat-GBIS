@@ -153,7 +153,7 @@
   <script src="/static/main.js"></script>
   {% if gtag_id %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{gtag_id}}"></script>
-  <script src="/static/dataLayer.js"></script>
+  <script src="{{url('frontdoor:data-layer-js')}}"></script>
   {% endif %}
 </body>
 

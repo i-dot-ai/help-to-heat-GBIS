@@ -42,6 +42,7 @@ def environment(**options):
             "space_name": settings.VCAP_APPLICATION.get("space_name", "unknown"),
             "slugify": slugify,
             "is_checked": is_checked,
+            "gtag_id": settings.GTAG_ID,
         }
     )
     return env
