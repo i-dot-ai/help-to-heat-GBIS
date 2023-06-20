@@ -1,4 +1,4 @@
-include envs/portal
+include envs/web
 
 define _update_requirements
 	docker run -v ${PWD}/:/app/:z python:3.9-buster bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
@@ -19,8 +19,8 @@ reset-db:
 
 .PHONY: add-suppliers
 add-suppliers:
-	docker-compose build portal
-	docker-compose run portal python manage.py add_suppliers
+	docker-compose build web
+	docker-compose run web python manage.py add_suppliers
 
 # -------------------------------------- Code Style  -------------------------------------
 
@@ -32,9 +32,9 @@ check-python-code:
 
 .PHONY: check-migrations
 check-migrations:
-	docker-compose build portal
-	docker-compose run portal python manage.py migrate
-	docker-compose run portal python manage.py makemigrations --check
+	docker-compose build web
+	docker-compose run web python manage.py migrate
+	docker-compose run web python manage.py makemigrations --check
 
 .PHONY: test
 test:
