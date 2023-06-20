@@ -38,10 +38,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup prod api host
-        if:  ${{ github.event_name == 'release' }}
-        run: echo "PORTAL_URL=http://help-to-heat-portal.apps.internal:8012" >> $GITHUB_ENV
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -55,7 +51,7 @@ jobs:
           DOCKER_IMAGE: ${{ matrix.app }}
 
         run: |
-          docker build . --file $DOCKER_FILE --tag $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --build-arg PORTAL_URL=$PORTAL_URL --build-arg UPRN_API_KEY=$UPRN_API_KEY
+          docker build . --file $DOCKER_FILE --tag $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE:$IMAGE_TAG --build-arg UPRN_API_KEY=$UPRN_API_KEY
           docker push -a $DOCKER_REPOSITORY/${{ github.repository_owner }}/$DOCKER_IMAGE
 
   deploy_image:
