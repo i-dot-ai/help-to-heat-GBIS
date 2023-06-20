@@ -3,8 +3,9 @@ import uuid
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from help_to_heat import utils
 from marshmallow import ValidationError
+
+from help_to_heat import utils
 
 from ..portal import email_handler
 from . import eligibility, interface, schemas

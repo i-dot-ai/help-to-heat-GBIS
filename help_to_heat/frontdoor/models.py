@@ -1,5 +1,6 @@
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+
 from help_to_heat import utils
 
 

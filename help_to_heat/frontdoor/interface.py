@@ -1,6 +1,7 @@
 import marshmallow
 import osdatahub
 from django.conf import settings
+
 from help_to_heat import portal
 from help_to_heat.utils import Entity, Interface, register_event, with_schema
 
