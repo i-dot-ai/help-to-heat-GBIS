@@ -4,6 +4,7 @@ from . import views
 
 frontdoor_patterns = [
     path("", views.homepage_view, name="homepage"),
+    path("dataLayer.js", views.data_layer_js_view, name="data-layer-js"),
     path("cookies/", views.cookies_view, name="cookies"),
     path("feedback/", views.FeedbackView, name="feedback"),
     path("feedback/thanks/", views.feedback_thanks_view, name="feedback-thanks"),
