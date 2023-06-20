@@ -33,7 +33,7 @@ jobs:
         app: [help-to-heat-frontdoor]
         include:
           - app: help-to-heat-frontdoor
-            dockerfile: docker/portal/Dockerfile
+            dockerfile: docker/web/Dockerfile
 
     steps:
       - uses: actions/checkout@v3
