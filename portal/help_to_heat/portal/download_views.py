@@ -7,36 +7,35 @@ from django.views.decorators.http import require_http_methods
 from help_to_heat.frontdoor.eligibility import calculate_eligibility
 from help_to_heat.portal import decorators, models
 
-legacy_referral_keys_map = {
-    "receivingBenefits": "benefits",
-    "property": "property_type",
-    "personalDetails.firstName": "first_name",
-    "personalDetails.lastName": "last_name",
-    "personalDetails.email": "email",
-    "housingStatus": "own_property",
-    "numberOfBedrooms": "number_of_bedrooms",
-    "councilTaxBand": "council_tax_band",
-    "loft": "loft",
-    "loftAccess": "loft_access",
-    "personalDetails.phoneNumber": "contact_number",
-    "address.buildingNumberOrName": "address_line_1",
-    "address.postcode": "postcode",
-    "location": "country",
-    "householdIncome": "household_income",
-    "walls": "wall_type",
-    "wallInsulation": "wall_insulation",
-    "energySupplier": "supplier",
-    "addressUPRN": "uprn",
-    "counciltaxBandsSize": "counciltaxBandsSize",
-    "house": "house",
-    "loftInsulation": "loft_insulation",
-    "propertyEpcDetails.propertyEpcDate.day": "propertyEpcDetails.propertyEpcDate.day",
-    "propertyEpcDetails.propertyEpcDate.month": "propertyEpcDetails.propertyEpcDate.month",
-    "propertyEpcDetails.propertyEpcDate.year": "propertyEpcDetails.propertyEpcDate.year",
-    "propertyEpcDetails.propertyEpcRating": "propertyEpcDetails.propertyEpcRating",
-    "suggestedEPCFound": "suggestedEPCFound",
-    "suggestedEPCIsCorrect": "suggestedEPCIsCorrect",
-}
+csv_columns = (
+    "ECO4",
+    "GBIS",
+    "first_name",
+    "last_name",
+    "contact_number",
+    "email",
+    "own_property",
+    "benefits",
+    "household_income",
+    "uprn",
+    "address",
+    "council_tax_band",
+    "property_type",
+    "property_subtype",
+    "epc_rating",
+    "accept_suggested_epc",
+    "epc_date",
+    "number_of_bedrooms",
+    "wall_type",
+    "wall_insulation",
+    "loft",
+    "loft_access",
+    "loft_insulation",
+    "Property main heat source",
+    "supplier",
+    "submission_date",
+    "submission_time",
+)
 
 
 @require_http_methods(["GET"])
@@ -67,22 +66,20 @@ def download_csv_by_id_view(request, download_id):
     return response
 
 
-def convert_row(row):
-    row = {legacy_referral_keys_map.get(k, k): v for (k, v) in row.items()}
-    return row
-
-
-def add_extra_row_data(row):
+def add_extra_row_data(referral):
+    row = dict(referral.data)
     eligibility = calculate_eligibility(row)
     epc_date = row.get("epc_date")
     epc_date = epc_date and datetime.datetime.strptime(epc_date, "%Y-%m-%d")
     row = {
         **row,
-        "ECO4": "Energy Company Obligation 4" in eligibility,
-        "GBIS": "Great British Insulation Scheme" in eligibility,
+        "ECO4": "Energy Company Obligation 4" in eligibility and "Yes" or "No",
+        "GBIS": "Great British Insulation Scheme" in eligibility and "Yes" or "No",
         "epc_day": epc_date and epc_date.day or "",
         "epc_month": epc_date and epc_date.month or "",
         "epc_year": epc_date and epc_date.year or "",
+        "submission_date": referral.created_at.date(),
+        "submission_time": referral.created_at.time().strftime("%H:%M:%S'"),
     }
     return row
 
@@ -92,14 +89,9 @@ def create_referral_csv(referrals, file_name):
         "Content-Type": "text/csv",
         "Content-Disposition": f"attachment; filename=referral-data-{file_name}.csv",
     }
-    rows = [convert_row(referral.data) for referral in referrals]
-    rows = [add_extra_row_data(row) for row in rows]
-    data_keys = []
-    for row in rows:
-        data_keys = data_keys | row.keys()
-    fieldnames = data_keys
+    rows = [add_extra_row_data(referral) for referral in referrals]
     response = HttpResponse(headers=headers)
-    writer = csv.DictWriter(response, fieldnames=fieldnames)
+    writer = csv.DictWriter(response, fieldnames=csv_columns, extrasaction="ignore")
     writer.writeheader()
     for row in rows:
         writer.writerow(row)

@@ -268,6 +268,7 @@ class SessionSchema(Schema):
     council_tax_band = fields.String(validate=validate.OneOf(welsh_council_tax_band_options))
     accept_suggested_epc = fields.String(validate=validate.OneOf(epc_validation_options))
     epc_rating = fields.String(validate=validate.OneOf(epc_rating_options))
+    epc_date = fields.String()
     benefits = fields.String(validate=validate.OneOf(yes_no_options))
     household_income = fields.String(validate=validate.OneOf(household_income_options))
     property_type = fields.String(validate=validate.OneOf(property_type_options))

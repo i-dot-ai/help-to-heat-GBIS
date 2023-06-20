@@ -190,6 +190,26 @@ def _answer_house_questions(page, session_id, benefits_answer, epc_rating="D"):
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_happy_flow():
+    supplier = "Bulb"
+    session_id = _do_happy_flow(supplier=supplier)
+
+    data = interface.api.session.get_answer(session_id, page_name="contact-details")
+    expected = {
+        "first_name": "Freddy",
+        "last_name": "Flibble",
+        "contact_number": "07777777777",
+        "email": "freddy.flibble@example.com",
+    }
+    assert data == expected, (data, expected)
+
+    referral = models.Referral.objects.get(session_id=session_id)
+    assert referral.supplier.name == supplier
+    assert referral.data["first_name"] == "Freddy"
+    assert referral.data["benefits"] == "Yes"
+    referral.delete()
+
+
+def _do_happy_flow(supplier="Foxglove"):
     client = utils.get_client()
     page = client.get("/")
 
@@ -214,7 +234,7 @@ def test_happy_flow():
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
-    page = _check_page(page, "supplier", "supplier", "Octopus")
+    page = _check_page(page, "supplier", "supplier", "Shell")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
     form = page.get_form()
@@ -234,11 +254,11 @@ def test_happy_flow():
     page = page.click(contains="Change Energy supplier")
 
     form = page.get_form()
-    form["supplier"] = "British Gas"
+    form["supplier"] = supplier
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Confirm and submit')")
-    assert page.has_text("British Gas")
+    assert page.has_text(supplier)
 
     form = page.get_form()
     page = form.submit()
@@ -249,22 +269,9 @@ def test_happy_flow():
 
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Your details have been submitted to British Gas')")
+    assert page.has_one(f"h1:contains('Your details have been submitted to {supplier}')")
 
-    data = interface.api.session.get_answer(session_id, page_name="contact-details")
-    expected = {
-        "first_name": "Freddy",
-        "last_name": "Flibble",
-        "contact_number": "07777777777",
-        "email": "freddy.flibble@example.com",
-    }
-    assert data == expected, (data, expected)
-
-    referral = models.Referral.objects.get(session_id=session_id)
-    assert referral.supplier.name == "British Gas"
-    assert referral.data["first_name"] == "Freddy"
-    assert referral.data["benefits"] == "Yes"
-    referral.delete()
+    return session_id
 
 
 def _make_check_page(session_id):
