@@ -32,7 +32,7 @@ jobs:
     - name: Install Dependencies
       run: |
         python3 -m pip install --upgrade pip setuptools
-        pip install -r portal/requirements-dev.lock
+        pip install -r requirements-dev.lock
 
     - name: Run Python Code Checks
       run: |
