@@ -128,7 +128,7 @@ def login_as_role(client, role, email=None, password=None, supplier="Octopus"):
         user.is_team_leader = True
         user.supplier_id = models.Supplier.objects.get(name=supplier).id
     elif role == "service_manager":
-        user.is_supplier_admin = True
+        user.is_service_manager = True
     user.save()
     page = login(client, email, password)
     assert page.has_text("Logout")

@@ -62,7 +62,7 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
     username = None
     full_name = models.CharField(max_length=255, blank=True, null=True)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
-    is_supplier_admin = models.BooleanField(default=False)
+    is_service_manager = models.BooleanField(default=False)
     is_team_leader = models.BooleanField(default=False)
     is_team_member = models.BooleanField(default=False)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
