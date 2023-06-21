@@ -40,7 +40,7 @@ def homepage_view(request):
 @require_http_methods(["GET"])
 @decorators.requires_service_manager
 def service_manager_homepage_view(request):
-    template = "portal/supplier-admin/homepage.html"
+    template = "portal/service-manager/homepage.html"
     suppliers = models.Supplier.objects.all()
     data = {
         "suppliers": suppliers,
