@@ -4,6 +4,7 @@ import freezegun
 import nose
 from django.contrib.auth import authenticate
 from django.utils import timezone
+
 from help_to_heat.portal import models
 
 from . import utils

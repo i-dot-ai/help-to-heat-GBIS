@@ -3,8 +3,9 @@ import random
 import string
 
 import django.db.utils
-from help_to_heat.portal import models
 from nose.tools import assert_raises
+
+from help_to_heat.portal import models
 
 from . import utils
 

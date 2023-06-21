@@ -4,15 +4,15 @@ volumes:
   help_to_heat_postgres_data: {}
 
 services:
-  portal:
+  web:
     build:
       context: .
-      dockerfile: ./docker/portal/Dockerfile
-    image: help_to_heat_portal
+      dockerfile: ./docker/web/Dockerfile
+    image: help_to_heat_web
     depends_on:
       - help-to-heat-db
     env_file:
-      - ./envs/portal
+      - ./envs/web
     volumes:
       - ./:/app/:z
     ports:
@@ -24,6 +24,6 @@ services:
     volumes:
       - help_to_heat_postgres_data:/var/lib/postgresql/data:Z
     env_file:
-      - ./envs/portal
+      - ./envs/web
     expose:
       - "5432"
