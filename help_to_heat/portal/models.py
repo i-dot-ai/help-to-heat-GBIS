@@ -15,38 +15,20 @@ logger = logging.getLogger(__name__)
 
 
 class SupplierChoices(utils.Choices):
-    BRITISH_GAS = "British Gas"
-    BULB = "Bulb"
-    E_ENERGY = "E Energy"
-    ECOTRICITY = "Ecotricity"
-    EDF = "EDF"
-    EON = "EON"
-    ESB = "ESB"
-    FOXGLOVE = "Foxglove"
-    OCTOPUS = "Octopus"
-    OVO = "OVO"
-    SCOTTISH_POWER = "Scottish Power"
-    SHELL = "Shell"
-    UTILITA = "Utilita"
-    UTILITY_WAREHOUSE = "Utility Warehouse"
-
-
-SUPPLIER_VALUE_MAPPING = {
-    "british-gas": SupplierChoices.BRITISH_GAS,
-    "bulb": SupplierChoices.BULB,
-    "e-energy": SupplierChoices.E_ENERGY,
-    "ecotricity": SupplierChoices.ECOTRICITY,
-    "edf": SupplierChoices.EDF,
-    "eon": SupplierChoices.EON,
-    "esb": SupplierChoices.ESB,
-    "foxglove": SupplierChoices.FOXGLOVE,
-    "octopus": SupplierChoices.OCTOPUS,
-    "ovo": SupplierChoices.OVO,
-    "scottish-power": SupplierChoices.SCOTTISH_POWER,
-    "shell": SupplierChoices.SHELL,
-    "utilita": SupplierChoices.UTILITA,
-    "utility-warehouse": SupplierChoices.UTILITY_WAREHOUSE,
-}
+    BRITISH_GAS = ("british-gas", "British Gas")
+    BULB = ("bulb", "Bulb")
+    E_ENERGY = ("e-energy", "E Energy")
+    ECOTRICITY = ("ecotricity", "Ecotricity")
+    EDF = ("edf", "EDF")
+    EON = ("eon", "EON")
+    ESB = ("esb", "ESB")
+    FOXGLOVE = ("foxglove", "Foxglove")
+    OCTOPUS = ("octopus", "Octopus")
+    OVO = ("ovo", "OVO")
+    SCOTTISH_POWER = ("scottish-power", "Scottish Power")
+    SHELL = ("shell", "Shell")
+    UTILITA = ("utilita", "Utilita")
+    UTILITY_WAREHOUSE = ("utility-warehouse", "Utility Warehouse")
 
 
 class Supplier(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
@@ -62,7 +44,7 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
     username = None
     full_name = models.CharField(max_length=255, blank=True, null=True)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
-    is_supplier_admin = models.BooleanField(default=False)
+    is_service_manager = models.BooleanField(default=False)
     is_team_leader = models.BooleanField(default=False)
     is_team_member = models.BooleanField(default=False)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
@@ -125,15 +107,6 @@ class Referral(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
         on_delete=models.PROTECT,
         related_name="referral_download",
     )
-
-    def save(self, *args, **kwargs):
-        if not self.supplier:
-            if self.data["energySupplier"]:
-                selected_supplier = SUPPLIER_VALUE_MAPPING[self.data["energySupplier"]]
-                selected_supplier_name = selected_supplier.label
-                supplier = Supplier.objects.get(name=selected_supplier_name)
-                self.supplier = supplier
-        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"<referral id={self.id} supplier={self.supplier}>"

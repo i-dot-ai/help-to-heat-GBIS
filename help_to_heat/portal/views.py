@@ -27,7 +27,7 @@ def unauthorised_view(request):
 @login_required(login_url="portal:unauthorised")
 def homepage_view(request):
     user = request.user
-    if user.is_supplier_admin:
+    if user.is_service_manager:
         return service_manager_homepage_view(request)
     elif user.is_team_leader:
         return team_leader_homepage_view(request)
@@ -40,7 +40,7 @@ def homepage_view(request):
 @require_http_methods(["GET"])
 @decorators.requires_service_manager
 def service_manager_homepage_view(request):
-    template = "portal/supplier-admin/homepage.html"
+    template = "portal/service-manager/homepage.html"
     suppliers = models.Supplier.objects.all()
     data = {
         "suppliers": suppliers,

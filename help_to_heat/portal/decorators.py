@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 
 requires_service_manager = user_passes_test(
-    lambda user: (user.is_authenticated and user.is_supplier_admin and user.is_active),
+    lambda user: (user.is_authenticated and user.is_service_manager and user.is_active),
     login_url="portal:unauthorised",
 )
 
