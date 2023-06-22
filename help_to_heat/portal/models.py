@@ -39,6 +39,12 @@ class Supplier(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
         return f"<Supplier {self.name}>"
 
 
+class UserRoleChoices(utils.Choices):
+    SERVICE_MANAGER = ("service-manager", "Service Manager")
+    TEAM_LEADER = ("team-leader", "Team Leader")
+    TEAM_MEMBER = ("team-member", "Team Member")
+
+
 class User(BaseUser, utils.UUIDPrimaryKeyBase):
     objects = BaseUserManager()
     username = None
@@ -47,6 +53,7 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
     is_service_manager = models.BooleanField(default=False)
     is_team_leader = models.BooleanField(default=False)
     is_team_member = models.BooleanField(default=False)
+    role = models.CharField(max_length=64, blank=True, null=True, choices=UserRoleChoices.choices)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
