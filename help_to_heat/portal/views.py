@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
@@ -58,7 +57,7 @@ def team_leader_homepage_view(request):
     template = "portal/team-leader/homepage.html"
     user = request.user
     supplier = user.supplier
-    team_members = models.User.objects.filter(Q(supplier=supplier) & (Q(is_team_member=True) | Q(is_team_leader=True)))
+    team_members = models.User.objects.filter(supplier=supplier).filter(role__in=("team-leader", "team-member")).all()
     data = {
         "team_members": team_members,
     }

@@ -49,7 +49,7 @@ def change_supplier_disabled_status_view(request, supplier_id):
 def supplier_team_leads_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
-        users = supplier.user_set.filter(is_team_leader=True).all()
+        users = supplier.user_set.filter(role="team-leader").all()
         return render(
             request, "portal/service-manager/supplier-team-lead-list.html", {"users": users, "supplier": supplier}
         )
@@ -68,7 +68,7 @@ def supplier_team_leads_add_view(request, supplier_id):
 
         user, _ = models.User.objects.get_or_create(email=leader_email)
         user.full_name = leader_name
-        user.is_team_leader = True
+        user.role = "team-leader"
         user.supplier = supplier
         user.save()
         email_handler.send_invite_email(user)
@@ -134,10 +134,7 @@ def team_member_add_details_view(request, supplier_id, user_role):
 
         user, _ = models.User.objects.get_or_create(email=user_email)
         user.full_name = user_name
-        if user_role == "team-leader":
-            user.is_team_leader = True
-        else:
-            user.is_team_member = True
+        user.role = user_role
         user.supplier = supplier
         user.save()
         email_handler.send_invite_email(user)
@@ -179,11 +176,6 @@ def team_member_edit_view(request, supplier_id, user_id):
         team_role = request.POST.get("team-role")
         user, _ = models.User.objects.get_or_create(pk=user_id)
         user.full_name = user_name
-        if team_role == "team-leader":
-            user.is_team_leader = True
-            user.is_team_member = False
-        elif team_role == "team-member":
-            user.is_team_member = True
-            user.is_team_leader = False
+        user.role = team_role
         user.save()
         return redirect("portal:user-details", supplier_id, user_id)
