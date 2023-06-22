@@ -108,15 +108,15 @@ def get_latest_email_url(email):
 
 
 def login_as_service_manager(client, email=None, password=None, supplier="Octopus"):
-    return login_as_role(client, "service_manager", email=email, password=password, supplier=supplier)
+    return login_as_role(client, "service-manager", email=email, password=password, supplier=supplier)
 
 
 def login_as_team_leader(client, email=None, password=None, supplier="Octopus"):
-    return login_as_role(client, "team_leader", email=email, password=password, supplier=supplier)
+    return login_as_role(client, "team-leader", email=email, password=password, supplier=supplier)
 
 
 def login_as_role(client, role, email=None, password=None, supplier="Octopus"):
-    assert role in ("team_leader", "service_manager")
+    assert role in ("team-leader", "service-manager")
     if not email:
         email = f"{role.replace('_', '-')}+{make_code()}@example.com"
     if not password:
@@ -124,11 +124,9 @@ def login_as_role(client, role, email=None, password=None, supplier="Octopus"):
     user = models.User.objects.create_user(email, password)
     user.full_name = f"Test {role.replace('_', ' ').capitalize()}"
     user.invite_accepted_at = timezone.now()
-    if role == "team_leader":
-        user.is_team_leader = True
+    user.role = role
+    if role == "team-leader":
         user.supplier_id = models.Supplier.objects.get(name=supplier).id
-    elif role == "service_manager":
-        user.is_service_manager = True
     user.save()
     page = login(client, email, password)
     assert page.has_text("Logout")

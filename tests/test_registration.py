@@ -116,7 +116,7 @@ def test_no_supplier_set():
     password = "Fl1bbl3Fl1bbl3"
     user = models.User.objects.create_user(email, password)
     user.invite_accepted_at = timezone.now()
-    user.is_team_leader = True
+    user.role = "team-leader"
     user.supplier_id = None
     user.save()
 
@@ -212,7 +212,7 @@ def test_invite_user_skip_otp():
     user = models.User.objects.create_user(email, password)
     user.full_name = f"Larry the Leader {utils.make_code()}"
     user.invite_accepted_at = timezone.now()
-    user.is_team_leader = True
+    user.role = "team-leader"
     user.supplier_id = models.Supplier.objects.get(name="Octopus").id
     user.save()
 

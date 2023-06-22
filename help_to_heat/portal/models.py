@@ -38,15 +38,22 @@ class Supplier(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     def __str__(self):
         return f"<Supplier {self.name}>"
 
+    def get_team_leader_count(self):
+        return self.user_set.filter(role="team-leader").count()
+
+
+class UserRoleChoices(utils.Choices):
+    SERVICE_MANAGER = ("service-manager", "Service Manager")
+    TEAM_LEADER = ("team-leader", "Team Leader")
+    TEAM_MEMBER = ("team-member", "Team Member")
+
 
 class User(BaseUser, utils.UUIDPrimaryKeyBase):
     objects = BaseUserManager()
     username = None
     full_name = models.CharField(max_length=255, blank=True, null=True)
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.PROTECT)
-    is_service_manager = models.BooleanField(default=False)
-    is_team_leader = models.BooleanField(default=False)
-    is_team_member = models.BooleanField(default=False)
+    role = models.CharField(max_length=64, blank=True, null=True, choices=UserRoleChoices.choices)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
@@ -88,6 +95,18 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
             self.last_otp = otp
             self.save()
         return success
+
+    @property
+    def is_service_manager(self):
+        return self.role == "service-manager"
+
+    @property
+    def is_team_leader(self):
+        return self.role == "team-leader"
+
+    @property
+    def is_team_member(self):
+        return self.role == "team-member"
 
 
 class ReferralDownload(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
