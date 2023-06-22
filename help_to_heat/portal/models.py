@@ -38,6 +38,9 @@ class Supplier(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     def __str__(self):
         return f"<Supplier {self.name}>"
 
+    def get_team_leader_count(self):
+        return self.user_set.filter(role="team-leader").count()
+
 
 class UserRoleChoices(utils.Choices):
     SERVICE_MANAGER = ("service-manager", "Service Manager")
