@@ -93,6 +93,18 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
             self.save()
         return success
 
+    @property
+    def is_service_manager(self):
+        return self.role == "service-manager"
+
+    @property
+    def is_team_leader(self):
+        return self.role == "team-leader"
+
+    @property
+    def is_team_member(self):
+        return self.role == "team-member"
+
 
 class ReferralDownload(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
     file_name = models.CharField(max_length=255, blank=True, null=True)
