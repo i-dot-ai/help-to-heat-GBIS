@@ -61,9 +61,9 @@ def invite_user(name, email, password, role, try_fake_email=False, skip_otp=Fals
         form["otp"] = utils.get_otp(secret)
         page = form.submit().follow()
 
-        if role == "team_member":
+        if role == "TEAM_MEMBER":
             assert not page.has_text("Manage members")
-        if role == "team_leader":
+        if role == "TEAM_LEADER":
             assert page.has_text("Manage members")
     return page
 
@@ -73,7 +73,7 @@ def test_team_leader():
     email = f"larry-the-leader+{utils.make_code()}@example.com"
     new_password = "N3wP455w0rd"
     team_lead_name = f"Larry the Leader {utils.make_code()}"
-    role = "team-leader"
+    role = "TEAM_LEADER"
     page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
 
@@ -102,7 +102,7 @@ def test_team_member():
     email = f"milly-the-member+{utils.make_code()}@example.com"
     new_password = "N3wP455w0rd"
     team_lead_name = f"Milly the member {utils.make_code()}"
-    role = "team-member"
+    role = "TEAM_MEMBER"
     page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
 
@@ -116,7 +116,7 @@ def test_no_supplier_set():
     password = "Fl1bbl3Fl1bbl3"
     user = models.User.objects.create_user(email, password)
     user.invite_accepted_at = timezone.now()
-    user.role = "team-leader"
+    user.role = "TEAM_LEADER"
     user.supplier_id = None
     user.save()
 
@@ -197,7 +197,7 @@ def test_accept_fake_email():
     email = f"milly-the-member+{utils.make_code()}@example.com"
     new_password = "N3wP455w0rd"
     team_lead_name = f"Milly the member {utils.make_code()}"
-    role = "team-member"
+    role = "TEAM_MEMBER"
     page = utils.login_as_team_leader(client)
     page = page.click(contains="Add a new team member or leader")
 
@@ -212,7 +212,7 @@ def test_invite_user_skip_otp():
     user = models.User.objects.create_user(email, password)
     user.full_name = f"Larry the Leader {utils.make_code()}"
     user.invite_accepted_at = timezone.now()
-    user.role = "team-leader"
+    user.role = "TEAM_LEADER"
     user.supplier_id = models.Supplier.objects.get(name="Octopus").id
     user.save()
 

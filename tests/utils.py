@@ -108,15 +108,15 @@ def get_latest_email_url(email):
 
 
 def login_as_service_manager(client, email=None, password=None, supplier="Octopus"):
-    return login_as_role(client, "service-manager", email=email, password=password, supplier=supplier)
+    return login_as_role(client, "SERVICE_MANAGER", email=email, password=password, supplier=supplier)
 
 
 def login_as_team_leader(client, email=None, password=None, supplier="Octopus"):
-    return login_as_role(client, "team-leader", email=email, password=password, supplier=supplier)
+    return login_as_role(client, "TEAM_LEADER", email=email, password=password, supplier=supplier)
 
 
 def login_as_role(client, role, email=None, password=None, supplier="Octopus"):
-    assert role in ("team-leader", "service-manager")
+    assert role in ("TEAM_LEADER", "SERVICE_MANAGER")
     if not email:
         email = f"{role.replace('_', '-')}+{make_code()}@example.com"
     if not password:
@@ -125,7 +125,7 @@ def login_as_role(client, role, email=None, password=None, supplier="Octopus"):
     user.full_name = f"Test {role.replace('_', ' ').capitalize()}"
     user.invite_accepted_at = timezone.now()
     user.role = role
-    if role == "team-leader":
+    if role == "TEAM_LEADER":
         user.supplier_id = models.Supplier.objects.get(name=supplier).id
     user.save()
     page = login(client, email, password)

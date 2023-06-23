@@ -39,13 +39,13 @@ class Supplier(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):
         return f"<Supplier {self.name}>"
 
     def get_team_leader_count(self):
-        return self.user_set.filter(role="team-leader").count()
+        return self.user_set.filter(role="TEAM_LEADER").count()
 
 
 class UserRoleChoices(utils.Choices):
-    SERVICE_MANAGER = ("service-manager", "Service Manager")
-    TEAM_LEADER = ("team-leader", "Team Leader")
-    TEAM_MEMBER = ("team-member", "Team Member")
+    SERVICE_MANAGER = "Service Manager"
+    TEAM_LEADER = "Team Leader"
+    TEAM_MEMBER = "Team Member"
 
 
 class User(BaseUser, utils.UUIDPrimaryKeyBase):
@@ -98,15 +98,15 @@ class User(BaseUser, utils.UUIDPrimaryKeyBase):
 
     @property
     def is_service_manager(self):
-        return self.role == "service-manager"
+        return self.role == "SERVICE_MANAGER"
 
     @property
     def is_team_leader(self):
-        return self.role == "team-leader"
+        return self.role == "TEAM_LEADER"
 
     @property
     def is_team_member(self):
-        return self.role == "team-member"
+        return self.role == "TEAM_MEMBER"
 
 
 class ReferralDownload(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):

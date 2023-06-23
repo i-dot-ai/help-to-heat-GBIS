@@ -17,13 +17,13 @@
       <label class="govuk-label" for="team-role">Team role</label>
       <div class="govuk-radios" data-module="govuk-radios">
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="team-role-1" name="team-role" {% if user.is_team_member == True %} checked="checked" {% endif %} type="radio" value="team-member" required>
+          <input class="govuk-radios__input" id="team-role-1" name="team-role" {% if user.is_team_member %} checked="checked" {% endif %} type="radio" value="TEAM_MEMBER" required>
           <label class="govuk-label govuk-radios__label" for="team-role-1">
             Team member
           </label>
         </div>
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="team-role-2" name="team-role" {% if user.is_team_leader == True %} checked="checked" {% endif %} type="radio" value="team-leader">
+          <input class="govuk-radios__input" id="team-role-2" name="team-role" {% if user.is_team_leader %} checked="checked" {% endif %} type="radio" value="TEAM_LEADER">
           <label class="govuk-label govuk-radios__label" for="team-role-2">
             Team leader
           </label>

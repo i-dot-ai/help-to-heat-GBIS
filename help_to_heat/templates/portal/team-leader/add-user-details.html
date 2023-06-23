@@ -9,7 +9,7 @@
   <fieldset class="govuk-fieldset">
   <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
     <h1 class="govuk-fieldset__heading">
-      Contact details for the new {% if user_role == "team-member" %}team member{% else %}team leader{% endif %}
+      Contact details for the new {% if user_role == "TEAM_MEMBER" %}team member{% else %}team leader{% endif %}
     </h1>
   </legend>
     <p>Enter the name and email address for the person you would like to add to your team.</p>
@@ -28,7 +28,7 @@
     </div>
     <br>
     <div class="govuk-button-group">
-      <button class="govuk-button" data-module="govuk-button" type="submit">Add {% if user_role == "team-member" %}team member{% else %}team leader{% endif %}</button>
+      <button class="govuk-button" data-module="govuk-button" type="submit">Add {% if user_role == "TEAM_MEMBER" %}team member{% else %}team leader{% endif %}</button>
       <a class="govuk-link" href="{{url('portal:homepage')}}">Cancel</a>
     </div>
   </fieldset>
