@@ -501,3 +501,6 @@ def cookies_view(request):
 
 def data_layer_js_view(request):
     return render(request, "dataLayer.js", {"gtag_id": settings.GTAG_ID}, content_type="application/x-javascript")
+
+def privacy_policy_view(request):
+    return render(request, template_name="frontdoor/privacy-policy.html")
