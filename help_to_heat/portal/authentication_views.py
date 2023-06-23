@@ -48,6 +48,7 @@ class CustomLoginView(MethodDispatcher):
             messages.error(request, "Please enter an email and password.")
             return render(request, self.template_name, {})
         else:
+            email = email.lower()
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 if not user.invite_accepted_at:

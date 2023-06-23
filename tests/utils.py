@@ -143,7 +143,7 @@ def login(client, email, password):
 
     assert page.has_text("Please enter your One Time Password (OTP)")
 
-    user = models.User.objects.get(email=email)
+    user = models.User.objects.get(email=email.lower())
     secret = user.get_totp_secret()
 
     form = page.get_form()
