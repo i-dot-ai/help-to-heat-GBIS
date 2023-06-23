@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         email = kwargs["email"]
         user = models.User(email=email)
-        user.is_supplier_admin = True
+        user.role = "service-manager"
         user.invited_at = timezone.now()
         user.invite_accepted_at = timezone.now()
         user.save()
