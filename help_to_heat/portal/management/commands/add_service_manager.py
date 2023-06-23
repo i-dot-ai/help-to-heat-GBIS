@@ -17,3 +17,4 @@ class Command(BaseCommand):
         user.invited_at = timezone.now()
         user.invite_accepted_at = timezone.now()
         user.save()
+        print(f"{user} added")  # noqa: T201
