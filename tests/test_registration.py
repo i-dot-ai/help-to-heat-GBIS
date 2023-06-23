@@ -213,7 +213,7 @@ def test_invite_user_skip_otp():
     user.full_name = f"Larry the Leader {utils.make_code()}"
     user.invite_accepted_at = timezone.now()
     user.role = "TEAM_LEADER"
-    user.supplier_id = models.Supplier.objects.get(name="Octopus").id
+    user.supplier_id = models.Supplier.objects.get(name="Utilita").id
     user.save()
 
     client = utils.get_client()
