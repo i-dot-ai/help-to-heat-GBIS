@@ -49,8 +49,8 @@
           <p class="govuk-body">{{epc_rating}}</p>
         </div>
       </div>
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
+      <div class="govuk-form-group {% if errors %}govuk-form-group--error{% endif %}">
+        <fieldset class="govuk-fieldset" {% if errors %} aria-describedby="question-accept_suggested_epc-error" {% endif %}>
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h1 class="govuk-fieldset__heading">
               Is this your EPC?

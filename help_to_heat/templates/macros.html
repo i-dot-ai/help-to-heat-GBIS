@@ -63,7 +63,7 @@
     <label class="govuk-label" for="question-{{name}}">
       {{label}}
     </label>
-    <input class="govuk-input" id="question-{{name}}" name="{{name}}" type="{{type}}" autocomplete="off" value="{{data.get(name, '')}}">
+    <input class="govuk-input" id="question-{{name}}" name="{{name}}" type="{{type}}" {% if errors.get(name) %} aria-describedby="question-{{name}}-error" {% endif %} autocomplete="off" value="{{data.get(name, '')}}">
   </div>
 {%- endmacro%}
 
