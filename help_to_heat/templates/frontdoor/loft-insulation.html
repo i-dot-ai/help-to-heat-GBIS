@@ -11,7 +11,7 @@
     <div class="govuk-grid-column-two-thirds">
       <form method="POST" novalidate>
         {{csrf_input}}
-        <div class="govuk-form-group">
+        <div class="govuk-form-group {% if errors %}govuk-form-group--error{% endif %}">
           <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">
