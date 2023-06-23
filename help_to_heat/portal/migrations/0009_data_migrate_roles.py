@@ -7,11 +7,11 @@ def migrate_roles(apps, schema_editor):
     users = User.objects.all()
     for user in users:
         if user.is_service_manager:
-            user.role = "service_manager"
+            user.role = "service-manager"
         elif user.is_team_leader:
-            user.role = "team_leader"
+            user.role = "team-leader"
         elif user.is_team_member:
-            user.role = "team_member"
+            user.role = "team-member"
         user.save()
 
 
