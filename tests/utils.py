@@ -107,15 +107,15 @@ def get_latest_email_url(email):
     return email_url
 
 
-def login_as_service_manager(client, email=None, password=None, supplier="Octopus"):
+def login_as_service_manager(client, email=None, password=None, supplier="Utilita"):
     return login_as_role(client, "SERVICE_MANAGER", email=email, password=password, supplier=supplier)
 
 
-def login_as_team_leader(client, email=None, password=None, supplier="Octopus"):
+def login_as_team_leader(client, email=None, password=None, supplier="Utilita"):
     return login_as_role(client, "TEAM_LEADER", email=email, password=password, supplier=supplier)
 
 
-def login_as_role(client, role, email=None, password=None, supplier="Octopus"):
+def login_as_role(client, role, email=None, password=None, supplier="Utilita"):
     assert role in ("TEAM_LEADER", "SERVICE_MANAGER")
     if not email:
         email = f"{role.replace('_', '-')}+{make_code()}@example.com"

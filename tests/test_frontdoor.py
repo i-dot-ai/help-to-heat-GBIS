@@ -190,7 +190,7 @@ def _answer_house_questions(page, session_id, benefits_answer, epc_rating="D"):
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
 def test_happy_flow():
-    supplier = "Bulb"
+    supplier = "EON"
     session_id = _do_happy_flow(supplier=supplier)
 
     data = interface.api.session.get_answer(session_id, page_name="contact-details")
@@ -234,7 +234,7 @@ def _do_happy_flow(supplier="Foxglove"):
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
-    page = _check_page(page, "supplier", "supplier", "Shell")
+    page = _check_page(page, "supplier", "supplier", "OVO")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
     form = page.get_form()
@@ -621,7 +621,7 @@ def test_referral_email():
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
-    page = _check_page(page, "supplier", "supplier", "Octopus")
+    page = _check_page(page, "supplier", "supplier", "Utilita")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
     form = page.get_form()
@@ -637,7 +637,7 @@ def test_referral_email():
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Confirm and submit')")
-    assert page.has_text("I agree for my personal details to be shared with Octopus")
+    assert page.has_text("I agree for my personal details to be shared with Utilita")
 
     form = page.get_form()
     page = form.submit()
@@ -648,11 +648,11 @@ def test_referral_email():
 
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
+    assert page.has_one("h1:contains('Your details have been submitted to Utilita')")
 
     referral_email_text = utils.get_latest_email_text("freddy.flibble@example.com")
 
-    assert "Your details have been submitted to Octopus." in referral_email_text
+    assert "Your details have been submitted to Utilita." in referral_email_text
     assert "You do not need to create another referral at any point." in referral_email_text
 
     referral = models.Referral.objects.get(session_id=session_id)
@@ -746,7 +746,7 @@ def test_incorrect_referral_email():
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
-    page = _check_page(page, "supplier", "supplier", "Octopus")
+    page = _check_page(page, "supplier", "supplier", "Utilita")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
     form = page.get_form()
@@ -790,7 +790,7 @@ def test_referral_not_providing_email():
     page = form.submit().follow()
 
     assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
-    page = _check_page(page, "supplier", "supplier", "Octopus")
+    page = _check_page(page, "supplier", "supplier", "Utilita")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
     form = page.get_form()
@@ -815,7 +815,7 @@ def test_referral_not_providing_email():
 
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Your details have been submitted to Octopus')")
+    assert page.has_one("h1:contains('Your details have been submitted to Utilita')")
 
     referral = models.Referral.objects.get(session_id=session_id)
     referral.delete()
