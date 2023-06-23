@@ -24,6 +24,7 @@ class SupplierChoices(utils.Choices):
     # ESB = ("esb", "ESB")
     # FOXGLOVE = ("foxglove", "Foxglove")
     # OCTOPUS = ("octopus", "Octopus")
+    OS_ENERGY = ("os-energy", "OS Energy")
     OVO = ("ovo", "OVO")
     SCOTTISH_POWER = ("scottish-power", "Scottish Power")
     # SHELL = ("shell", "Shell")

@@ -219,19 +219,20 @@ loft_access_options = ("Yes, there is access to my loft", "No, there is no acces
 loft_access_validation_options = loft_access_options + ("No loft",)
 supplier_options = (
     "British Gas",
-    "Bulb",
-    "E Energy",
-    "Ecotricity",
+    # "Bulb",
+    # "E Energy",
+    # "Ecotricity",
     "EDF",
     "EON",
-    "ESB",
-    "Foxglove",
-    "Octopus",
+    # "ESB",
+    # "Foxglove",
+    # "Octopus",
+    "OS Energy",
     "OVO",
     "Scottish Power",
-    "Shell",
+    # "Shell",
     "Utilita",
-    "Utility Warehouse",
+    # "Utility Warehouse",
 )
 epc_rating_options = ("A", "B", "C", "D", "E", "F", "G", "H", "Not found")
 loft_insulation_options = (
