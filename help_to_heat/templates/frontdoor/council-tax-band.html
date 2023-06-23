@@ -8,7 +8,7 @@
 {% block content %}
   {% call macros.form_wrapper(prev_url) -%}
     <div class="govuk-form-group {% if errors %}govuk-form-group--error{% endif %}">
-      <fieldset class="govuk-fieldset" aria-describedby="hint">
+      <fieldset class="govuk-fieldset" aria-describedby="hint {% if errors %}question-council_tax_band-error{% endif %}">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
           <h1 class="govuk-fieldset__heading">
             What is the council tax band of your property?

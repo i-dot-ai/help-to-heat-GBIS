@@ -12,7 +12,7 @@
       <form method="post" novalidate>
         {{csrf_input}}
         <div class="govuk-form-group {% if errors %}govuk-form-group--error{% endif %}">
-          <fieldset class="govuk-fieldset">
+          <fieldset class="govuk-fieldset" {% if errors %} aria-describedby="question-loft-error" {% endif %}>
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">
                 Do you have a loft that hasn't been converted into a room?
