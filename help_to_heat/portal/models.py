@@ -16,19 +16,19 @@ logger = logging.getLogger(__name__)
 
 class SupplierChoices(utils.Choices):
     BRITISH_GAS = ("british-gas", "British Gas")
-    BULB = ("bulb", "Bulb")
-    E_ENERGY = ("e-energy", "E Energy")
-    ECOTRICITY = ("ecotricity", "Ecotricity")
+    # BULB = ("bulb", "Bulb")
+    # E_ENERGY = ("e-energy", "E Energy")
+    # ECOTRICITY = ("ecotricity", "Ecotricity")
     EDF = ("edf", "EDF")
     EON = ("eon", "EON")
-    ESB = ("esb", "ESB")
-    FOXGLOVE = ("foxglove", "Foxglove")
-    OCTOPUS = ("octopus", "Octopus")
+    # ESB = ("esb", "ESB")
+    # FOXGLOVE = ("foxglove", "Foxglove")
+    # OCTOPUS = ("octopus", "Octopus")
     OVO = ("ovo", "OVO")
     SCOTTISH_POWER = ("scottish-power", "Scottish Power")
-    SHELL = ("shell", "Shell")
+    # SHELL = ("shell", "Shell")
     UTILITA = ("utilita", "Utilita")
-    UTILITY_WAREHOUSE = ("utility-warehouse", "Utility Warehouse")
+    # UTILITY_WAREHOUSE = ("utility-warehouse", "Utility Warehouse")
 
 
 class Supplier(utils.UUIDPrimaryKeyBase, utils.TimeStampedModel):

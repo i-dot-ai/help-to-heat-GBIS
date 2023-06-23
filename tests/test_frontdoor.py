@@ -233,7 +233,7 @@ def _do_happy_flow(supplier="Foxglove"):
     form = page.get_form()
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
+    assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
     page = _check_page(page, "supplier", "supplier", "Shell")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
@@ -620,7 +620,7 @@ def test_referral_email():
     form = page.get_form()
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
+    assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
     page = _check_page(page, "supplier", "supplier", "Octopus")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
@@ -745,7 +745,7 @@ def test_incorrect_referral_email():
     form = page.get_form()
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
+    assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
     page = _check_page(page, "supplier", "supplier", "Octopus")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
@@ -789,7 +789,7 @@ def test_referral_not_providing_email():
     form = page.get_form()
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Select your home energy supplier from the list below.')")
+    assert page.has_one("h1:contains('Select your home energy supplier from the list below')")
     page = _check_page(page, "supplier", "supplier", "Octopus")
 
     assert page.has_one("h1:contains('Add your personal and contact details')")
