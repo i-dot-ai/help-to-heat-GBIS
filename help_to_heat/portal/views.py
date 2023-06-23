@@ -57,7 +57,7 @@ def team_leader_homepage_view(request):
     template = "portal/team-leader/homepage.html"
     user = request.user
     supplier = user.supplier
-    team_members = models.User.objects.filter(supplier=supplier).filter(role__in=("team-leader", "team-member")).all()
+    team_members = models.User.objects.filter(supplier=supplier).filter(role__in=("TEAM_LEADER", "TEAM_MEMBER")).all()
     data = {
         "team_members": team_members,
     }

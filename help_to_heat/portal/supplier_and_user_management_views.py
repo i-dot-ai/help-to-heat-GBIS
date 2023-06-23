@@ -49,7 +49,7 @@ def change_supplier_disabled_status_view(request, supplier_id):
 def supplier_team_leads_view(request, supplier_id):
     if request.method == "GET":
         supplier = models.Supplier.objects.get(pk=supplier_id)
-        users = supplier.user_set.filter(role="team-leader").all()
+        users = supplier.user_set.filter(role="TEAM_LEADER").all()
         return render(
             request, "portal/service-manager/supplier-team-lead-list.html", {"users": users, "supplier": supplier}
         )
@@ -68,7 +68,7 @@ def supplier_team_leads_add_view(request, supplier_id):
 
         user, _ = models.User.objects.get_or_create(email=leader_email)
         user.full_name = leader_name
-        user.role = "team-leader"
+        user.role = "TEAM_LEADER"
         user.supplier = supplier
         user.save()
         email_handler.send_invite_email(user)
