@@ -35,6 +35,32 @@ page_compulsory_field_map = {
     "confirm-and-submit": ("permission",),
 }
 
+missing_item_errors = {
+    "country": "Select where the property is located",
+    "own_property": "Select if you own the property",
+    "address_line_1": "Enter Address line 1",
+    "postcode": "Enter a postcode",
+    "uprn": "Select your address",
+    "town_or_city": "Enter your Town or city",
+    "council_tax_band": "Enter the Council Tax Band of the property",
+    "accept_suggested_epc": "Select if your EPC rating is correct or not, or that you don’t know",
+    "benefits": "Select if anyone in your household is receiving any benefits listed below",
+    "household_income": "Select your household income",
+    "property_type": "Select your property type",
+    "number_of_bedrooms": "Select the number of bedrooms the property has",
+    "wall_type": "Select the type of walls the property has",
+    "wall_insulation": "Select if the walls of the property are insulated or not, or if you don’t know",
+    "loft": "Select if you have a loft that has been converted into a room or not",
+    "loft_access": "Select whether or not you have access to the loft",
+    "loft_insulation": "Select whether or not your loft is fully insulated",
+    "supplier": "Select your home energy supplier from the list below",
+    "first_name": "Enter your first name",
+    "last_name": "Enter your last name",
+    "email": "Enter your address",
+    "contact_number": "Enter your contact number",
+    "permission": "Please confirm that you agree to the use of your information by checking this box",
+}
+
 
 def register_page(name):
     def _inner(func):
@@ -143,7 +169,7 @@ class PageView(utils.MethodDispatcher):
     def validate(self, request, session_id, page_name, data, is_change_page):
         fields = page_compulsory_field_map.get(page_name, ())
         missing_fields = tuple(field for field in fields if not data.get(field))
-        errors = {field: "Please answer this question" for field in missing_fields}
+        errors = {field: missing_item_errors[field] for field in missing_fields}
         return errors
 
 
