@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
 from .. import utils
-from . import decorators, epc_writer, models
+from . import decorators, models
 
 
 @require_http_methods(["GET"])
@@ -102,7 +102,12 @@ def healthcheck_view(request):
 
 @require_http_methods(["GET", "POST"])
 class EPCUploadView(utils.MethodDispatcher):
-    args = ("/usr/local/bin/python", "/app/manage.py", "load_epc_ratings", "--url",)
+    args = (
+        "/usr/local/bin/python",
+        "/app/manage.py",
+        "load_epc_ratings",
+        "--url",
+    )
 
     def get(self, request):
         epc_count = models.EpcRating.objects.count()
