@@ -1,3 +1,5 @@
+import subprocess
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -100,6 +102,8 @@ def healthcheck_view(request):
 
 @require_http_methods(["GET", "POST"])
 class EPCUploadView(utils.MethodDispatcher):
+    args = ("/usr/local/bin/python", "/app/manage.py", "load_epc_ratings", "--url",)
+
     def get(self, request):
         template = "portal/epc-upload.html"
         return render(
@@ -109,9 +113,7 @@ class EPCUploadView(utils.MethodDispatcher):
 
     def post(self, request):
         url = request.POST["url"]
+        cmd_args = self.args + (url,)
+        subprocess.Popen(cmd_args)
         messages.info(request, "Upload started")
-
-        sorted_filepath = epc_writer.save_url_in_chunks(url)
-        rows = epc_writer.read_rows(sorted_filepath)
-        epc_writer.write_rows(rows)
         return redirect("portal:epc-upload")
