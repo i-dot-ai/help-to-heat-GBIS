@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
+from .. import utils
 from . import decorators, models
 
 
@@ -94,3 +95,13 @@ def healthcheck_view(request):
     _ = models.User.objects.exists()
     data = {"healthy": True, "datetime": timezone.now()}
     return JsonResponse(data, status=201)
+
+
+@require_http_methods(["GET"])
+class EPCUploadView(utils.MethodDispatcher):
+    def get(self, request):
+        template = "portal/epc-upload.html"
+        return render(
+            request,
+            template_name=template,
+        )
