@@ -1,5 +1,6 @@
 /all-domestic-certificates/
 /data/
+/temp-data/
 
 out
 **/*.test.ts
