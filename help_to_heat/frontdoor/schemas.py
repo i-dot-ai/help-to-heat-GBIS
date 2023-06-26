@@ -231,6 +231,7 @@ supplier_options = (
     "OVO",
     "Scottish Power",
     # "Shell",
+    "So Energy",
     "Utilita",
     # "Utility Warehouse",
 )
