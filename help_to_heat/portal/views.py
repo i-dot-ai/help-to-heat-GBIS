@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -5,7 +6,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
 from .. import utils
-from . import decorators, models
+from . import decorators, epc_writer, models
 
 
 @require_http_methods(["GET"])
@@ -97,7 +98,7 @@ def healthcheck_view(request):
     return JsonResponse(data, status=201)
 
 
-@require_http_methods(["GET"])
+@require_http_methods(["GET", "POST"])
 class EPCUploadView(utils.MethodDispatcher):
     def get(self, request):
         template = "portal/epc-upload.html"
@@ -105,3 +106,12 @@ class EPCUploadView(utils.MethodDispatcher):
             request,
             template_name=template,
         )
+
+    def post(self, request):
+        url = request.POST["url"]
+        messages.info(request, "Upload started")
+
+        sorted_filepath = epc_writer.save_url_in_chunks(url)
+        rows = epc_writer.read_rows(sorted_filepath)
+        epc_writer.write_rows(rows)
+        return redirect("portal:epc-upload")
