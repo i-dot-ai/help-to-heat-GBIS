@@ -1,0 +1,25 @@
+{% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block title %}
+  <title>Choose your supplier - Check eligibility for Great British Insulation Scheme - GOV.UK</title>
+{% endblock %}
+
+{% block content %}
+  {% call macros.form_wrapper(prev_url) -%}
+    <div class="govuk-form-group {% if errors %}govuk-form-group--error{% endif %}">
+      <fieldset class="govuk-fieldset"{% if errors %} aria-describedby="question-supplier-error" {% endif %}>
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Select your home energy supplier from the list below
+          </h1>
+        </legend>
+
+        <p class="govuk-body">If your home energy supplier is not listed, you can select any energy supplier from the list.</p>
+
+        {{macros.radios('supplier', supplier_options, data, errors)}}
+
+      </fieldset>
+    </div>
+  {%- endcall %}
+{% endblock %}

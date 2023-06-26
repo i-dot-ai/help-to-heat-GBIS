@@ -1,0 +1,37 @@
+{% extends "portal/base_generic_gov.html" %}
+
+{% block content %}
+
+<a href="{{url('portal:add-user-role-select', supplier_id)}}" class="govuk-back-link">Back</a>
+<form method="POST" novalidate>
+  {{csrf_input}}
+  <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h1 class="govuk-fieldset__heading">
+      Contact details for the new {% if user_role == "TEAM_MEMBER" %}team member{% else %}team leader{% endif %}
+    </h1>
+  </legend>
+    <p>Enter the name and email address for the person you would like to add to your team.</p>
+    <h2>Contact details</h2>
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="user-name">
+        Full name
+      </label>
+      <input required class="govuk-input" id="user-name" name="user-name" type="text">
+    </div>
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="user-email">
+        Email
+      </label>
+      <input required class="govuk-input" id="user-email" name="user-email" type="email">
+    </div>
+    <br>
+    <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button" type="submit">Add {% if user_role == "TEAM_MEMBER" %}team member{% else %}team leader{% endif %}</button>
+      <a class="govuk-link" href="{{url('portal:homepage')}}">Cancel</a>
+    </div>
+  </fieldset>
+  </div>
+</form>
+{% endblock %}

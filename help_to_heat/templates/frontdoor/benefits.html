@@ -1,0 +1,39 @@
+{% extends "frontdoor/base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block title %}
+  <title>Do you receive benefits? - Check eligibility for Great British Insulation Scheme - GOV.UK</title>
+{% endblock %}
+
+{% block content %}
+  {% call macros.form_wrapper(prev_url) -%}
+    <div class="govuk-form-group {% if errors %}govuk-form-group--error{% endif %}">
+      <fieldset class="govuk-fieldset"{% if errors %} aria-describedby="question-benefits-error" {% endif %}>
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Is anyone in your household receiving any benefits?
+          </h1>
+        </legend>
+
+        <p class="govuk-body">Select yes if they are receiving any of the following:</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+          <li>Income based Jobseekers Allowance</li>
+          <li>Income related Employment and Support Allowance</li>
+          <li>Income Support</li>
+          <li>Pension Credit Guarantee Credit</li>
+          <li>Working Tax Credit</li>
+          <li>Child Tax Credit</li>
+          <li>Universal Credit</li>
+          <li>Housing Benefit</li>
+          <li>Pension Credit Savings Credit</li>
+          <li>Child Benefit</li>
+        </ul>
+        <p class="govuk-body">You may be asked to provide evidence of this at a later stage.</p>
+
+        {{macros.radios('benefits', benefits_options, data, errors)}}
+
+      </fieldset>
+    </div>
+  {%- endcall %}
+{% endblock %}
