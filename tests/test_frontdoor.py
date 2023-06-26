@@ -108,7 +108,7 @@ def test_flow_errors():
     page = form.submit()
 
     assert page.has_one("h2:contains('There is a problem')")
-    assert page.has_text("Please answer this question")
+    assert page.has_text("Select where the property is located")
 
 
 def _answer_house_questions(page, session_id, benefits_answer, epc_rating="D"):
@@ -240,8 +240,8 @@ def _do_happy_flow(supplier="Foxglove"):
     form = page.get_form()
 
     page = form.submit()
-    assert page.has_text("Please answer this question")
-    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Please answer this question')")
+    assert page.has_text("Enter your first name")
+    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Enter your first name')")
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
@@ -263,7 +263,7 @@ def _do_happy_flow(supplier="Foxglove"):
     form = page.get_form()
     page = form.submit()
 
-    assert page.has_text("Please answer this question")
+    assert page.has_text("Please confirm that you agree to the use of your information by checking this box")
     form = page.get_form()
     form["permission"] = True
 
@@ -456,7 +456,7 @@ def test_no_address():
 
     page = form.submit()
     assert page.has_one("h2:contains('There is a problem')")
-    assert page.has_text("Please answer this question")
+    assert page.has_text("Enter your Town or city")
 
     form = page.get_form()
     assert form["address_line_1"] == "999 Letsby Avenue"
@@ -627,8 +627,8 @@ def test_referral_email():
     form = page.get_form()
 
     page = form.submit()
-    assert page.has_text("Please answer this question")
-    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Please answer this question')")
+    assert page.has_text("Enter your first name")
+    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Enter your first name')")
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
@@ -642,7 +642,7 @@ def test_referral_email():
     form = page.get_form()
     page = form.submit()
 
-    assert page.has_text("Please answer this question")
+    assert page.has_text("Please confirm that you agree to the use of your information by checking this box")
     form = page.get_form()
     form["permission"] = True
 
@@ -752,8 +752,8 @@ def test_incorrect_referral_email():
     form = page.get_form()
 
     page = form.submit()
-    assert page.has_text("Please answer this question")
-    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Please answer this question')")
+    assert page.has_text("Enter your first name")
+    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Enter your first name')")
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
@@ -796,8 +796,8 @@ def test_referral_not_providing_email():
     form = page.get_form()
 
     page = form.submit()
-    assert page.has_text("Please answer this question")
-    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Please answer this question')")
+    assert page.has_text("Enter your first name")
+    assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Enter your first name')")
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
@@ -809,7 +809,7 @@ def test_referral_not_providing_email():
     form = page.get_form()
     page = form.submit()
 
-    assert page.has_text("Please answer this question")
+    assert page.has_text("Please confirm that you agree to the use of your information by checking this box")
     form = page.get_form()
     form["permission"] = True
 
