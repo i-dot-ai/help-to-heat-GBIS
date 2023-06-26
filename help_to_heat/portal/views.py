@@ -105,10 +105,12 @@ class EPCUploadView(utils.MethodDispatcher):
     args = ("/usr/local/bin/python", "/app/manage.py", "load_epc_ratings", "--url",)
 
     def get(self, request):
+        epc_count = models.EpcRating.objects.count()
         template = "portal/epc-upload.html"
         return render(
             request,
             template_name=template,
+            context={"epc_count": epc_count},
         )
 
     def post(self, request):
