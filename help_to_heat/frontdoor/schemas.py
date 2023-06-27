@@ -227,7 +227,6 @@ supplier_options = (
     # "ESB",
     # "Foxglove",
     # "Octopus",
-    "OS Energy",
     "OVO",
     "Scottish Power",
     # "Shell",
