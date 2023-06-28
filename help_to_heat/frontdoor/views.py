@@ -531,3 +531,7 @@ def data_layer_js_view(request):
 
 def privacy_policy_view(request):
     return render(request, template_name="frontdoor/privacy-policy.html")
+
+
+def accessibility_statement_view(request):
+    return render(request, template_name="frontdoor/accessibility-statement.html")
