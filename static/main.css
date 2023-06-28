@@ -8,3 +8,10 @@
     display: flex;
     justify-content: flex-end;
 }
+
+#i-dot-ai .govuk-cookie-banner.hidden {
+  display: none;
+}
+#i-dot-ai .govuk-cookie-banner.visible {
+  display: block;
+}
