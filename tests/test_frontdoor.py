@@ -239,9 +239,13 @@ def _do_happy_flow(supplier="Foxglove"):
     assert page.has_one("h1:contains('Add your personal and contact details')")
     form = page.get_form()
 
+    form["last_name"] = "Flimble"
+
     page = form.submit()
     assert page.has_text("Enter your first name")
     assert page.has_one("p#question-first_name-error.govuk-error-message:contains('Enter your first name')")
+    form = page.get_form()
+    assert form["last_name"] == "Flimble"
 
     form["first_name"] = "Freddy"
     form["last_name"] = "Flibble"
