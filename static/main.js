@@ -8,11 +8,13 @@ window.onload = () => {
   const hideButton = document.getElementById("hideButton");
   const cookieBanner = document.getElementById("cookie-banner");
 
+  cookieBanner.style.display = "none";
+
   const isCookieSet = document.cookie
     .split(";")
     .some((item) => item.trim().startsWith("hideButton="));
 
-  if (isCookieSet) cookieBanner.style.display = "none";
+  if (!isCookieSet) cookieBanner.style.display = "block";
 
   hideButton.addEventListener("click", () => {
     const date = new Date();
