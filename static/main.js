@@ -8,13 +8,14 @@ window.onload = () => {
   const hideButton = document.getElementById("hideButton");
   const cookieBanner = document.getElementById("cookie-banner");
 
-  cookieBanner.style.display = "none";
-
   const isCookieSet = document.cookie
     .split(";")
     .some((item) => item.trim().startsWith("hideButton="));
 
-  if (!isCookieSet) cookieBanner.style.display = "block";
+  if (!isCookieSet) {
+    cookieBanner.classList.remove("hidden");
+    cookieBanner.classList.add("visible");
+  }
 
   hideButton.addEventListener("click", () => {
     const date = new Date();
@@ -23,6 +24,7 @@ window.onload = () => {
     document.cookie =
       "hideButton=hidden; expires=" + date.toUTCString() + "; path=/";
 
-    cookieBanner.style.display = "none";
+    cookieBanner.classList.remove("visible");
+    cookieBanner.classList.add("hidden");
   });
 };
