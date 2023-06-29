@@ -14,5 +14,4 @@ CONTACT_EMAIL="test@example.com"
 FROM_EMAIL="test@example.com"
 EMAIL_BACKEND_TYPE=CONSOLE
 BASE_URL=http://localhost:8012/
-SHOW_FRONTDOOR=True
 OS_API_KEY="f4k3k3y"
