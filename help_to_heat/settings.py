@@ -177,5 +177,3 @@ if not DEBUG:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_AGE = 60 * 10  # 10 minutes
     SESSION_COOKIE_SAMESITE = "Strict"
-
-KILL_SWITCH = env.bool("KILL_SWITCH", default=True)
