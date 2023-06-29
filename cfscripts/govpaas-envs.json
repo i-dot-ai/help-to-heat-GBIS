@@ -3,7 +3,6 @@
         "help-to-heat-frontdoor": {
             "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
             "EMAIL_BACKEND_TYPE": "CONSOLE",
-            "SHOW_FRONTDOOR": "True",
             "OS_API_KEY": "fakeapikey"
         }
     },
@@ -13,7 +12,6 @@
             "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "TEAM_NOTIFY_API_KEY",
             "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-            "SHOW_FRONTDOOR": "True",
             "OS_API_KEY": "OS_API_KEY"
         }
     },
@@ -23,7 +21,6 @@
             "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "LIVE_NOTIFY_API_KEY",
             "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-            "SHOW_FRONTDOOR": "True",
             "OS_API_KEY": "OS_API_KEY"
         }
     },
@@ -33,7 +30,6 @@
             "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "LIVE_NOTIFY_API_KEY",
             "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-            "SHOW_FRONTDOOR": "True",
             "OS_API_KEY": "OS_API_KEY"
         }
     },
@@ -43,7 +39,6 @@
             "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
             "GOVUK_NOTIFY_API_KEY": "LIVE_NOTIFY_API_KEY",
             "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-            "SHOW_FRONTDOOR": "True",
             "OS_API_KEY": "OS_API_KEY"
         }
     }    

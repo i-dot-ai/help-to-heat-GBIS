@@ -6,13 +6,14 @@ def migrate_roles(apps, schema_editor):
     User = apps.get_model("portal", "User")
     users = User.objects.all()
     for user in users:
-        if user.role.lower().endswith("manager"):
-            user.role = "SERVICE_MANAGER"
-        elif user.role.lower().endswith("leader"):
-            user.role = "TEAM_LEADER"
-        elif user.role.lower().endswith("member"):
-            user.role = "TEAM_MEMBER"
-        user.save()
+        if user.role:
+            if user.role.lower().endswith("manager"):
+                user.role = "SERVICE_MANAGER"
+            elif user.role.lower().endswith("leader"):
+                user.role = "TEAM_LEADER"
+            elif user.role.lower().endswith("member"):
+                user.role = "TEAM_MEMBER"
+            user.save()
 
 
 class Migration(migrations.Migration):
