@@ -18,9 +18,11 @@ if not settings.KILL_SWITCH:
         ]
 
     urlpatterns = [
-        path("admin/", admin.site.urls),
         path("api/", include(api_patterns)),
         path("robots.txt", views.robots_txt_view),
     ] + urlpatterns
 else:
     urlpatterns = []
+
+if settings.DEBUG:
+    urlpatterns = urlpatterns + [path("admin/", admin.site.urls)]
