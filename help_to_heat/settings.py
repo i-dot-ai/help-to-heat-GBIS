@@ -165,8 +165,6 @@ else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
 
-SHOW_FRONTDOOR = True
-
 OS_API_KEY = env.str("OS_API_KEY")
 
 TOTP_ISSUER = "Help to Heat Supplier Portal"
@@ -177,5 +175,3 @@ if not DEBUG:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_AGE = 60 * 10  # 10 minutes
     SESSION_COOKIE_SAMESITE = "Strict"
-
-KILL_SWITCH = env.bool("KILL_SWITCH", default=True)

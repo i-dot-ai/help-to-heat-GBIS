@@ -112,9 +112,11 @@ def get_prev_next_urls(session_id, page_name):
 
 
 class PageView(utils.MethodDispatcher):
-    def get(self, request, session_id, page_name, errors=None, is_change_page=False):
+    def get(self, request, session_id, page_name, data=None, errors=None, is_change_page=False):
         if not errors:
             errors = {}
+        if not data:
+            data = interface.api.session.get_answer(session_id, page_name)
         if is_change_page:
             assert page_name in schemas.change_page_lookup
             prev_page_name = schemas.change_page_lookup[page_name]
@@ -122,7 +124,6 @@ class PageView(utils.MethodDispatcher):
             next_page_url = None
         else:
             prev_page_url, next_page_url = self.get_prev_next_urls(session_id, page_name)
-        data = interface.api.session.get_answer(session_id, page_name)
         extra_context = self.get_context(request=request, session_id=session_id, page_name=page_name, data=data)
         context = {
             "data": data,
@@ -142,13 +143,13 @@ class PageView(utils.MethodDispatcher):
         data = request.POST.dict()
         errors = self.validate(request, session_id, page_name, data, is_change_page)
         if errors:
-            return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
+            return self.get(request, session_id, page_name, data=data, errors=errors, is_change_page=is_change_page)
         else:
             try:
                 data = self.save_data(request, session_id, page_name)
             except ValidationError as val_errors:
                 errors = {field: val_errors.messages["data"][field][0] for field in val_errors.messages["data"]}
-                return self.get(request, session_id, page_name, errors=errors, is_change_page=is_change_page)
+                return self.get(request, session_id, page_name, data=data, errors=errors, is_change_page=is_change_page)
             return self.handle_post(request, session_id, page_name, data, is_change_page)
 
     def save_data(self, request, session_id, page_name, *args, **kwargs):
@@ -531,3 +532,7 @@ def data_layer_js_view(request):
 
 def privacy_policy_view(request):
     return render(request, template_name="frontdoor/privacy-policy.html")
+
+
+def accessibility_statement_view(request):
+    return render(request, template_name="frontdoor/accessibility-statement.html")
