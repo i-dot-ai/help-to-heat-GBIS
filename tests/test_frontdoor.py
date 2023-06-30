@@ -33,7 +33,7 @@ def test_flow_northern_ireland():
     form["country"] = "Northern Ireland"
     page = form.submit().follow()
 
-    assert page.has_text("The scheme does not apply to homes in Northern Ireland")
+    assert page.has_text("This service is not available for homes in Northern Ireland")
 
     data = interface.api.session.get_answer(session_id, page_name="country")
     assert data["country"] == "Northern Ireland"
