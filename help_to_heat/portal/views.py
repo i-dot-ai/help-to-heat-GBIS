@@ -99,3 +99,14 @@ def healthcheck_view(request):
     _ = models.User.objects.exists()
     data = {"healthy": True, "datetime": timezone.now()}
     return JsonResponse(data, status=201)
+
+
+@require_http_methods(["GET"])
+def epc_page(request):
+    epc_count = models.EpcRating.objects.count()
+    template = "portal/epc-page.html"
+    return render(
+        request,
+        template_name=template,
+        context={"epc_count": epc_count},
+    )
