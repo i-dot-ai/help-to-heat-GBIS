@@ -33,7 +33,7 @@ def test_flow_northern_ireland():
     form["country"] = "Northern Ireland"
     page = form.submit().follow()
 
-    assert page.has_text("The scheme does not apply to homes in Northern Ireland")
+    assert page.has_text("This service is not available for homes in Northern Ireland")
 
     data = interface.api.session.get_answer(session_id, page_name="country")
     assert data["country"] == "Northern Ireland"
@@ -87,7 +87,7 @@ def test_flow_scotland():
     assert page.has_one("h1:contains('What is the council tax band of your property?')")
     page = _check_page(page, "council-tax-band", "council_tax_band", "B")
 
-    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+    assert page.has_one("h1:contains('Is anyone in your household receiving any of the following benefits?')")
     page = _check_page(page, "benefits", "benefits", "Yes")
 
 
@@ -149,7 +149,7 @@ def _answer_house_questions(page, session_id, benefits_answer, epc_rating="D"):
     assert page.has_one("h1:contains('We found an Energy Performance Certificate that might be yours')")
     page = _check_page(page, "epc", "accept_suggested_epc", "Yes")
 
-    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+    assert page.has_one("h1:contains('Is anyone in your household receiving any of the following benefits?')")
     page = _check_page(page, "benefits", "benefits", benefits_answer)
 
     assert page.has_one("h1:contains('What is your annual household income?')")
@@ -532,7 +532,7 @@ def test_no_epc():
 
     assert data["epc_rating"] == "Not found"
 
-    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+    assert page.has_one("h1:contains('Is anyone in your household receiving any of the following benefits?')")
 
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
@@ -593,7 +593,7 @@ def test_eligibility():
     form = page.get_form()
     page = form.submit().follow()
 
-    assert page.has_one("h1:contains('Is anyone in your household receiving any benefits?')")
+    assert page.has_one("h1:contains('Is anyone in your household receiving any of the following benefits?')")
     page = _check_page(page, "benefits", "benefits", "No")
 
     assert page.has_one("h1:contains('Your property is not eligible')")

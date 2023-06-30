@@ -50,7 +50,7 @@ summary_map = {
     "address": "Property address",
     "council_tax_band": "Council tax band",
     "epc": "Energy Performance Certificate",
-    "benefits": "Is anyone in your household receiving any benefits?",
+    "benefits": "Is anyone in your household receiving any of the following benefits?",
     "household_income": "Annual household income",
     "property_type": "Property type",
     "property_subtype": "Property type",
