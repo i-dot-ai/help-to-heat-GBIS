@@ -6,6 +6,10 @@ from django.views.decorators.http import require_http_methods
 
 from . import decorators, models
 
+import logging
+logger = logging.getLogger('django.request')
+logger.setLevel(logging.ERROR)
+
 
 @require_http_methods(["GET"])
 @login_required(login_url="portal:unauthorised")
