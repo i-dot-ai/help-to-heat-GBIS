@@ -216,8 +216,9 @@ class AddressSelectView(PageView):
 
 @register_page("address-manual")
 class AddressManualView(PageView):
-    def get_context(self, request, session_id, *args, **kwargs):
-        data = interface.api.session.get_answer(session_id, "address")
+    def get_context(self, request, session_id, page_name, data, *args, **kwargs):
+        answer_data = interface.api.session.get_answer(session_id, "address")
+        data = {**answer_data, **data}
         return {"data": data}
 
     def save_data(self, request, session_id, page_name, *args, **kwargs):
