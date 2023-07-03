@@ -911,5 +911,5 @@ def test_long_address():
     form["postcode"] = "?" * 256
     page = form.submit()
 
-    assert page.has_one("Longer than maximum length 128")
-    assert page.has_one("Longer than maximum length 16")
+    assert page.has_text("Longer than maximum length 128")
+    assert page.has_text("Longer than maximum length 16")
