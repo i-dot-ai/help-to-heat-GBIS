@@ -31,7 +31,7 @@ page_compulsory_field_map = {
     "loft-access": ("loft_access",),
     "loft-insulation": ("loft_insulation",),
     "supplier": ("supplier",),
-    "contact-details": ("first_name", "last_name", "contact_number"),
+    "contact-details": ("first_name", "last_name"),
     "confirm-and-submit": ("permission",),
 }
 
@@ -447,6 +447,18 @@ class ContactDetailsView(PageView):
     def get_context(self, session_id, *args, **kwargs):
         supplier_data = interface.api.session.get_answer(session_id, "supplier")
         return {"supplier": supplier_data["supplier"]}
+
+    def validate(self, request, session_id, page_name, data, is_change_page):
+        fields = page_compulsory_field_map.get(page_name, ())
+        missing_fields = tuple(field for field in fields if not data.get(field))
+        errors = {field: missing_item_errors[field] for field in missing_fields}
+        if (not data.get("email")) and (not data.get("contact_number")):
+            errors = {
+                **errors,
+                "email": missing_item_errors["email"],
+                "contact_number": missing_item_errors["contact_number"],
+            }
+        return errors
 
 
 @register_page("confirm-and-submit")
