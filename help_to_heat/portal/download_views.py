@@ -83,15 +83,21 @@ def add_extra_row_data(referral):
     return row
 
 
-def create_referral_csv(referrals, file_name):
+def create_csv_response(fieldnames, rows, file_name):
     headers = {
         "Content-Type": "text/csv",
-        "Content-Disposition": f"attachment; filename=referral-data-{file_name}.csv",
+        "Content-Disposition": f"attachment; filename={file_name}",
     }
-    rows = [add_extra_row_data(referral) for referral in referrals]
     response = HttpResponse(headers=headers)
-    writer = csv.DictWriter(response, fieldnames=csv_columns, extrasaction="ignore")
+    writer = csv.DictWriter(response, fieldnames=fieldnames, extrasaction="ignore")
     writer.writeheader()
     for row in rows:
         writer.writerow(row)
     return response
+
+
+def create_referral_csv(referrals, file_name):
+    file_name = f"referral-data-{file_name}.csv"
+    rows = [add_extra_row_data(referral) for referral in referrals]
+    fieldnames = csv_columns
+    return create_csv_response(fieldnames, rows, file_name)
