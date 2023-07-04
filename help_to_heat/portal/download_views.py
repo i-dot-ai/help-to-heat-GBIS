@@ -101,3 +101,9 @@ def create_referral_csv(referrals, file_name):
     rows = [add_extra_row_data(referral) for referral in referrals]
     fieldnames = csv_columns
     return create_csv_response(fieldnames, rows, file_name)
+
+
+@require_http_methods(["GET"])
+@decorators.requires_service_manager
+def service_analytics_view(request):
+    return create_csv_response(["col1", "col2"], [], "service_analytics.csv")
