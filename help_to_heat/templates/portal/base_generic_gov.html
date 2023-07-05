@@ -113,6 +113,13 @@
               Logout
             </a>
           </li>
+          {% if request.user.is_service_manager %}
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="{{url('portal:service-analytics')}}">
+                Download service analytics
+              </a>
+            </li>
+          {% endif %}
         </ul>
       </nav>
     </div>

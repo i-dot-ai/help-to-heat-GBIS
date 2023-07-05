@@ -5,10 +5,7 @@ from . import utils
 from .test_frontdoor import _do_happy_flow
 
 
-@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
-def test_csv():
-    _do_happy_flow(supplier="OVO")
-
+def _check_referral_csv():
     client = utils.get_client()
     page = utils.login_as_team_leader(client, supplier="OVO")
     assert page.has_one("p:contains('Unread leads') ~ p:contains('1')")
@@ -22,3 +19,21 @@ def test_csv():
     rows = list(csv.DictReader(lines))
     data = rows[0]
     assert data["epc_date"] == "2022-12-25"
+
+
+def _check_service_analytics():
+    client = utils.get_client()
+    page = utils.login_as_service_manager(client)
+
+    csv_page = page.click(contains="Download service analytics")
+    text = csv_page.content.decode("utf-8")
+    lines = text.splitlines()
+    assert len(lines) > 300
+    assert len(lines[0].split(",")) == 3, len(lines[0].split(","))
+
+
+@unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
+def test_csv():
+    _do_happy_flow(supplier="OVO")
+    _check_referral_csv()
+    _check_service_analytics()
