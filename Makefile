@@ -25,7 +25,7 @@ add-suppliers:
 # -------------------------------------- Code Style  -------------------------------------
 
 .PHONY: check-code
-check-python-code:
+check-code:
 	docker-compose -f tests/docker-compose.yml build check-code-help-to-heat && docker-compose -f tests/docker-compose.yml run --no-deps --rm check-code-help-to-heat
 
 .PHONY: check-migrations
