@@ -1,9 +1,11 @@
 import csv
+import itertools
 
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
+from help_to_heat.frontdoor import models as frontdoor_models
 from help_to_heat.frontdoor.eligibility import calculate_eligibility
 from help_to_heat.portal import decorators, models
 
@@ -103,7 +105,21 @@ def create_referral_csv(referrals, file_name):
     return create_csv_response(fieldnames, rows, file_name)
 
 
+def process_created_at(row):
+    row = {**row, "created_at": row["created_at"].strftime("%Y-%m-%d %H:%M:%S")}
+    return row
+
+
 @require_http_methods(["GET"])
 @decorators.requires_service_manager
 def service_analytics_view(request):
-    return create_csv_response(["col1", "col2"], [], "service_analytics.csv")
+    answer_data = frontdoor_models.Answer.objects.values("session_id", "page_name", "created_at")
+    feedback_data = (
+        frontdoor_models.Feedback.objects.exclude(session_id=None)
+        .exclude(page_name=None)
+        .exclude(page_name="")
+        .values("session_id", "page_name", "created_at")
+    )
+    data = itertools.chain(answer_data, feedback_data)
+    rows = [process_created_at(item) for item in data]
+    return create_csv_response(["session_id", "page_name", "created_at"], rows, "service_analytics.csv")
