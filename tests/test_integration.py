@@ -24,7 +24,12 @@ def _check_referral_csv():
 def _check_service_analytics():
     client = utils.get_client()
     page = utils.login_as_service_manager(client)
-    assert page.has_one("a:contains('Download service analytics')")
+
+    csv_page = page.click(contains="Download service analytics")
+    text = csv_page.content.decode("utf-8")
+    lines = text.splitlines()
+    assert len(lines) > 300
+    assert len(lines[0].split(",")) == 3, len(lines[0].split(","))
 
 
 @unittest.mock.patch("osdatahub.PlacesAPI", utils.StubAPI)
