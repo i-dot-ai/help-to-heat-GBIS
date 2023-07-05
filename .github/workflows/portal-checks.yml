@@ -1,4 +1,4 @@
-name: Check backend code
+name: Check code
 
 env:
   DOCKER_BUILDKIT: 1
@@ -17,7 +17,7 @@ on:
 
 jobs:
   check_web:
-    name: Check Python
+    name: Check code
 
     runs-on: ubuntu-latest
 
@@ -29,57 +29,38 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Install Dependencies
+    - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip setuptools
-        pip install -r requirements-dev.lock
+        pip install -r flake8 flake8-isort flake8-print flake8-blind-except pep8-naming black
 
-    - name: Run Python Code Checks
+    - name: Check code formatting
       run: |
-        make check-python-code
+        black --check .
 
-    - uses: actions/checkout@v2
-    - name: Slack Notification
-      continue-on-error: true
-      if: ${{ failure() }}
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_COLOR: '#FF0000'
-        SLACK_ICON: https://avatars0.githubusercontent.com/u/818058?s=200&v=4
-        SLACK_TITLE: '${{ github.ref_name }} CodeCheck ${{ job.status }} :warning:'
-        SLACK_USERNAME: ${{ github.actor }}
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_MESSAGE: '${{ github.ref_name }} Action ${{ job.status }}'
+    - name: Check code imports
+        isort --check .
+
+    - name: Check code linting
+        flake8 .
 
 
   run_tests:
-    name: Run Tests
+    name: Run tests
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Run Tests
+    - name: Run tests
       run: |
-        make test
-
-    - uses: actions/checkout@v2
-    - name: Slack Notification
-      continue-on-error: true
-      if: ${{ failure() }}
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_COLOR: '#FF0000'
-        SLACK_ICON: https://avatars0.githubusercontent.com/u/818058?s=200&v=4
-        SLACK_TITLE: '${{ github.ref_name }} CodeCheck ${{ job.status }} :warning:'
-        SLACK_USERNAME: ${{ github.actor }}
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_MESSAGE: '${{ github.ref_name }} Action ${{ job.status }}'
+        docker-compose -f tests/docker-compose.yml build tests-help-to-heat help-to-heat-test-db
+        docker-compose -f tests/docker-compose.yml run --rm tests-help-to-heat
 
 
   check_migrations:
-    name: Check Migrations
+    name: Check migrations
 
     runs-on: ubuntu-latest
 
@@ -88,17 +69,5 @@ jobs:
 
       - run: |
           docker-compose build web
+          docker-compose run web python manage.py migrate
           docker-compose run web python manage.py makemigrations --check
-
-      - uses: actions/checkout@v2
-      - name: Slack Notification
-        continue-on-error: true
-        if: ${{ failure() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_COLOR: '#FF0000'
-          SLACK_ICON: https://avatars0.githubusercontent.com/u/818058?s=200&v=4
-          SLACK_TITLE: '${{ github.ref_name }} CodeCheck ${{ job.status }} :warning:'
-          SLACK_USERNAME: ${{ github.actor }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_MESSAGE: '${{ github.ref_name }} Action ${{ job.status }}'
