@@ -118,8 +118,8 @@ def service_analytics_view(request):
         frontdoor_models.Feedback.objects.exclude(session_id=None)
         .exclude(page_name=None)
         .exclude(page_name="")
-        .values("session_id", "page_name", "created_at")
+        .values("created_at", "session_id", "page_name")
     )
     data = itertools.chain(answer_data, feedback_data)
     rows = [process_created_at(item) for item in data]
-    return create_csv_response(["session_id", "page_name", "created_at"], rows, "service_analytics.csv")
+    return create_csv_response(["created_at", "session_id", "page_name"], rows, "service_analytics.csv")
